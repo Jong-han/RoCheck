@@ -32,6 +32,7 @@ class RaidAdapter: ListAdapter<CheckListModel, RaidAdapter.RaidViewHolder>( Raid
             binding.run {
 
                 model = item
+                executePendingBindings()
 
             }
 

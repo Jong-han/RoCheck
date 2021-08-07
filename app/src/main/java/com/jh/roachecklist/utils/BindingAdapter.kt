@@ -7,45 +7,18 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 
 
-object BindingAdapter {
+@BindingAdapter("android:visibleIf")
+fun View.setVisibleIf( value: Boolean) {
 
-    @BindingAdapter("android:visibleIf")
-    @JvmStatic
-    fun setVisibleIf( view: View, value: Boolean) {
-
-        if ( value )
-            view.visibility = View.VISIBLE
-        else
-            view.visibility = View.GONE
-//        Log.i("zxcv"," visible :: ${this.isVisible}" )
-
-    }
-
-
-//    @BindingAdapter("android:invisibleIf")
-//    @JvmStatic
-//    fun View.setInvisibleIf(value: Boolean) {
-//
-//        if ( value )
-//            view.visibility = View.VISIBLE
-//        else
-//            view.visibility = View.GONE
-//    }
+    this.isVisible = value
 
 }
 
-//@BindingAdapter("android:visibleIf")
-//fun View.setVisibleIf(value: Boolean) {
-//
-//    this.isVisible = value
-//    Log.i("zxcv"," visible :: ${this.isVisible}" )
-//
-//}
-//
-//
-//@BindingAdapter("android:invisibleIf")
-//fun View.setInvisibleIf(value: Boolean) {
-//
-//    this.isInvisible = value
-//
-//}
+
+@BindingAdapter("android:invisibleIf")
+fun View.setInvisibleIf( value: Boolean) {
+
+    this.isInvisible = value
+
+}
+

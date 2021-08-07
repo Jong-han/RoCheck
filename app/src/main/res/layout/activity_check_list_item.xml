@@ -6,7 +6,6 @@
         <variable
             name="model"
             type="com.jh.roachecklist.ui.checklist.CheckListModel" />
-        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -25,19 +24,19 @@
             android:id="@+id/cb1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{model.count > 0 ? View.VISIBLE : View.GONE}"/>
+            android:visibleIf="@{model.count > 0 }"/>
 
         <CheckBox
             android:id="@+id/cb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{model.count > 1 ? View.VISIBLE : View.GONE}"/>
+            android:visibleIf="@{model.count > 1 }"/>
 
         <CheckBox
             android:id="@+id/cb3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{model.count > 2 ? View.VISIBLE : View.GONE}"/>
+            android:visibleIf="@{model.count > 2 }"/>
 
     </LinearLayout>
 </layout>

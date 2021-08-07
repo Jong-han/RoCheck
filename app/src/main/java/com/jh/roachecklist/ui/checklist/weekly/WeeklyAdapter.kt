@@ -32,6 +32,7 @@ class WeeklyAdapter: ListAdapter<CheckListModel, WeeklyAdapter.WeeklyViewHolder>
             binding.run {
 
                 model = item
+                executePendingBindings()
 
             }
 

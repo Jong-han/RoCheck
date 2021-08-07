@@ -34,6 +34,7 @@ class DailyAdapter: ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( D
             binding.run {
 
                 model = item
+                executePendingBindings()
 
             }
 
