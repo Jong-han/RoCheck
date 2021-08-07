@@ -77,6 +77,7 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             repository.deleteCharacter( character )
 
         }
+        rvItems.remove( character )
 
     }
 

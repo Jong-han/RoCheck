@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RoaCheckList</string>
+    <string name="character_title">캐릭터 선택</string>
+    <string name="character_add_nickname">닉네임</string>
+    <string name="character_add_level">아이템 레벨</string>
+    <string name="character_add_class">클래스</string>
+    <string name="character_add_create">생성</string>
+    <string name="character_add_cancel">취소</string>
+    <string name="character_add_change">변경</string>
+    <string name="character_dialog_change_level">아이템 레벨 변경</string>
+    <string name="character_dialog_delete">캐릭터 삭제</string>
+    <string name="check_list_tab_daily">일일</string>
+    <string name="check_list_tab_weekly">주간</string>
+    <string name="check_list_tab_raid">군단장 레이드</string>
+    <string name="check_list_no_list">진행할 수 있는\n컨텐츠가 없습니다.</string>
 </resources>

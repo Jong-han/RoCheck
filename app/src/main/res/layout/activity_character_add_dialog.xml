@@ -9,7 +9,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="30dp">
+        android:background="@drawable/bg_cm_dialog"
+        android:padding="@dimen/default_layout_padding">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/container_name"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="닉네임"
+            android:hint="@string/character_add_nickname"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="아이템 레벨"
+            android:hint="@string/character_add_level"
             app:layout_constraintTop_toBottomOf="@id/container_name">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:hint="클래스"
+            android:hint="@string/character_add_class"
             app:layout_constraintTop_toBottomOf="@id/container_level">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -68,27 +69,30 @@
 
         <Button
             android:id="@+id/btn_ok"
+            style="@style/buttonCommon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="@string/character_add_create"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btn_cancel"
             app:layout_constraintTop_toBottomOf="@id/container_klass"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:text="생성"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
         <Button
             android:id="@+id/btn_cancel"
+            style="@style/buttonCommon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="취소"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
+
+            android:text="@string/character_add_cancel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_ok"
             app:layout_constraintTop_toBottomOf="@id/container_klass"
-            app:layout_constraintBottom_toBottomOf="parent"
-
-            />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
 
