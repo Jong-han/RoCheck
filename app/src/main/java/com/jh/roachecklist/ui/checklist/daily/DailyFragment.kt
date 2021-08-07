@@ -35,6 +35,8 @@ class DailyFragment: BaseFragment<ActivityCheckListDailyBinding, CheckListViewMo
 
         dailyAdapter.submitList( viewModel.daily )
 
+        dailyAdapter.notifyDataSetChanged()
+
 
     }
 

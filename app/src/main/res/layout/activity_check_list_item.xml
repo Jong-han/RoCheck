@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="item"
+            name="model"
             type="com.jh.roachecklist.ui.checklist.CheckListModel" />
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -14,15 +16,28 @@
 
         <TextView
             android:id="@+id/tv_work"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:text="@{item.work}" />
+            android:text="@{model.work}" />
 
         <CheckBox
-            android:id="@+id/cb"
+            android:id="@+id/cb1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="@{model.count > 0 ? View.VISIBLE : View.GONE}"/>
+
+        <CheckBox
+            android:id="@+id/cb2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{model.count > 1 ? View.VISIBLE : View.GONE}"/>
+
+        <CheckBox
+            android:id="@+id/cb3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{model.count > 2 ? View.VISIBLE : View.GONE}"/>
 
     </LinearLayout>
 </layout>

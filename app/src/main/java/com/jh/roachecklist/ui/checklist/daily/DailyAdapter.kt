@@ -1,5 +1,6 @@
 package com.jh.roachecklist.ui.checklist.daily
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -32,7 +33,7 @@ class DailyAdapter: ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( D
 
             binding.run {
 
-                this.item = item
+                model = item
 
             }
 
