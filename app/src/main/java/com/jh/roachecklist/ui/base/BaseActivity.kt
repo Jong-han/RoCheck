@@ -1,6 +1,9 @@
 package com.jh.roachecklist.ui.base
 
 import android.os.Bundle
+import android.transition.Slide
+import android.view.Gravity
+import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -24,6 +27,27 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>: AppCompatActi
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        with( window ) {
+
+            requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
+            // set an slide transition
+            val endTransition = Slide(Gravity.END).apply {
+                duration = 300
+                excludeTarget( android.R.id.statusBarBackground, true )
+
+            }
+            val startTransition = Slide(Gravity.START).apply {
+
+                duration = 300
+
+                excludeTarget( android.R.id.statusBarBackground, true )
+
+            }
+            enterTransition = endTransition
+            exitTransition = startTransition
+
+        }
 
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<T>( this, getLayoutId() ).apply {

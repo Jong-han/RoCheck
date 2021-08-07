@@ -1,24 +1,29 @@
 package com.jh.roachecklist.ui.character
 
-import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.content.Intent
 import androidx.activity.viewModels
+import androidx.core.app.ActivityOptionsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCharacterBinding
-import com.jh.roachecklist.databinding.ActivityCharacterDialogBinding
+import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.ui.base.BaseActivity
 import com.jh.roachecklist.ui.base.setSupportActionBar
+import com.jh.roachecklist.ui.checklist.CheckListActivity
+import com.jh.roachecklist.ui.dialog.DialogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewModel>() {
+
+    companion object {
+
+        const val EXTRA_LEVEL = "EXTRA_LEVEL"
+        const val EXTRA_NICK_NAME = "EXTRA_NICK_NAME"
+
+    }
 
     override val viewModel: CharacterViewModel by viewModels()
 
@@ -26,7 +31,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     override fun getLayoutId(): Int = R.layout.activity_character
 
-    private val characterAdapter = CharacterAdapter()
+    private val characterAdapter: CharacterAdapter by lazy { CharacterAdapter( startCheckList, longClickListener ) }
 
     override fun initViewAndEvent() {
 
@@ -34,50 +39,62 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         dataBinding.rvCharacter.apply {
 
-            layoutManager = LinearLayoutManager( this@CharacterActivity )
+            layoutManager = GridLayoutManager( this@CharacterActivity, 2 )
             adapter = characterAdapter
 
         }
 
         viewModel.clickAddCharacter.observe( this, {
 
-            showDefaultDialog( this, layoutInflater ) { name: String, level: Int, klass: String ->
-                viewModel.createCharacter( name, level, klass )
+            DialogUtil.showAddCharacterDialog( this, layoutInflater ) { name: String, level: Int, klass: String ->
+                viewModel.addCharacter( name, level, klass )
             }
 
         })
 
-        viewModel.rvItem.observe( this, {
+        viewModel.rvItems.observe( this, {
 
-            characterAdapter.submitList( it )
+            characterAdapter.submitList( it.toList() )
 
         })
 
     }
 
-    private fun showDefaultDialog(context: Context, layoutInflater: LayoutInflater, onOk: (String, Int, String)->(Unit) ) {
+    private val startCheckList: Function1<Int, Unit> = { pos: Int ->
 
-        val binding = ActivityCharacterDialogBinding.inflate( layoutInflater )
-        val builder = AlertDialog.Builder( context )
+        val item = characterAdapter.currentList[pos]
+        Intent( this, CheckListActivity::class.java ).apply {
 
-        builder.setView( binding.root )
-        builder.setCancelable( false )
+            putExtra( EXTRA_LEVEL, item.level )
+            putExtra( EXTRA_NICK_NAME, item.nickName )
 
-        val dialog = builder.create()
-        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
-        dialog.show()
+            val optionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
 
-        binding.run {
-
-            btnOk.setOnClickListener {
-                onOk.invoke( etName.text.toString(), etLevel.text.toString().toInt(), etKlass.text.toString() )
-                dialog.dismiss()
-            }
-            btnCancel.setOnClickListener {
-                dialog.dismiss()
-            }
+            startActivity( this, optionsCompat.toBundle() )
 
         }
 
     }
+
+    private val longClickListener = { pos: Int ->
+
+        val item = characterAdapter.currentList[pos]
+        DialogUtil.showEditMenuDialog( this, layoutInflater, item, updateCharacter, deleteCharacter )
+
+    }
+
+    private val updateCharacter = { character: CharacterEntity, level: Int ->
+
+        viewModel.updateCharacter( character, level )
+        characterAdapter.notifyItemChanged( characterAdapter.currentList.indexOf( character ) )
+
+    }
+
+    private val deleteCharacter = { character: CharacterEntity ->
+
+        viewModel.deleteCharacter( character )
+
+    }
+
 }

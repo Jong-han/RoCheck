@@ -4,34 +4,49 @@
     <data>
         <variable
             name="item"
-            type="com.jh.roachecklist.ui.character.CharacterModel" />
+            type="com.jh.roachecklist.db.CharacterEntity" />
     </data>
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:background="@drawable/bg_rounded_corner"
+        android:padding="10dp">
 
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="10dp"
+            android:layout_weight="3"
+            android:src="@mipmap/ic_launcher_round" />
         <TextView
             android:id="@+id/tb_character_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{item.name}" />
+            android:gravity="start"
+            android:text="@{item.nickName}" />
 
         <TextView
             android:id="@+id/tb_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{item.klass}" />
+            android:gravity="start"
+            android:text="@{`클래스 : ` + item.klass}" />
 
         <TextView
             android:id="@+id/tb_level"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@{Integer.valueOf(item.level).toString()}" />
+            android:gravity="start"
+            android:text="@{`아이템 레벨 : ` + Integer.valueOf(item.level).toString()}" />
 
     </LinearLayout>
 </layout>
