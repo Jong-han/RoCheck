@@ -22,4 +22,7 @@ interface CharacterDAO {
 
     @Delete
     fun deleteCharacter(entity: CharacterEntity)
+
+    @Query("SELECT * FROM Character WHERE nick_name = :nickName ")
+    fun searchCharacter( nickName: String ): CharacterEntity?
 }

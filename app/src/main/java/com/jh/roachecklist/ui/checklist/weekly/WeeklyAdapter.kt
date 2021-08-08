@@ -1,6 +1,7 @@
 package com.jh.roachecklist.ui.checklist.weekly
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -8,9 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListItemBinding
+import com.jh.roachecklist.setCheckBox
 import com.jh.roachecklist.ui.checklist.CheckListModel
 
-class WeeklyAdapter: ListAdapter<CheckListModel, WeeklyAdapter.WeeklyViewHolder>( WeeklyDiffUtil() ) {
+class WeeklyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<CheckListModel, WeeklyAdapter.WeeklyViewHolder>( WeeklyDiffUtil() ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeeklyViewHolder {
 
@@ -32,6 +34,21 @@ class WeeklyAdapter: ListAdapter<CheckListModel, WeeklyAdapter.WeeklyViewHolder>
             binding.run {
 
                 model = item
+                cb1.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb1.setCheckBox( item.checkedCount, 1 )
+
+                cb2.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb2.setCheckBox( item.checkedCount, 2 )
+
+                cb3.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb3.setCheckBox( item.checkedCount, 3 )
+
                 executePendingBindings()
 
             }

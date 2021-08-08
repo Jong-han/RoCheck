@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.jh.roachecklist.ui.checklist.CheckListViewModel" />
+            type="com.jh.roachecklist.ui.checklist.weekly.WeeklyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

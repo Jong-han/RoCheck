@@ -1,7 +1,6 @@
 package com.jh.roachecklist.ui.character
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.db.CharacterEntity
@@ -11,7 +10,6 @@ import com.jh.roachecklist.utils.ListLiveData
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,7 +17,11 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterViewModel @Inject constructor( private val repository: Repository ): BaseViewModel() {
 
+    enum class CharacterEvent { EXIST }
+
     val rvItems = ListLiveData<CharacterEntity>()
+
+    val event = MutableLiveData<CharacterEvent>()
 
     init {
 
@@ -41,16 +43,33 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         clickAddCharacter.call()
     }
 
-    fun addCharacter(name: String, level: Int, klass: String ) {
+    fun addCharacter(nickName: String, level: Int, klass: String ) {
 
-        val character = CharacterEntity( name, klass, level )
+        val character = CharacterEntity(nickName, klass, level)
 
-        viewModelScope.launch( Dispatchers.IO ) {
+        viewModelScope.launch(Dispatchers.IO) {
 
-            repository.addCharacter( character )
+            if ( repository.isExist( nickName ) ) {
+
+                withContext( Dispatchers.Main ) {
+
+                    event.value = CharacterEvent.EXIST
+
+                }
+
+            } else {
+
+                Log.i("zxcvzxcv", " 캐릭터생성")
+                repository.addCharacter(character)
+                withContext(Dispatchers.Main) {
+
+                    rvItems.add(character)
+
+                }
+
+            }
 
         }
-        rvItems.add( character )
 
     }
     fun updateCharacter( character: CharacterEntity, level: Int ) {

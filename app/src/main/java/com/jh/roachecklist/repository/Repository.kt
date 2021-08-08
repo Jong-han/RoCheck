@@ -1,8 +1,10 @@
 package com.jh.roachecklist.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.baycon.mobilefax.db.RoCheckDB
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 
 class Repository( private val db: RoCheckDB ) {
 
@@ -33,6 +35,12 @@ class Repository( private val db: RoCheckDB ) {
     fun deleteCharacter( characterEntity: CharacterEntity ) {
 
         db.characterDAO().deleteCharacter( characterEntity )
+
+    }
+
+    fun isExist( nickName: String ): Boolean {
+        Log.i("zxcv", "isExist :: ${db.characterDAO().searchCharacter( nickName )}")
+        return db.characterDAO().searchCharacter( nickName ) != null
 
     }
 

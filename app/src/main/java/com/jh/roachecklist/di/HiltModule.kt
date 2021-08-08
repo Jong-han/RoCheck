@@ -3,6 +3,7 @@ package com.jh.roachecklist.di
 import android.content.Context
 import androidx.room.Room
 import com.baycon.mobilefax.db.RoCheckDB
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class HiltModule {
+
     @Singleton
     @Provides
     fun provideDataBase(@ApplicationContext context: Context): RoCheckDB {
@@ -24,4 +26,9 @@ class HiltModule {
     @Singleton
     @Provides
     fun provideRepository( db: RoCheckDB ): Repository = Repository( db )
+
+    @Singleton
+    @Provides
+    fun providePref( @ApplicationContext context: Context ): AppPreference = AppPreference( context )
+
 }

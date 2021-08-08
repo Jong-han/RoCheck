@@ -1,6 +1,7 @@
 package com.jh.roachecklist.ui.character
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -55,6 +56,17 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         viewModel.rvItems.observe( this, {
 
             characterAdapter.submitList( it.toList() )
+
+        })
+
+        viewModel.event.observe( this, { event ->
+
+            when ( event ) {
+
+                CharacterViewModel.CharacterEvent.EXIST -> { Toast.makeText( this, "이미 존재하는 캐릭터 입니다.", Toast.LENGTH_SHORT).show() }
+                else -> {}
+
+            }
 
         })
 

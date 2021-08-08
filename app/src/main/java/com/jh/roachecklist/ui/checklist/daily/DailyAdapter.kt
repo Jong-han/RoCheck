@@ -1,7 +1,7 @@
 package com.jh.roachecklist.ui.checklist.daily
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListItemBinding
-import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.setCheckBox
 import com.jh.roachecklist.ui.checklist.CheckListModel
 
-class DailyAdapter: ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( DailyDiffUtil() ) {
+class DailyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( DailyDiffUtil() ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyViewHolder {
 
@@ -34,6 +34,21 @@ class DailyAdapter: ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( D
             binding.run {
 
                 model = item
+                cb1.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb1.setCheckBox( item.checkedCount, 1 )
+
+                cb2.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb2.setCheckBox( item.checkedCount, 2 )
+
+                cb3.setOnClickListener {
+                    onChecked.invoke( it, adapterPosition )
+                }
+                cb3.setCheckBox( item.checkedCount, 3 )
+
                 executePendingBindings()
 
             }
