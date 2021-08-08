@@ -15,28 +15,40 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/primary_color"
+            app:tabTextColor="@color/text_color"
+            app:tabSelectedTextColor="@color/text_color"
+            app:tabIndicatorColor="@color/text_color"
+            app:tabRippleColor="@color/accent_color"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일일"/>
+                android:text="@string/check_list_tab_daily"/>
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주간"/>
+                android:text="@string/check_list_tab_weekly"/>
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="레이드"/>
+                android:text="@string/check_list_tab_raid"/>
 
         </com.google.android.material.tabs.TabLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/primary_color"
+            app:layout_constraintTop_toBottomOf="@id/tabs"/>
 
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/tabs"
+            app:layout_constraintTop_toBottomOf="@id/view"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

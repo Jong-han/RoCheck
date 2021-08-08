@@ -14,7 +14,7 @@
         android:layout_margin="15dp"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="@drawable/bg_rounded_corner"
+        android:background="@drawable/bg_character_item"
         android:padding="10dp">
 
         <ImageView
@@ -30,6 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/primary_text_size"
+            android:textStyle="bold"
             android:text="@{item.nickName}" />
 
         <TextView
@@ -38,6 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/secondary_text_size"
             android:text="@{`클래스 : ` + item.klass}" />
 
         <TextView
@@ -46,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="start"
+            android:textSize="@dimen/secondary_text_size"
+            android:textColor="@color/primary_color"
             android:text="@{`아이템 레벨 : ` + Integer.valueOf(item.level).toString()}" />
 
     </LinearLayout>
