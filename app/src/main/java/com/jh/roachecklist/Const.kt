@@ -52,7 +52,6 @@ object Const {
 
     object WeeklyWork {
 
-        const val CHALLENGE_ABYSS_DUNGEON = "도전 어비스 던전"
         const val CHALLENGE_GUARDIAN = "도전 가디언 토벌"
         const val WEEKLY_EFONA = "주간 에포나 의뢰"
         const val ARGOS_1 = "아르고스 페이즈 1"
@@ -71,12 +70,18 @@ object Const {
         const val BALRAN_HARD = "발탄 하드"
         const val VIAKISS_NORMAL = "비아키스 노멀"
         const val VIAKISS_HARD = "비아키스 하드"
-        const val KOUKUSATON_REHEARSAL = "쿠크세이튼 리허설"
         const val KOUKUSATON_NORMAL = "쿠크세이튼 노멀"
-        const val ABRELSHOULD_DEJAVU = "아브렐슈드 데자뷰"
         const val ABRELSHOULD_1_2 = "아브렐슈드 1/2 관문"
         const val ABRELSHOULD_3_4 = "아브렐슈드 3/4 관문"
         const val ABRELSHOULD_5_6 = "아브렐슈드 5/6 관문"
+
+    }
+
+    object Expedition {
+
+        const val CHALLENGE_ABYSS_DUNGEON = "도전 어비스 던전"
+        const val KOUKUSATON_REHEARSAL = "쿠크세이튼 리허설"
+        const val ABRELSHOULD_DEJAVU = "아브렐슈드 데자뷰"
 
     }
 

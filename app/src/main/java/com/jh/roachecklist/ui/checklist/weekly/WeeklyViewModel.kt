@@ -18,12 +18,11 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
 
     var weekly = MutableLiveData( arrayListOf<CheckListModel>(
 
-        CheckListModel( WeeklyWork.CHALLENGE_ABYSS_DUNGEON, 0, null, 0, 0, 1 ),
         CheckListModel( WeeklyWork.CHALLENGE_GUARDIAN, 0, null, 0, 0, 3 ),
         CheckListModel( WeeklyWork.WEEKLY_EFONA, 0, null, 0, 0, 3 ),
-        CheckListModel( WeeklyWork.ARGOS_1, 1370, null, 1500, 0, 1 ),
-        CheckListModel( WeeklyWork.ARGOS_2, 1385, null, 800, 0, 1 ),
-        CheckListModel( WeeklyWork.ARGOS_3, 1400, null, 1000, 0, 1 ),
+        CheckListModel( WeeklyWork.ARGOS_1, 1370, 1475, 1500, 0, 1 ),
+        CheckListModel( WeeklyWork.ARGOS_2, 1385, 1475, 800, 0, 1 ),
+        CheckListModel( WeeklyWork.ARGOS_3, 1400, 1475, 1000, 0, 1 ),
         CheckListModel( WeeklyWork.GHOST_SHIP, 0, null, 0, 0, 1 ),
         CheckListModel( WeeklyWork.OREHA_NOMAL, 1325, 1415, 1500, 0, 1 ),
         CheckListModel( WeeklyWork.OREHA_HARD, 1355, 1415, 1700, 0, 1 ),
@@ -75,12 +74,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
 
         when ( weekly.value!![pos].work ) {
 
-            WeeklyWork.CHALLENGE_ABYSS_DUNGEON -> {
-
-                pref.challengeAbyssDungeon = pref.challengeAbyssDungeon + 1
-                weekly.value!![pos].checkedCount = pref.challengeAbyssDungeon
-
-            }
             WeeklyWork.CHALLENGE_GUARDIAN -> {
 
                 pref.challengeGuardian = pref.challengeGuardian + 1
@@ -157,12 +150,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
 
         when ( weekly.value!![pos].work ) {
 
-            WeeklyWork.CHALLENGE_ABYSS_DUNGEON -> {
-
-                pref.challengeAbyssDungeon = pref.challengeAbyssDungeon - 1
-                weekly.value!![pos].checkedCount = pref.challengeAbyssDungeon
-
-            }
             WeeklyWork.CHALLENGE_GUARDIAN -> {
 
                 pref.challengeGuardian = pref.challengeGuardian - 1

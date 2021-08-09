@@ -51,14 +51,33 @@
             app:layout_constraintBottom_toBottomOf="@id/tb_character"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <TextView
+            android:id="@+id/btn_weekly_expedition"
+            android:background="@drawable/bg_character_item"
+            android:padding="15dp"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/expedition_title"
+            android:textStyle="bold"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.clickExpedition()}"
+            app:layout_constraintTop_toBottomOf="@id/tb_character"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_character"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/tb_character"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
+            app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

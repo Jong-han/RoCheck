@@ -39,20 +39,27 @@ class DailyFragment: BaseFragment<ActivityCheckListDailyBinding, DailyViewModel>
             adapter = dailyAdapter
 
         }
-        dailyAdapter.submitList( viewModel.daily )
+        viewModel.daily.observe( viewLifecycleOwner, {
 
-        dailyAdapter.notifyDataSetChanged()
+            dailyAdapter.submitList( it )
 
+        })
 
     }
 
     private val onChecked = { view: View, pos: Int ->
 
-        val item = dailyAdapter.currentList[pos]
-        if ( ( view as CheckBox).isChecked )
-            viewModel.increaseCheckedCount( item.work )
-        else
-            viewModel.decreaseCheckedCount( item.work )
+        if ( ( view as CheckBox).isChecked ) {
+
+            viewModel.increaseCheckedCount(pos)
+            dailyAdapter.notifyItemChanged( pos )
+
+        } else {
+
+            viewModel.decreaseCheckedCount( pos )
+            dailyAdapter.notifyItemChanged( pos )
+
+        }
 
     }
 

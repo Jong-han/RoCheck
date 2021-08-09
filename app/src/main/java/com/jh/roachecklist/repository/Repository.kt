@@ -14,7 +14,7 @@ class Repository( private val db: RoCheckDB ) {
 //
 //    }
 
-    fun getAllCharacters(): List<CharacterEntity> {
+    fun getAllCharacters(): LiveData<List<CharacterEntity>> {
 
         return db.characterDAO().getAll()
 
@@ -38,9 +38,9 @@ class Repository( private val db: RoCheckDB ) {
 
     }
 
-    fun isExist( nickName: String ): Boolean {
-        Log.i("zxcv", "isExist :: ${db.characterDAO().searchCharacter( nickName )}")
-        return db.characterDAO().searchCharacter( nickName ) != null
+    fun isExist( character: CharacterEntity ): Boolean {
+
+        return db.characterDAO().searchCharacter( character.nickName ) != null
 
     }
 
@@ -49,5 +49,7 @@ class Repository( private val db: RoCheckDB ) {
         db.characterDAO().clearTable()
 
     }
+
+    suspend fun getHighestLevel(): Int? = db.characterDAO().getHighestLevel()
 
 }

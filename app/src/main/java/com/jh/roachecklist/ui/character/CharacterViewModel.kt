@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.utils.ListLiveData
@@ -15,26 +16,38 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor( private val repository: Repository ): BaseViewModel() {
+class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference ): BaseViewModel() {
 
     enum class CharacterEvent { EXIST }
 
-    val rvItems = ListLiveData<CharacterEntity>()
+    val rvItems = MutableLiveData<List<CharacterEntity>>()
+
+    val originalList = repository.getAllCharacters()
 
     val event = MutableLiveData<CharacterEvent>()
 
+    var level = 0
+
     init {
 
-        viewModelScope.launch( Dispatchers.IO ) {
+        viewModelScope.launch( Dispatchers.IO) {
 
-            val temp = repository.getAllCharacters()
-            withContext( Dispatchers.Main ) {
-//
-                rvItems.addAll( temp )
-
-            }
+            setHighestLevel()
 
         }
+
+    }
+
+    val clickExpedition = SingleLiveEvent<Any>()
+    fun clickExpedition() {
+
+        viewModelScope.launch( Dispatchers.IO) {
+
+            setHighestLevel()
+
+        }
+
+        clickExpedition.call()
 
     }
 
@@ -48,9 +61,9 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         val character = CharacterEntity(nickName, klass, level)
 
         viewModelScope.launch(Dispatchers.IO) {
-
-            if ( repository.isExist( nickName ) ) {
-
+            val isExist = repository.isExist( character )
+            if ( isExist ) {
+                Log.i("zxcvzxcv","캐릭터가 존재합니다.")
                 withContext( Dispatchers.Main ) {
 
                     event.value = CharacterEvent.EXIST
@@ -61,11 +74,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
                 Log.i("zxcvzxcv", " 캐릭터생성")
                 repository.addCharacter(character)
-                withContext(Dispatchers.Main) {
-
-                    rvItems.add(character)
-
-                }
 
             }
 
@@ -78,11 +86,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
             character.level = level
             repository.updateCharacter( character )
-            withContext( Dispatchers.Main ) {
-
-                rvItems.get( rvItems.indexOf( character ) ).level = level
-
-            }
 
         }
 
@@ -94,10 +97,32 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch( Dispatchers.IO ) {
 
             repository.deleteCharacter( character )
+            withContext( Dispatchers.Main ) {
+
+                pref.deletePref( character.nickName )
+
+            }
 
         }
-        rvItems.remove( character )
 
     }
+
+    fun setRvItems(items: List<CharacterEntity>) {
+
+        rvItems.value = items
+
+    }
+
+    private fun setHighestLevel() {
+
+        viewModelScope.launch ( Dispatchers.IO ) {
+
+            level = repository.getHighestLevel() ?: 0
+
+        }
+
+    }
+
+    fun getHighestLevel() = level
 
 }

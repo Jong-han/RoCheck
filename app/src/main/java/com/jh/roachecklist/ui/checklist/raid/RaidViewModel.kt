@@ -21,12 +21,10 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference ): Base
         CheckListModel( Raid.BALRAN_HARD, 1445, null, 4500, 0, 1 ),
         CheckListModel( Raid.VIAKISS_NORMAL, 1430, null, 3300, 0, 1 ),
         CheckListModel( Raid.VIAKISS_HARD, 1460, null, 4500, 0, 1 ),
-        CheckListModel( Raid.KOUKUSATON_REHEARSAL, 1385, null, 0, 0, 1 ),
-        CheckListModel( Raid.KOUKUSATON_NORMAL, 1475, null, 0, 0, 1 ),
-        CheckListModel( Raid.ABRELSHOULD_DEJAVU, 1430, null, 0, 0, 1 ),
-        CheckListModel( Raid.ABRELSHOULD_1_2, 1490, null, 0, 0, 1 ),
-        CheckListModel( Raid.ABRELSHOULD_3_4, 1500, null, 0, 0, 1 ),
-        CheckListModel( Raid.ABRELSHOULD_5_6, 1520, null, 0, 0,1  ),
+        CheckListModel( Raid.KOUKUSATON_NORMAL, 1475, null, 4500, 0, 1 ),
+        CheckListModel( Raid.ABRELSHOULD_1_2, 1490, null, 4500, 0, 1 ),
+        CheckListModel( Raid.ABRELSHOULD_3_4, 1500, null, 1500, 0, 1 ),
+        CheckListModel( Raid.ABRELSHOULD_5_6, 1520, null, 1500, 0,1 ),
     ) )
     private fun filterList( level: Int ) {
 
@@ -38,7 +36,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference ): Base
 
     }
 
-    private fun setDailyList() {
+    private fun setRaidList() {
 
         val raidList = pref.getRaidList()
         for ( index in 0 until raidList.size ) {
@@ -55,7 +53,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference ): Base
         this.nickName = nickName
         this.level = level
         pref.getPref( nickName )
-        setDailyList()
+        setRaidList()
         filterList ( level )
 
         for ( work in raid.value!! ) {
@@ -121,24 +119,14 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference ): Base
                 }
 
             }
-            Raid.KOUKUSATON_REHEARSAL -> {
 
-                pref.koukusatonRehearsal = pref.koukusatonRehearsal + 1
-                raid.value!![pos].checkedCount = pref.koukusatonRehearsal
-
-            }
             Raid.KOUKUSATON_NORMAL -> {
 
                 pref.koutusatonNormal = pref.koutusatonNormal + 1
                 raid.value!![pos].checkedCount = pref.koutusatonNormal
 
             }
-            Raid.ABRELSHOULD_DEJAVU -> {
 
-                pref.abrelshouldDevaju = pref.abrelshouldDevaju + 1
-                raid.value!![pos].checkedCount = pref.abrelshouldDevaju
-
-            }
             Raid.ABRELSHOULD_1_2 -> {
 
                 pref.abrelshould12 = pref.abrelshould12 + 1
@@ -190,22 +178,10 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference ): Base
                 raid.value!![pos].checkedCount = pref.viakissHard
 
             }
-            Raid.KOUKUSATON_REHEARSAL -> {
-
-                pref.koukusatonRehearsal = pref.koukusatonRehearsal - 1
-                raid.value!![pos].checkedCount = pref.koukusatonRehearsal
-
-            }
             Raid.KOUKUSATON_NORMAL -> {
 
                 pref.koutusatonNormal = pref.koutusatonNormal - 1
                 raid.value!![pos].checkedCount = pref.koutusatonNormal
-
-            }
-            Raid.ABRELSHOULD_DEJAVU -> {
-
-                pref.abrelshouldDevaju = pref.abrelshouldDevaju - 1
-                raid.value!![pos].checkedCount = pref.abrelshouldDevaju
 
             }
             Raid.ABRELSHOULD_1_2 -> {

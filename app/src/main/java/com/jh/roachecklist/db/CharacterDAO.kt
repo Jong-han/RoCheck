@@ -9,7 +9,7 @@ interface CharacterDAO {
     fun insert(entity: CharacterEntity)
 
     @Query("SELECT * FROM Character")
-    fun getAll(): List<CharacterEntity>
+    fun getAll(): LiveData<List<CharacterEntity>>
 
     @Query("DELETE FROM Character")
     fun clearTable()
@@ -25,4 +25,8 @@ interface CharacterDAO {
 
     @Query("SELECT * FROM Character WHERE nick_name = :nickName ")
     fun searchCharacter( nickName: String ): CharacterEntity?
+
+    @Query("SELECT level FROM Character ORDER BY level DESC LIMIT 1")
+    fun getHighestLevel(): Int?
+
 }

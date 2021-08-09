@@ -2,17 +2,32 @@ package com.jh.roachecklist.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import com.jh.roachecklist.Const
+import android.os.Build
 import com.jh.roachecklist.Const.DailyWork
+import java.io.File
 
-class AppPreference constructor( private val context: Context ) {
+
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+class AppPreference constructor(private val context: Context ) {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    fun getPref( nickName: String ) {
+    fun getPref( nickName: String = "expedition" ) {
 
         sharedPreferences = context.getSharedPreferences( nickName, 0 )
+
+    }
+
+    fun deletePref( nickName: String ) {
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            context.deleteSharedPreferences( nickName )
+//        } else {
+            context.getSharedPreferences( nickName, 0 ).edit().clear().apply()
+            val deletePrefFile =
+                File( context.cacheDir.parent + "/shared_prefs/" + nickName + ".xml")
+            deletePrefFile.delete()
+//        }
 
     }
 
@@ -73,11 +88,7 @@ class AppPreference constructor( private val context: Context ) {
      * 주간 숙제 리스트
      */
 
-    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeAbyssDungeon, challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard, orehaBus )
-
-    var challengeAbyssDungeon: Int
-        get() = sharedPreferences.getInt("challengeAbyssDungeon", 0)
-        set(value) = sharedPreferences.edit().putInt("challengeAbyssDungeon", value).apply()
+    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard, orehaBus )
 
     var challengeGuardian: Int
         get() = sharedPreferences.getInt("challengeGuardian", 0)
@@ -118,7 +129,7 @@ class AppPreference constructor( private val context: Context ) {
     /**
      * 군단장 레이드 리스트
      */
-    fun getRaidList(): ArrayList<Int> = arrayListOf( bartanNormal, bartanHard, viakissNormal, viakissHard, koukusatonRehearsal, koutusatonNormal, abrelshouldDevaju, abrelshould12, abrelshould34, abrelshould56 )
+    fun getRaidList(): ArrayList<Int> = arrayListOf( bartanNormal, bartanHard, viakissNormal, viakissHard, koutusatonNormal, abrelshould12, abrelshould34, abrelshould56 )
 
     var bartanNormal: Int
         get() = sharedPreferences.getInt("bartanNormal", 0)
@@ -132,15 +143,9 @@ class AppPreference constructor( private val context: Context ) {
     var viakissHard: Int
         get() = sharedPreferences.getInt("viakissHard", 0)
         set(value) = sharedPreferences.edit().putInt("viakissHard", value).apply()
-    var koukusatonRehearsal: Int
-        get() = sharedPreferences.getInt("koukusatonRehearsal", 0)
-        set(value) = sharedPreferences.edit().putInt("koukusatonRehearsal", value).apply()
     var koutusatonNormal: Int
         get() = sharedPreferences.getInt("koutusatonNormal", 0)
         set(value) = sharedPreferences.edit().putInt("koutusatonNormal", value).apply()
-    var abrelshouldDevaju: Int
-        get() = sharedPreferences.getInt("abrelshouldDevaju", 0)
-        set(value) = sharedPreferences.edit().putInt("abrelshouldDevaju", value).apply()
     var abrelshould12: Int
         get() = sharedPreferences.getInt("abrelshould12", 0)
         set(value) = sharedPreferences.edit().putInt("abrelshould12", value).apply()
@@ -150,6 +155,23 @@ class AppPreference constructor( private val context: Context ) {
     var abrelshould56: Int
         get() = sharedPreferences.getInt("abrelshould56", 0)
         set(value) = sharedPreferences.edit().putInt("abrelshould56", value).apply()
+
+    /**
+     * 주간 원정대 숙제 리스트
+     */
+    fun getExpeditionList(): ArrayList<Int> = arrayListOf( challengeAbyssDungeon, koukusatonRehearsal, abrelshouldDevaju )
+
+    var challengeAbyssDungeon: Int
+        get() = sharedPreferences.getInt("challengeAbyssDungeon", 0)
+        set(value) = sharedPreferences.edit().putInt("challengeAbyssDungeon", value).apply()
+
+    var koukusatonRehearsal: Int
+        get() = sharedPreferences.getInt("koukusatonRehearsal", 0)
+        set(value) = sharedPreferences.edit().putInt("koukusatonRehearsal", value).apply()
+
+    var abrelshouldDevaju: Int
+        get() = sharedPreferences.getInt("abrelshouldDevaju", 0)
+        set(value) = sharedPreferences.edit().putInt("abrelshouldDevaju", value).apply()
 
 
 }
