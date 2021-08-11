@@ -29,4 +29,7 @@ interface CharacterDAO {
     @Query("SELECT level FROM Character ORDER BY level DESC LIMIT 1")
     fun getHighestLevel(): Int?
 
+    @Query("SELECT nick_name FROM Character")
+    fun getCharacterNickNameList(): List<String>
+
 }

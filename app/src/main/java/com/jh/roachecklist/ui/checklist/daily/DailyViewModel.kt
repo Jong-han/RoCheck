@@ -16,14 +16,22 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
     private var nickName = ""
     private var level = 0
-    private var dailyMap: HashMap<String, Int>? =  null
+
+    val displayEfonaRestBonus = MutableLiveData<Int>(0)
+    val displayChaosRestBonus = MutableLiveData<Int>(0)
+    val displayGuardianRestBonus = MutableLiveData<Int>(0)
+
+    var displayEfonaRestBonusFirst = 0
+    var displayChaosRestBonusFirst = 0
+    var displayGuardianRestBonusFirst = 0
+
 
     var daily = MutableLiveData( arrayListOf<CheckListModel>(
         CheckListModel( DailyWork.GUILD, 0, null, 0, 0, 1 ),
         CheckListModel( DailyWork.DAILY_EFONA, 0, null, 0, 0, 3),
         CheckListModel( DailyWork.FAVORABILITY, 0, null, 0, 0, 1),
         CheckListModel( DailyWork.ISLAND, 0, null, 0, 0, 1 ),
-        CheckListModel( DailyWork.FIELD_BOSS, 0, null, 0, 0, 2 ),
+        CheckListModel( DailyWork.FIELD_BOSS, 0, null, 0, 0, 1 ),
         CheckListModel( DailyWork.DAILY_GUARDIAN, 0, null, 0, 0, 2 ),
         CheckListModel( DailyWork.CHAOS_GATE, 0, null, 0, 0, 1 ),
         CheckListModel( DailyWork.CHAOS_DUNGEON, 0, null, 0, 0, 2 ),
@@ -46,7 +54,52 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
             daily.value!![index].checkedCount = dailyList[index]
 
+            when ( index ) {
+
+                DailyIndex.DAILY_EFONA -> {
+
+                    when {
+                        displayEfonaRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * dailyList[index] -> displayEfonaRestBonus.value = displayEfonaRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS * dailyList[index] )
+                        displayEfonaRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 1 ) -> displayEfonaRestBonus.value = displayEfonaRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 1 ) )
+                        displayEfonaRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 2 ) -> displayEfonaRestBonus.value = displayEfonaRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 2 ) )
+                        displayEfonaRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 3 ) -> displayEfonaRestBonus.value = displayEfonaRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 3 ) )
+                    }
+
+                }
+                DailyIndex.CHAOS_DUNGEON -> {
+
+                    when {
+                        displayChaosRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * dailyList[index] -> displayChaosRestBonus.value = displayChaosRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS * dailyList[index] )
+                        displayChaosRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 1 ) -> displayChaosRestBonus.value = displayChaosRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 1 ) )
+                        displayChaosRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 2 ) -> displayChaosRestBonus.value = displayChaosRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 2 ) )
+                    }
+
+                }
+                DailyIndex.DAILY_GUARDIAN -> {
+
+                    when {
+                        displayGuardianRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * dailyList[index] -> displayGuardianRestBonus.value = displayGuardianRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS * dailyList[index] )
+                        displayGuardianRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 1 ) -> displayGuardianRestBonus.value = displayGuardianRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 1 ) )
+                        displayGuardianRestBonusFirst >= Const.Rest.CONSUME_REST_BONUS * ( dailyList[index] - 2 ) -> displayGuardianRestBonus.value = displayGuardianRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS  * ( dailyList[index] - 2 ) )
+                    }
+
+                }
+
+            }
+
         }
+
+    }
+
+    private fun setRestBonus() {
+
+        displayEfonaRestBonus.value = pref.efonaRestBonus
+        displayGuardianRestBonus.value = pref.guardianRestBonus
+        displayChaosRestBonus.value = pref.chaosRestBonus
+
+        displayEfonaRestBonusFirst = pref.efonaRestBonus
+        displayGuardianRestBonusFirst = pref.guardianRestBonus
+        displayChaosRestBonusFirst = pref.chaosRestBonus
 
     }
 
@@ -56,6 +109,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
         this.level = level
         pref.getPref( nickName )
         filterList ( level )
+        setRestBonus()
         setDailyList()
 
         for ( work in daily.value!! ) {
@@ -79,6 +133,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.dailyEfona = pref.dailyEfona + 1
                 daily.value!![pos].checkedCount = pref.dailyEfona
+                if ( displayEfonaRestBonus.value ?: 0 >= Const.Rest.CONSUME_REST_BONUS ) {
+
+                    displayEfonaRestBonus.value = displayEfonaRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
             DailyWork.FAVORABILITY -> {
@@ -103,6 +162,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.dailyGuardian = pref.dailyGuardian + 1
                 daily.value!![pos].checkedCount = pref.dailyGuardian
+                if ( displayGuardianRestBonus.value ?: 0 >= Const.Rest.CONSUME_REST_BONUS ) {
+
+                    displayGuardianRestBonus.value = displayGuardianRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
             DailyWork.CHAOS_GATE -> {
@@ -115,6 +179,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.chaosDungeon = pref.chaosDungeon + 1
                 daily.value!![pos].checkedCount = pref.chaosDungeon
+                if ( displayChaosRestBonus.value ?: 0 >= Const.Rest.CONSUME_REST_BONUS ) {
+
+                    displayChaosRestBonus.value = displayChaosRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
 
@@ -135,6 +204,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.dailyEfona = pref.dailyEfona - 1
                 daily.value!![pos].checkedCount = pref.dailyEfona
+                if ( displayEfonaRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS ) ?: 0  <= displayEfonaRestBonusFirst) {
+
+                    displayEfonaRestBonus.value = displayEfonaRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
             DailyWork.FAVORABILITY -> {
@@ -159,6 +233,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.dailyGuardian = pref.dailyGuardian - 1
                 daily.value!![pos].checkedCount = pref.dailyGuardian
+                if ( displayGuardianRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS ) ?: 0  <= displayGuardianRestBonusFirst) {
+
+                    displayGuardianRestBonus.value = displayGuardianRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
             DailyWork.CHAOS_GATE -> {
@@ -171,6 +250,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference ): Bas
 
                 pref.chaosDungeon = pref.chaosDungeon - 1
                 daily.value!![pos].checkedCount = pref.chaosDungeon
+                if ( displayChaosRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS ) ?: 0  <= displayChaosRestBonusFirst) {
+
+                    displayChaosRestBonus.value = displayChaosRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS )
+
+                }
 
             }
 

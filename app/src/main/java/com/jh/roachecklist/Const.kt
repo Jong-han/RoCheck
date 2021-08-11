@@ -2,6 +2,17 @@ package com.jh.roachecklist
 
 object Const {
 
+    object Rest {
+
+        const val MAX_REST_BONUS = 100
+        const val DAILY_EFONA_COUNT = 3
+        const val DAILY_GUARDIAN_COUNT = 2
+        const val CHAOS_DUNGEON_COUNT = 2
+        const val CONSUME_REST_BONUS = 20
+        const val CHARGE_REST_BONUS = 10
+
+    }
+
     object ListState {
 
         const val TRY = 0

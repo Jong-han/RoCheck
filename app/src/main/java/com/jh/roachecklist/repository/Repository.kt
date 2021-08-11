@@ -52,4 +52,6 @@ class Repository( private val db: RoCheckDB ) {
 
     suspend fun getHighestLevel(): Int? = db.characterDAO().getHighestLevel()
 
+    fun getNickNameList(): List<String> = db.characterDAO().getCharacterNickNameList()
+
 }

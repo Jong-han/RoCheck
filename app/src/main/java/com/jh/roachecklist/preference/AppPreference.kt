@@ -3,6 +3,8 @@ package com.jh.roachecklist.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
+import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.DailyWork
 import java.io.File
 
@@ -36,19 +38,17 @@ class AppPreference constructor(private val context: Context ) {
      */
     fun getDailyList(): ArrayList<Int> = arrayListOf( guild, dailyEfona, favorability, island, fieldBoss, dailyGuardian, chaosGate, chaosDungeon)
 
-    fun getDailyMap(): HashMap<String,Int> {
+    fun resetDaily() {
 
-        val result = HashMap<String, Int>()
-        result[DailyWork.GUILD] = 0
-        result[DailyWork.DAILY_EFONA] = 1
-        result[DailyWork.FAVORABILITY] = 2
-        result[DailyWork.ISLAND] = 3
-        result[DailyWork.FIELD_BOSS] = 4
-        result[DailyWork.DAILY_GUARDIAN] = 5
-        result[DailyWork.CHAOS_GATE] = 6
-        result[DailyWork.CHAOS_DUNGEON] = 7
-
-        return result
+        guild = 0
+        chaosDungeon = 0
+        dailyEfona = 0
+        favorability = 0
+        island = 0
+        fieldBoss = 0
+        dailyGuardian = 0
+        chaosDungeon = 0
+        chaosGate = 0
 
     }
 
@@ -85,10 +85,151 @@ class AppPreference constructor(private val context: Context ) {
         set(value) = sharedPreferences.edit().putInt("chaosGate", value).apply()
 
     /**
+     * 휴식 보너스
+     */
+    fun getRestList(): ArrayList<Int> = arrayListOf( efonaRestBonus, chaosRestBonus, guardianRestBonus )
+
+    var efonaRestBonus: Int
+        get() {
+
+            return if ( sharedPreferences.getInt("efonaRestBonus", 0) <= 0 )
+                0
+            else
+                sharedPreferences.getInt("efonaRestBonus", 0)
+
+        }
+        set(value) {
+
+            if ( value <= 0 )
+                sharedPreferences.edit().putInt("efonaRestBonus", 0).apply()
+            else
+                sharedPreferences.edit().putInt("efonaRestBonus", value).apply()
+
+        }
+
+    fun consumeEfonaRestBonus( count: Int ) {
+
+        var tryCount = count
+
+        while ( tryCount > 0 ) {
+
+            if ( efonaRestBonus >= 20 ) {
+
+                efonaRestBonus -= Const.Rest.CONSUME_REST_BONUS
+                tryCount--
+
+            }
+            else
+                break
+
+        }
+
+    }
+
+    var chaosRestBonus: Int
+        get() {
+
+            return if ( sharedPreferences.getInt("chaosRestBonus", 0) <= 0 )
+                0
+            else
+                sharedPreferences.getInt("chaosRestBonus", 0)
+
+        }
+        set(value) {
+
+            if ( value <= 0 )
+                sharedPreferences.edit().putInt("chaosRestBonus", 0).apply()
+            else
+                sharedPreferences.edit().putInt("chaosRestBonus", value).apply()
+
+        }
+
+    fun consumeChaosRestBonus( count: Int ) {
+
+        var tryCount = count
+
+        while ( tryCount > 0 ) {
+
+            if ( chaosRestBonus >= 20 ) {
+
+                chaosRestBonus -= Const.Rest.CONSUME_REST_BONUS
+                tryCount--
+
+            }
+            else
+                break
+
+        }
+
+    }
+
+    var guardianRestBonus: Int
+        get() {
+
+            return if ( sharedPreferences.getInt("guardianRestBonus", 0) <= 0 )
+                0
+            else
+                sharedPreferences.getInt("guardianRestBonus", 0)
+
+        }
+        set(value) {
+
+            if ( value <= 0 )
+                sharedPreferences.edit().putInt("guardianRestBonus", 0).apply()
+            else
+                sharedPreferences.edit().putInt("guardianRestBonus", value).apply()
+
+        }
+
+    fun consumeGuardianRestBonus( count: Int ) {
+
+        var tryCount = count
+
+        while ( tryCount > 0 ) {
+
+            if ( guardianRestBonus >= 20 ) {
+
+                guardianRestBonus -= Const.Rest.CONSUME_REST_BONUS
+                tryCount--
+
+            }
+            else
+                break
+
+        }
+
+    }
+
+
+
+    /**
      * 주간 숙제 리스트
      */
 
     fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard, orehaBus )
+
+    fun resetWeekly() {
+
+        challengeGuardian = 0
+        weeklyEfona = 0
+        argos1 = 0
+        argos2 = 0
+        argos3 = 0
+        ghostShip = 0
+        orehaNomal = 0
+        orehaHard = 0
+        orehaBus = 0
+
+        bartanNormal = 0
+        bartanHard = 0
+        viakissNormal = 0
+        viakissHard = 0
+        koutusatonNormal = 0
+        abrelshould12 = 0
+        abrelshould34 = 0
+        abrelshould56 = 0
+
+    }
 
     var challengeGuardian: Int
         get() = sharedPreferences.getInt("challengeGuardian", 0)
@@ -160,6 +301,15 @@ class AppPreference constructor(private val context: Context ) {
      * 주간 원정대 숙제 리스트
      */
     fun getExpeditionList(): ArrayList<Int> = arrayListOf( challengeAbyssDungeon, koukusatonRehearsal, abrelshouldDevaju )
+
+    fun resetExpedition() {
+
+        getPref()
+        challengeAbyssDungeon = 0
+        koukusatonRehearsal = 0
+        abrelshouldDevaju = 0
+
+    }
 
     var challengeAbyssDungeon: Int
         get() = sharedPreferences.getInt("challengeAbyssDungeon", 0)

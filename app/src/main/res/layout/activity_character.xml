@@ -52,6 +52,21 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <TextView
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:padding="10dp"
+            android:text="설정"
+            android:textStyle="bold"
+            android:textSize="@dimen/secondary_text_size"
+            android:textColor="@color/text_color"
+            android:onClick="@{()->viewModel.clickSetting()}"
+            app:layout_constraintTop_toTopOf="@id/tb_character"
+            app:layout_constraintBottom_toBottomOf="@id/tb_character"
+            app:layout_constraintEnd_toStartOf="@id/btn_add_character"/>
+
+        <TextView
             android:id="@+id/btn_weekly_expedition"
             android:background="@drawable/bg_character_item"
             android:padding="15dp"

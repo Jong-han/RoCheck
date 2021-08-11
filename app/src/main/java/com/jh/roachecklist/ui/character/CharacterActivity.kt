@@ -1,5 +1,7 @@
 package com.jh.roachecklist.ui.character
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -15,6 +17,7 @@ import com.jh.roachecklist.ui.base.setSupportActionBar
 import com.jh.roachecklist.ui.checklist.CheckListActivity
 import com.jh.roachecklist.ui.checklist.expedition.ExpeditionActivity
 import com.jh.roachecklist.ui.dialog.DialogUtil
+import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,6 +61,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             DialogUtil.showAddCharacterDialog( this, layoutInflater ) { name: String, level: Int, klass: String ->
                 viewModel.addCharacter( name, level, klass )
             }
+
+        })
+
+        viewModel.clickSetting.observe( this, {
+
+            DialogUtil.showSettingDialog( this, layoutInflater, settingAlarm, DefaultNotification.NOTIFICATION_CODE_DEFAULT )
 
         })
 
@@ -128,6 +137,14 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     private val deleteCharacter = { character: CharacterEntity ->
 
         viewModel.deleteCharacter( character )
+
+    }
+
+    private val settingAlarm = { triggerTime: Long, alarmManager: AlarmManager, pendingIntent: PendingIntent ->
+
+        alarmManager.cancel( pendingIntent )
+        Log.i("zxcv","세팅알람")
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
 
     }
 

@@ -56,6 +56,13 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         clickAddCharacter.call()
     }
 
+    val clickSetting = SingleLiveEvent<Any>()
+    fun clickSetting() {
+
+        clickSetting.call()
+
+    }
+
     fun addCharacter(nickName: String, level: Int, klass: String ) {
 
         val character = CharacterEntity(nickName, klass, level)
