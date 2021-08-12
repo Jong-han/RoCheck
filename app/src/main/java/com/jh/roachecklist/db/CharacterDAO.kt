@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Dao
 interface CharacterDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: CharacterEntity)
 
     @Query("SELECT * FROM Character")
@@ -28,5 +28,8 @@ interface CharacterDAO {
 
     @Query("SELECT level FROM Character ORDER BY level DESC LIMIT 1")
     fun getHighestLevel(): Int?
+
+    @Query("SELECT nick_name FROM Character")
+    fun getCharacterNickNameList(): List<String>
 
 }

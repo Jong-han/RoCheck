@@ -20,7 +20,7 @@ class RaidFragment: BaseFragment<ActivityCheckListRaidBinding, RaidViewModel>() 
 
     override fun getLayoutId(): Int = R.layout.activity_check_list_raid
 
-    private val raidAdapter: RaidAdapter by lazy { RaidAdapter( onChecked ) }
+    private val raidAdapter: RaidAdapter by lazy { RaidAdapter( onChecked, onClickNoti ) }
 
     override fun initViewsAndEvents() {
 
@@ -78,10 +78,14 @@ class RaidFragment: BaseFragment<ActivityCheckListRaidBinding, RaidViewModel>() 
             raidAdapter.notifyItemChanged( pos )
 
         }
-//        raidAdapter.notifyDataSetChanged()
-
-//        raidAdapter.notif
 
     }
+    private val onClickNoti = { position: Int ->
+
+        viewModel.onClickNoti( position )
+        raidAdapter.notifyItemChanged( position )
+
+    }
+
 
 }

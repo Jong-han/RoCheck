@@ -19,7 +19,7 @@ class WeeklyFragment: BaseFragment<ActivityCheckListWeeklyBinding, WeeklyViewMod
 
     override fun getLayoutId(): Int = R.layout.activity_check_list_weekly
 
-    private val weeklyAdapter: WeeklyAdapter by lazy { WeeklyAdapter( onChecked ) }
+    private val weeklyAdapter: WeeklyAdapter by lazy { WeeklyAdapter( onChecked, onClickNoti ) }
 
     override fun initViewsAndEvents() {
 
@@ -77,9 +77,12 @@ class WeeklyFragment: BaseFragment<ActivityCheckListWeeklyBinding, WeeklyViewMod
             weeklyAdapter.notifyItemChanged( pos )
 
         }
-//        raidAdapter.notifyDataSetChanged()
 
-//        raidAdapter.notif
+    }
+    private val onClickNoti = { position: Int ->
+
+        viewModel.onClickNoti( position )
+        weeklyAdapter.notifyItemChanged( position )
 
     }
 

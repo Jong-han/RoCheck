@@ -1,16 +1,21 @@
 package com.jh.roachecklist.ui.dialog
 
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
 import com.jh.roachecklist.R
-import com.jh.roachecklist.databinding.ActivityCharacterAddDialogBinding
-import com.jh.roachecklist.databinding.ActivityCharacterEditDeleteDialogBinding
-import com.jh.roachecklist.databinding.ActivityCharacterEditLevelDialogBinding
-import com.jh.roachecklist.databinding.ActivityCharacterEditMenuDialogBinding
+import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.service.AlarmReceiver
+import com.jh.roachecklist.utils.DefaultNotification
+import java.util.*
 
 object DialogUtil {
 
@@ -117,6 +122,99 @@ object DialogUtil {
 
             btnOk.setOnClickListener {
                 onDelete.invoke( item )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showSettingDialog( context: Context, layoutInflater: LayoutInflater, onOk: ( Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
+
+        val binding = ActivityCharacterSettingAlarmBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent( context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+
+//                DefaultNotification.startNotification( context, "로첵", "타입" )
+
+                val hour = timePicker.hour
+                val minute = timePicker.minute
+
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, hour)
+                calendar.set(Calendar.MINUTE, minute)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+//                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
+
+                onOk.invoke( calendar.timeInMillis, alarmManager, pendingIntent )
+                dialog.dismiss()
+
+            }
+            btnCancel.setOnClickListener {
+
+                dialog.dismiss()
+
+            }
+
+        }
+
+    }
+
+    fun showSettingRestDialog( context: Context, layoutInflater: LayoutInflater, onModify: (Int, Int, Int) -> Unit ) {
+
+        val binding = ActivityCheckListDailyRestEditDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            etEfona.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+            }
+
+            etChaos.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            etGuardian.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            btnOk.setOnClickListener {
+                onModify.invoke( etEfona.text.toString().toInt(), etGuardian.text.toString().toInt(), etChaos.text.toString().toInt() )
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {

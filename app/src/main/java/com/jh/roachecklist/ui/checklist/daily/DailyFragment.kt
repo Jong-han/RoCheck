@@ -2,18 +2,14 @@ package com.jh.roachecklist.ui.checklist.daily
 
 import android.view.View
 import android.widget.CheckBox
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListDailyBinding
 import com.jh.roachecklist.ui.base.BaseFragment
-import com.jh.roachecklist.ui.character.CharacterViewModel
 import com.jh.roachecklist.ui.checklist.CheckListActivity
-import com.jh.roachecklist.ui.checklist.CheckListModel
-import com.jh.roachecklist.ui.checklist.CheckListViewModel
+import com.jh.roachecklist.ui.dialog.DialogUtil
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +21,7 @@ class DailyFragment: BaseFragment<ActivityCheckListDailyBinding, DailyViewModel>
 
     override fun getLayoutId(): Int = R.layout.activity_check_list_daily
 
-    private val dailyAdapter: DailyAdapter by lazy { DailyAdapter( onChecked ) }
+    private val dailyAdapter: DailyAdapter by lazy { DailyAdapter( onChecked, onClickNoti ) }
 
     override fun initViewsAndEvents() {
 
@@ -44,6 +40,16 @@ class DailyFragment: BaseFragment<ActivityCheckListDailyBinding, DailyViewModel>
             dailyAdapter.submitList( it )
 
         })
+        viewModel.clickSettingRest.observe( viewLifecycleOwner, {
+
+            DialogUtil.showSettingRestDialog( requireContext(), layoutInflater ) { efona: Int, guardian: Int, chaos: Int ->
+
+                viewModel.editRestBonus( efona, guardian, chaos )
+//                requireActivity().finish()
+
+            }
+
+        })
 
     }
 
@@ -60,6 +66,13 @@ class DailyFragment: BaseFragment<ActivityCheckListDailyBinding, DailyViewModel>
             dailyAdapter.notifyItemChanged( pos )
 
         }
+
+    }
+
+    private val onClickNoti = { position: Int ->
+
+        viewModel.onClickNoti( position )
+        dailyAdapter.notifyItemChanged( position )
 
     }
 

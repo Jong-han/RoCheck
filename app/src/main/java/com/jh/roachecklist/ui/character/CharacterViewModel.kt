@@ -44,16 +44,26 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch( Dispatchers.IO) {
 
             setHighestLevel()
+            withContext( Dispatchers.Main ) {
+
+                clickExpedition.call()
+
+            }
 
         }
-
-        clickExpedition.call()
 
     }
 
     val clickAddCharacter = SingleLiveEvent<Any>()
     fun clickAddCharacter() {
         clickAddCharacter.call()
+    }
+
+    val clickSetting = SingleLiveEvent<Any>()
+    fun clickSetting() {
+
+        clickSetting.call()
+
     }
 
     fun addCharacter(nickName: String, level: Int, klass: String ) {

@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListItemBinding
+import com.jh.roachecklist.db.CheckListEntity
 import com.jh.roachecklist.setCheckBox
-import com.jh.roachecklist.ui.checklist.CheckListModel
 
-class DailyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<CheckListModel, DailyAdapter.DailyViewHolder>( DailyDiffUtil() ) {
+class DailyAdapter( private val onChecked: (View, Int)->(Unit), private val onClickNoti: (Int)->(Unit) ): ListAdapter<CheckListEntity, DailyAdapter.DailyViewHolder>( DailyDiffUtil() ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DailyViewHolder {
 
@@ -29,7 +29,7 @@ class DailyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<Ch
 
     inner class DailyViewHolder( private val binding: ActivityCheckListItemBinding ): RecyclerView.ViewHolder( binding.root ) {
 
-        fun bind( item: CheckListModel ) {
+        fun bind( item: CheckListEntity) {
 
             binding.run {
 
@@ -49,6 +49,12 @@ class DailyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<Ch
                 }
                 cb3.setCheckBox( item.checkedCount, 3 )
 
+                ivNoti.setOnClickListener {
+
+                    onClickNoti.invoke( adapterPosition )
+
+                }
+
                 executePendingBindings()
 
             }
@@ -57,12 +63,12 @@ class DailyAdapter( private val onChecked: (View, Int)->(Unit) ): ListAdapter<Ch
 
     }
 
-    class DailyDiffUtil: DiffUtil.ItemCallback<CheckListModel>() {
-        override fun areItemsTheSame(oldItem: CheckListModel, newItem: CheckListModel): Boolean {
+    class DailyDiffUtil: DiffUtil.ItemCallback<CheckListEntity>() {
+        override fun areItemsTheSame(oldItem: CheckListEntity, newItem: CheckListEntity): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: CheckListModel, newItem: CheckListModel): Boolean {
+        override fun areContentsTheSame(oldItem: CheckListEntity, newItem: CheckListEntity): Boolean {
             return oldItem == newItem
         }
 

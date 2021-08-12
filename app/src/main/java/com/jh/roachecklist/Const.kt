@@ -2,10 +2,32 @@ package com.jh.roachecklist
 
 object Const {
 
-    object ListState {
+    const val MAX_LEVEL = 10000
 
-        const val TRY = 0
-        const val IGNORE = 1
+    object NotiState {
+
+        const val YES = 1
+        const val NO = 0
+
+    }
+
+    object Rest {
+
+        const val MAX_REST_BONUS = 100
+        const val DAILY_EFONA_COUNT = 3
+        const val DAILY_GUARDIAN_COUNT = 2
+        const val CHAOS_DUNGEON_COUNT = 2
+        const val CONSUME_REST_BONUS = 20
+        const val CHARGE_REST_BONUS = 10
+
+    }
+
+    object WorkType {
+
+        const val DAILY = "DAILY"
+        const val WEEKLY = "WEEKLY"
+        const val RAID = "RAID"
+        const val EXPEDITION = "EXPEDITION"
 
     }
 
@@ -46,7 +68,6 @@ object Const {
         const val GHOST_SHIP = 6
         const val OREHA_NOMAL = 7
         const val OREHA_HARD = 8
-        const val OREHA_BUS = 9
 
     }
 
@@ -60,7 +81,6 @@ object Const {
         const val GHOST_SHIP = "유령선"
         const val OREHA_NOMAL = "오레하의 우물 노멀"
         const val OREHA_HARD = "오레하의 우물 하드"
-        const val OREHA_BUS = "오레하의 우물 버스 운행"
 
     }
 

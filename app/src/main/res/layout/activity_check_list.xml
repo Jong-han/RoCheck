@@ -32,6 +32,20 @@
 
         </androidx.appcompat.widget.Toolbar>
 
+<!--        <TextView-->
+<!--            android:id="@+id/btn_add_character"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="15dp"-->
+<!--            android:padding="10dp"-->
+<!--            android:text="설정"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="@dimen/secondary_text_size"-->
+<!--            android:textColor="@color/text_color"-->
+<!--            app:layout_constraintTop_toTopOf="@id/tb_character"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/tb_character"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"

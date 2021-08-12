@@ -23,7 +23,7 @@
             android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="3"
-            android:src="@mipmap/ic_launcher_round" />
+            android:src="@drawable/baseline_account_circle_24" />
         <TextView
             android:id="@+id/tb_character_name"
             android:layout_width="wrap_content"
