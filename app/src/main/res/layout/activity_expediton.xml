@@ -51,7 +51,7 @@
             android:textStyle="bold"
             android:textSize="@dimen/title_text_size"
             android:text="@string/check_list_no_list"
-            android:visibleIf="@{viewModel.expediton.empty}"
+            android:visibleIf="@{viewModel.expedition.empty}"
             app:layout_constraintVertical_bias="0.45"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

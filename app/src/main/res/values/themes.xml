@@ -19,6 +19,7 @@
         <item name="android:textSize">@dimen/secondary_text_size</item>
         <item name="android:textStyle">bold</item>
         <item name="backgroundTint">@color/primary_color</item>
+        <item name="android:backgroundTint">@drawable/bg_cm_button</item>
         <item name="rippleColor">@color/accent_color</item>
     </style>
 

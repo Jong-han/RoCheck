@@ -17,7 +17,7 @@ class ExpeditionActivity: BaseActivity<ActivityExpeditonBinding, ExpeditionViewM
 
     override fun getLayoutId(): Int = R.layout.activity_expediton
 
-    private val expeditionAdapter: ExpeditionAdapter by lazy { ExpeditionAdapter( onChecked ) }
+    private val expeditionAdapter: ExpeditionAdapter by lazy { ExpeditionAdapter( onChecked, onClickNoti ) }
 
     override fun initViewAndEvent() {
 
@@ -30,7 +30,7 @@ class ExpeditionActivity: BaseActivity<ActivityExpeditonBinding, ExpeditionViewM
 
         }
 
-        viewModel.expediton.observe( this, {
+        viewModel.expedition.observe( this, {
 
             expeditionAdapter.submitList( it )
 
@@ -51,6 +51,13 @@ class ExpeditionActivity: BaseActivity<ActivityExpeditonBinding, ExpeditionViewM
             expeditionAdapter.notifyItemChanged( pos )
 
         }
+
+    }
+
+    private val onClickNoti = { position: Int ->
+
+        viewModel.onClickNoti( position )
+        expeditionAdapter.notifyItemChanged( position )
 
     }
 

@@ -5,7 +5,7 @@ import androidx.room.*
 
 @Dao
 interface CharacterDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: CharacterEntity)
 
     @Query("SELECT * FROM Character")

@@ -2,50 +2,46 @@ package com.jh.roachecklist.ui.checklist.weekly
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.WeeklyWork
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.ui.base.BaseViewModel
-import com.jh.roachecklist.ui.checklist.CheckListModel
+import com.jh.roachecklist.db.CheckListEntity
+import com.jh.roachecklist.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): BaseViewModel() {
+class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
+                                          private val repository: Repository ): BaseViewModel() {
 
     private var nickName = ""
     private var level = 0
 
-    var weekly = MutableLiveData( arrayListOf<CheckListModel>(
+    var weekly = MutableLiveData<List<CheckListEntity>>()
 
-        CheckListModel( WeeklyWork.CHALLENGE_GUARDIAN, 0, null, 0, 0, 3 ),
-        CheckListModel( WeeklyWork.WEEKLY_EFONA, 0, null, 0, 0, 3 ),
-        CheckListModel( WeeklyWork.ARGOS_1, 1370, 1475, 1500, 0, 1 ),
-        CheckListModel( WeeklyWork.ARGOS_2, 1385, 1475, 800, 0, 1 ),
-        CheckListModel( WeeklyWork.ARGOS_3, 1400, 1475, 1000, 0, 1 ),
-        CheckListModel( WeeklyWork.GHOST_SHIP, 0, null, 0, 0, 1 ),
-        CheckListModel( WeeklyWork.OREHA_NOMAL, 1325, 1415, 1500, 0, 1 ),
-        CheckListModel( WeeklyWork.OREHA_HARD, 1355, 1415, 1700, 0, 1 ),
-        CheckListModel( WeeklyWork.OREHA_BUS, 1415, null, 0, 0, 1 ),
-
-        ) )
     private fun filterList( level: Int ) {
 
         weekly.value = weekly.value?.filter { model ->
 
             level >= model.minLevel ?: 0 &&  level < model.maxLevel ?: 10000
 
-        } as ArrayList<CheckListModel>
+        } as ArrayList<CheckListEntity>
 
     }
 
-    private fun setDailyList() {
+    private fun setWeeklyList() {
 
         val weeklyList = pref.getWeeklyList()
+        val weeklyNotiList = pref.getWeeklyNotiList()
         for ( index in 0 until weeklyList.size ) {
-            Log.i("zxcv", "index :: ${index} :: ${weeklyList[index]}")
 
             weekly.value!![index].checkedCount = weeklyList[index]
+            weekly.value!![index].isNoti = weeklyNotiList[index]
 
         }
 
@@ -56,12 +52,17 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
         this.nickName = nickName
         this.level = level
         pref.getPref( nickName )
-        setDailyList()
-        filterList ( level )
 
-        for ( work in weekly.value!! ) {
+        viewModelScope.launch( Dispatchers.IO ) {
 
-            Log.i("zxcv", "${work.work} checked :: ${work.checkedCount}")
+            val result =  repository.getWeeklyCheckList()
+            withContext( Dispatchers.Main ) {
+
+                weekly.value = result
+                setWeeklyList()
+                filterList ( level )
+
+            }
 
         }
 
@@ -134,13 +135,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
                 }
 
             }
-            WeeklyWork.OREHA_BUS -> {
-
-                pref.orehaBus = pref.orehaBus + 1
-                weekly.value!![pos].checkedCount = pref.orehaBus
-
-            }
-
 
         }
 
@@ -198,13 +192,103 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference ): Bas
                 weekly.value!![pos].checkedCount = pref.orehaHard
 
             }
-            WeeklyWork.OREHA_BUS -> {
 
-                pref.orehaBus = pref.orehaBus - 1
-                weekly.value!![pos].checkedCount = pref.orehaBus
+        }
+
+    }
+
+    fun onClickNoti( pos: Int ) {
+        Log.i("zxcv","눌린거 :: ${weekly.value!![pos].work}")
+
+        when ( weekly.value!![pos].work ) {
+
+            Const.WeeklyWork.CHALLENGE_GUARDIAN -> {
+
+                if ( pref.challengeGuardianNoti == Const.NotiState.YES )
+                    pref.challengeGuardianNoti = Const.NotiState.NO
+                else
+                    pref.challengeGuardianNoti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.challengeGuardianNoti
 
             }
 
+            Const.WeeklyWork.WEEKLY_EFONA -> {
+
+                if ( pref.weeklyEfonaNoti == Const.NotiState.YES )
+                    pref.weeklyEfonaNoti = Const.NotiState.NO
+                else
+                    pref.weeklyEfonaNoti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.weeklyEfonaNoti
+
+            }
+
+            Const.WeeklyWork.ARGOS_1 -> {
+
+                if ( pref.argos1Noti == Const.NotiState.YES )
+                    pref.argos1Noti = Const.NotiState.NO
+                else
+                    pref.argos1Noti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.argos1Noti
+
+            }
+
+            Const.WeeklyWork.ARGOS_2 -> {
+
+                if ( pref.argos2Noti == Const.NotiState.YES )
+                    pref.argos2Noti = Const.NotiState.NO
+                else
+                    pref.argos2Noti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.argos2Noti
+
+            }
+
+            Const.WeeklyWork.ARGOS_3 -> {
+
+                if ( pref.argos3Noti == Const.NotiState.YES )
+                    pref.argos3Noti = Const.NotiState.NO
+                else
+                    pref.argos3Noti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.argos3Noti
+
+            }
+
+            Const.WeeklyWork.GHOST_SHIP -> {
+
+                if ( pref.ghostShipNoti == Const.NotiState.YES )
+                    pref.ghostShipNoti = Const.NotiState.NO
+                else
+                    pref.ghostShipNoti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.ghostShipNoti
+
+            }
+
+            Const.WeeklyWork.OREHA_NOMAL -> {
+
+                if ( pref.orehaNormalNoti == Const.NotiState.YES )
+                    pref.orehaNormalNoti = Const.NotiState.NO
+                else
+                    pref.orehaNormalNoti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.orehaNormalNoti
+
+            }
+
+            Const.WeeklyWork.OREHA_HARD -> {
+
+                if ( pref.orehaHardNoti == Const.NotiState.YES )
+                    pref.orehaHardNoti = Const.NotiState.NO
+                else
+                    pref.orehaHardNoti = Const.NotiState.YES
+
+                weekly.value!![pos].isNoti = pref.orehaHardNoti
+
+            }
 
         }
 

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="model"
-            type="com.jh.roachecklist.ui.checklist.CheckListModel" />
+            type="com.jh.roachecklist.db.CheckListEntity" />
     </data>
 
     <LinearLayout
@@ -14,11 +14,21 @@
         android:background="@drawable/bg_check_list_item"
         android:padding="15dp">
 
+        <ImageView
+            android:id="@+id/iv_noti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:src="@{model.isNoti == 1 ? @drawable/baseline_notifications_active_24 : @drawable/baseline_notifications_off_24}"/>
+
+
         <TextView
             android:id="@+id/tv_work"
             android:textStyle="bold"
             android:textSize="@dimen/primary_text_size"
             android:textColor="@color/primary_color"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
@@ -28,18 +38,21 @@
             android:id="@+id/cb1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibleIf="@{model.count > 0 }"/>
 
         <CheckBox
             android:id="@+id/cb2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibleIf="@{model.count > 1 }"/>
 
         <CheckBox
             android:id="@+id/cb3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibleIf="@{model.count > 2 }"/>
 
     </LinearLayout>

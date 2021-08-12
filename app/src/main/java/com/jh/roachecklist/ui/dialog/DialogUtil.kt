@@ -9,6 +9,7 @@ import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
@@ -175,6 +176,49 @@ object DialogUtil {
 
                 dialog.dismiss()
 
+            }
+
+        }
+
+    }
+
+    fun showSettingRestDialog( context: Context, layoutInflater: LayoutInflater, onModify: (Int, Int, Int) -> Unit ) {
+
+        val binding = ActivityCheckListDailyRestEditDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            etEfona.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+            }
+
+            etChaos.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            etGuardian.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            btnOk.setOnClickListener {
+                onModify.invoke( etEfona.text.toString().toInt(), etGuardian.text.toString().toInt(), etChaos.text.toString().toInt() )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
             }
 
         }

@@ -1,6 +1,7 @@
 package com.jh.roachecklist.ui.checklist
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.ui.base.BaseViewModel
@@ -13,5 +14,12 @@ class CheckListViewModel @Inject constructor( savedState: SavedStateHandle ): Ba
 
 //    val level: Int = savedState.get<Int>( CharacterActivity.EXTRA_LEVEL ) ?: 0
 //    val nickname: String = savedState.get<String>( CharacterActivity.EXTRA_NICK_NAME ) ?: ""
+
+    val activeFragment = MutableLiveData<Int>()
+    fun setActiveFragment( active: Int ) {
+
+        activeFragment.value = active
+
+    }
 
 }

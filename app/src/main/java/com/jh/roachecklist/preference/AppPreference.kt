@@ -33,6 +33,10 @@ class AppPreference constructor(private val context: Context ) {
 
     }
 
+    var isFirst: Boolean
+        get() = sharedPreferences.getBoolean("isFirst", true)
+        set(value) = sharedPreferences.edit().putBoolean("isFirst", value).apply()
+
     /**
      * 일일 숙제 리스트
      */
@@ -100,10 +104,11 @@ class AppPreference constructor(private val context: Context ) {
         }
         set(value) {
 
-            if ( value <= 0 )
-                sharedPreferences.edit().putInt("efonaRestBonus", 0).apply()
-            else
-                sharedPreferences.edit().putInt("efonaRestBonus", value).apply()
+            when {
+                value <= 0 -> sharedPreferences.edit().putInt("efonaRestBonus", 0).apply()
+                value >= 100 -> sharedPreferences.edit().putInt("efonaRestBonus", 100).apply()
+                else -> sharedPreferences.edit().putInt("efonaRestBonus", value).apply()
+            }
 
         }
 
@@ -137,10 +142,11 @@ class AppPreference constructor(private val context: Context ) {
         }
         set(value) {
 
-            if ( value <= 0 )
-                sharedPreferences.edit().putInt("chaosRestBonus", 0).apply()
-            else
-                sharedPreferences.edit().putInt("chaosRestBonus", value).apply()
+            when {
+                value <= 0 -> sharedPreferences.edit().putInt("chaosRestBonus", 0).apply()
+                value >= 100 -> sharedPreferences.edit().putInt("chaosRestBonus", 100).apply()
+                else -> sharedPreferences.edit().putInt("chaosRestBonus", value).apply()
+            }
 
         }
 
@@ -174,10 +180,11 @@ class AppPreference constructor(private val context: Context ) {
         }
         set(value) {
 
-            if ( value <= 0 )
-                sharedPreferences.edit().putInt("guardianRestBonus", 0).apply()
-            else
-                sharedPreferences.edit().putInt("guardianRestBonus", value).apply()
+            when {
+                value <= 0 -> sharedPreferences.edit().putInt("guardianRestBonus", 0).apply()
+                value >= 100 -> sharedPreferences.edit().putInt("guardianRestBonus", 100).apply()
+                else -> sharedPreferences.edit().putInt("guardianRestBonus", value).apply()
+            }
 
         }
 
@@ -206,7 +213,7 @@ class AppPreference constructor(private val context: Context ) {
      * 주간 숙제 리스트
      */
 
-    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard, orehaBus )
+    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard )
 
     fun resetWeekly() {
 
@@ -218,7 +225,6 @@ class AppPreference constructor(private val context: Context ) {
         ghostShip = 0
         orehaNomal = 0
         orehaHard = 0
-        orehaBus = 0
 
         bartanNormal = 0
         bartanHard = 0
@@ -262,10 +268,6 @@ class AppPreference constructor(private val context: Context ) {
     var orehaHard: Int
         get() = sharedPreferences.getInt("orehaHard", 0)
         set(value) = sharedPreferences.edit().putInt("orehaHard", value).apply()
-
-    var orehaBus: Int
-        get() = sharedPreferences.getInt("orehaBus", 0)
-        set(value) = sharedPreferences.edit().putInt("orehaBus", value).apply()
 
     /**
      * 군단장 레이드 리스트
@@ -323,5 +325,102 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("abrelshouldDevaju", 0)
         set(value) = sharedPreferences.edit().putInt("abrelshouldDevaju", value).apply()
 
+
+    /**
+     * 각 리스트당 노티 여부
+     */
+    fun getDailyNotiList(): ArrayList<Int> = arrayListOf( guildNoti, dailyEfonaNoti, favorabilityNoti, islandNoti, fieldBossNoti, dailyGuardianNoti, chaosGateNoti, chaosDungeonNoti )
+
+    var guildNoti: Int
+        get() = sharedPreferences.getInt("guildNoti", 0)
+        set(value) = sharedPreferences.edit().putInt("guildNoti", value).apply()
+    var dailyEfonaNoti: Int
+        get() = sharedPreferences.getInt("dailyEfonaNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("dailyEfonaNoti", value).apply()
+    var favorabilityNoti: Int
+        get() = sharedPreferences.getInt("favorabilityNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("favorabilityNoti", value).apply()
+    var islandNoti: Int
+        get() = sharedPreferences.getInt("islandNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("islandNoti", value).apply()
+    var fieldBossNoti: Int
+        get() = sharedPreferences.getInt("fieldBossNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("fieldBossNoti", value).apply()
+    var dailyGuardianNoti: Int
+        get() = sharedPreferences.getInt("dailyGuardianNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("dailyGuardianNoti", value).apply()
+    var chaosGateNoti: Int
+        get() = sharedPreferences.getInt("chaosGateNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("chaosGateNoti", value).apply()
+    var chaosDungeonNoti: Int
+        get() = sharedPreferences.getInt("chaosDungeonNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("chaosDungeonNoti", value).apply()
+
+    fun getWeeklyNotiList(): ArrayList<Int> = arrayListOf( challengeGuardianNoti, weeklyEfonaNoti, argos1Noti, argos2Noti, argos3Noti, ghostShipNoti, orehaNormalNoti, orehaHardNoti )
+
+    var challengeGuardianNoti: Int
+        get() = sharedPreferences.getInt("challengeGuardianNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("challengeGuardianNoti", value).apply()
+    var weeklyEfonaNoti: Int
+        get() = sharedPreferences.getInt("weeklyEfonaNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("weeklyEfonaNoti", value).apply()
+    var argos1Noti: Int
+        get() = sharedPreferences.getInt("argos1Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("argos1Noti", value).apply()
+    var argos2Noti: Int
+        get() = sharedPreferences.getInt("argos2Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("argos2Noti", value).apply()
+    var argos3Noti: Int
+        get() = sharedPreferences.getInt("argos3Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("argos3Noti", value).apply()
+    var ghostShipNoti: Int
+        get() = sharedPreferences.getInt("ghostShipNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("ghostShipNoti", value).apply()
+    var orehaNormalNoti: Int
+        get() = sharedPreferences.getInt("orehaNormalNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("orehaNormalNoti", value).apply()
+    var orehaHardNoti: Int
+        get() = sharedPreferences.getInt("orehaHardNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("orehaHardNoti", value).apply()
+
+
+    fun getRaidNotiList(): ArrayList<Int> = arrayListOf( bartanNormalNoti, bartanHardNoti, viakissNormalNoti, viakissHardNoti, koukosatonRehearsalNoti, abrelshould12Noti, abrelshould34Noti, abrelshould56Noti )
+
+    var bartanNormalNoti: Int
+        get() = sharedPreferences.getInt("bartanNormalNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("bartanNormalNoti", value).apply()
+    var bartanHardNoti: Int
+        get() = sharedPreferences.getInt("bartanHardNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("bartanHardNoti", value).apply()
+    var viakissNormalNoti: Int
+        get() = sharedPreferences.getInt("ViakissNormalNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("ViakissNormalNoti", value).apply()
+    var viakissHardNoti: Int
+        get() = sharedPreferences.getInt("viakissHardNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("viakissHardNoti", value).apply()
+    var koutosatonNormalNoti: Int
+        get() = sharedPreferences.getInt("koutosatonNormalNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("koutosatonNormalNoti", value).apply()
+    var abrelshould12Noti: Int
+        get() = sharedPreferences.getInt("abrelshould12Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("abrelshould12Noti", value).apply()
+    var abrelshould34Noti: Int
+        get() = sharedPreferences.getInt("abrelshould34Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("abrelshould34Noti", value).apply()
+    var abrelshould56Noti: Int
+        get() = sharedPreferences.getInt("abrelshould56Noti", 1)
+        set(value) = sharedPreferences.edit().putInt("abrelshould56Noti", value).apply()
+
+    fun getExpeditionNotiList(): ArrayList<Int> = arrayListOf( abyssDungeonNoti, koukosatonRehearsalNoti, abrelshouldDevajuNoti )
+
+    var abyssDungeonNoti: Int
+        get() = sharedPreferences.getInt("abyssDungeonNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("abyssDungeonNoti", value).apply()
+    var koukosatonRehearsalNoti: Int
+        get() = sharedPreferences.getInt("koukosatonRehearsalNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("koukosatonRehearsalNoti", value).apply()
+    var abrelshouldDevajuNoti: Int
+        get() = sharedPreferences.getInt("abrelshouldDevajuNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("abrelshouldDevajuNoti", value).apply()
 
 }

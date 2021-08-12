@@ -44,10 +44,13 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch( Dispatchers.IO) {
 
             setHighestLevel()
+            withContext( Dispatchers.Main ) {
+
+                clickExpedition.call()
+
+            }
 
         }
-
-        clickExpedition.call()
 
     }
 

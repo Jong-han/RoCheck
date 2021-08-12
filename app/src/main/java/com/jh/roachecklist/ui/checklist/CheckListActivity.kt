@@ -99,6 +99,8 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
         activeFragment = fragment
 
+        viewModel.setActiveFragment( index )
+
     }
 
     private fun setBundle(): Bundle {
