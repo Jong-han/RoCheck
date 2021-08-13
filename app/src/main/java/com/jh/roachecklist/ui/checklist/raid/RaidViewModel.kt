@@ -75,59 +75,22 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
 
         when ( raid.value!![pos].work ) {
 
-            Raid.BALTAN_NORMAL -> {
+            Raid.BALTAN -> {
 
-                pref.bartanNormal = pref.bartanNormal + 1
-                raid.value!![pos].checkedCount = pref.bartanNormal
-                if ( pref.bartanHard == 1 ) {
-
-                    pref.bartanHard = pref.bartanHard - 1
-                    otherDifficulty?.let { raid.value!![it].checkedCount = pref.bartanHard }
-
-                }
+                pref.bartan = pref.bartan + 1
+                raid.value!![pos].checkedCount = pref.bartan
 
             }
-            Raid.BALRAN_HARD -> {
+            Raid.VIAKISS -> {
 
-                pref.bartanHard = pref.bartanHard + 1
-                raid.value!![pos].checkedCount = pref.bartanHard
-                if ( pref.bartanNormal == 1 ) {
-
-                    pref.bartanNormal = pref.bartanNormal - 1
-                    otherDifficulty?.let { raid.value!![it].checkedCount = pref.bartanNormal }
-
-                }
+                pref.viakiss = pref.viakiss + 1
+                raid.value!![pos].checkedCount = pref.viakiss
 
             }
-            Raid.VIAKISS_NORMAL -> {
+            Raid.KOUKUSATON -> {
 
-                pref.viakissNormal = pref.viakissNormal + 1
-                raid.value!![pos].checkedCount = pref.viakissNormal
-                if ( pref.viakissHard == 1 ) {
-
-                    pref.viakissHard = pref.viakissHard - 1
-                    otherDifficulty?.let { raid.value!![it].checkedCount = pref.viakissHard }
-
-                }
-
-            }
-            Raid.VIAKISS_HARD -> {
-
-                pref.viakissHard = pref.viakissHard + 1
-                raid.value!![pos].checkedCount = pref.viakissHard
-                if ( pref.viakissNormal == 1 ) {
-
-                    pref.viakissNormal = pref.viakissNormal - 1
-                    otherDifficulty?.let { raid.value!![it].checkedCount = pref.viakissNormal }
-
-                }
-
-            }
-
-            Raid.KOUKUSATON_NORMAL -> {
-
-                pref.koutusatonNormal = pref.koutusatonNormal + 1
-                raid.value!![pos].checkedCount = pref.koutusatonNormal
+                pref.koutusaton = pref.koutusaton + 1
+                raid.value!![pos].checkedCount = pref.koutusaton
 
             }
 
@@ -158,34 +121,22 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
 
         when ( raid.value!![pos].work ) {
 
-            Raid.BALTAN_NORMAL -> {
+            Raid.BALTAN -> {
 
-                pref.bartanNormal = pref.bartanNormal - 1
-                raid.value!![pos].checkedCount = pref.bartanNormal
-
-            }
-            Raid.BALRAN_HARD -> {
-
-                pref.bartanHard = pref.bartanHard - 1
-                raid.value!![pos].checkedCount = pref.bartanHard
+                pref.bartan = pref.bartan - 1
+                raid.value!![pos].checkedCount = pref.bartan
 
             }
-            Raid.VIAKISS_NORMAL -> {
+            Raid.VIAKISS -> {
 
-                pref.viakissNormal = pref.viakissNormal - 1
-                raid.value!![pos].checkedCount = pref.viakissNormal
-
-            }
-            Raid.VIAKISS_HARD -> {
-
-                pref.viakissHard = pref.viakissHard - 1
-                raid.value!![pos].checkedCount = pref.viakissHard
+                pref.viakiss = pref.viakiss - 1
+                raid.value!![pos].checkedCount = pref.viakiss
 
             }
-            Raid.KOUKUSATON_NORMAL -> {
+            Raid.KOUKUSATON -> {
 
-                pref.koutusatonNormal = pref.koutusatonNormal - 1
-                raid.value!![pos].checkedCount = pref.koutusatonNormal
+                pref.koutusaton = pref.koutusaton - 1
+                raid.value!![pos].checkedCount = pref.koutusaton
 
             }
             Raid.ABRELSHOULD_1_2 -> {
@@ -216,50 +167,32 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
 
         when ( raid.value!![pos].work ) {
 
-            Const.Raid.BALTAN_NORMAL -> {
+            Const.Raid.BALTAN -> {
 
-                if ( pref.bartanNormalNoti >= Const.NotiState.YES )
-                    pref.bartanNormalNoti = Const.NotiState.NO
+                if ( pref.bartanNoti >= Const.NotiState.YES )
+                    pref.bartanNoti = Const.NotiState.NO
                 else
-                    pref.bartanNormalNoti = Const.NotiState.YES
+                    pref.bartanNoti = Const.NotiState.YES
 
-                raid.value!![pos].isNoti = pref.bartanNormalNoti
+                raid.value!![pos].isNoti = pref.bartanNoti
 
             }
-            Const.Raid.BALRAN_HARD -> {
+            Const.Raid.VIAKISS -> {
 
-                if ( pref.bartanHardNoti >= Const.NotiState.YES )
-                    pref.bartanHardNoti = Const.NotiState.NO
+                if ( pref.viakissNoti >= Const.NotiState.YES )
+                    pref.viakissNoti = Const.NotiState.NO
                 else
-                    pref.bartanHardNoti = Const.NotiState.YES
-                raid.value!![pos].isNoti = pref.bartanHardNoti
+                    pref.viakissNoti = Const.NotiState.YES
+                raid.value!![pos].isNoti = pref.viakissNoti
 
             }
-            Const.Raid.VIAKISS_NORMAL -> {
+            Const.Raid.KOUKUSATON -> {
 
-                if ( pref.viakissNormalNoti >= Const.NotiState.YES )
-                    pref.viakissNormalNoti = Const.NotiState.NO
+                if ( pref.koutosatonNoti >= Const.NotiState.YES )
+                    pref.koutosatonNoti = Const.NotiState.NO
                 else
-                    pref.viakissNormalNoti = Const.NotiState.YES
-                raid.value!![pos].isNoti = pref.viakissNormalNoti
-
-            }
-            Const.Raid.VIAKISS_HARD -> {
-
-                if ( pref.viakissHardNoti >= Const.NotiState.YES )
-                    pref.viakissHardNoti = Const.NotiState.NO
-                else
-                    pref.viakissHardNoti = Const.NotiState.YES
-                raid.value!![pos].isNoti = pref.viakissHardNoti
-
-            }
-            Const.Raid.KOUKUSATON_NORMAL -> {
-
-                if ( pref.koutosatonNormalNoti >= Const.NotiState.YES )
-                    pref.koutosatonNormalNoti = Const.NotiState.NO
-                else
-                    pref.koutosatonNormalNoti = Const.NotiState.YES
-                raid.value!![pos].isNoti = pref.koutosatonNormalNoti
+                    pref.koutosatonNoti = Const.NotiState.YES
+                raid.value!![pos].isNoti = pref.koutosatonNoti
 
             }
             Const.Raid.ABRELSHOULD_1_2 -> {

@@ -2,10 +2,7 @@ package com.jh.roachecklist.preference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import android.util.Log
 import com.jh.roachecklist.Const
-import com.jh.roachecklist.Const.DailyWork
 import java.io.File
 
 
@@ -213,7 +210,7 @@ class AppPreference constructor(private val context: Context ) {
      * 주간 숙제 리스트
      */
 
-    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, orehaNomal, orehaHard )
+    fun getWeeklyList(): ArrayList<Int> = arrayListOf( challengeGuardian, weeklyEfona, argos1, argos2, argos3, ghostShip, oreha )
 
     fun resetWeekly() {
 
@@ -223,14 +220,11 @@ class AppPreference constructor(private val context: Context ) {
         argos2 = 0
         argos3 = 0
         ghostShip = 0
-        orehaNomal = 0
-        orehaHard = 0
+        oreha = 0
 
-        bartanNormal = 0
-        bartanHard = 0
-        viakissNormal = 0
-        viakissHard = 0
-        koutusatonNormal = 0
+        bartan = 0
+        viakiss = 0
+        koutusaton = 0
         abrelshould12 = 0
         abrelshould34 = 0
         abrelshould56 = 0
@@ -261,32 +255,22 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("ghostShip", 0)
         set(value) = sharedPreferences.edit().putInt("ghostShip", value).apply()
 
-    var orehaNomal: Int
-        get() = sharedPreferences.getInt("orehaNomal", 0)
-        set(value) = sharedPreferences.edit().putInt("orehaNomal", value).apply()
-
-    var orehaHard: Int
-        get() = sharedPreferences.getInt("orehaHard", 0)
-        set(value) = sharedPreferences.edit().putInt("orehaHard", value).apply()
+    var oreha: Int
+        get() = sharedPreferences.getInt("oreha", 0)
+        set(value) = sharedPreferences.edit().putInt("oreha", value).apply()
 
     /**
      * 군단장 레이드 리스트
      */
-    fun getRaidList(): ArrayList<Int> = arrayListOf( bartanNormal, bartanHard, viakissNormal, viakissHard, koutusatonNormal, abrelshould12, abrelshould34, abrelshould56 )
+    fun getRaidList(): ArrayList<Int> = arrayListOf( bartan, viakiss, koutusaton, abrelshould12, abrelshould34, abrelshould56 )
 
-    var bartanNormal: Int
+    var bartan: Int
         get() = sharedPreferences.getInt("bartanNormal", 0)
         set(value) = sharedPreferences.edit().putInt("bartanNormal", value).apply()
-    var bartanHard: Int
-        get() = sharedPreferences.getInt("bartanHard", 0)
-        set(value) = sharedPreferences.edit().putInt("bartanHard", value).apply()
-    var viakissNormal: Int
+    var viakiss: Int
         get() = sharedPreferences.getInt("viakissNormal", 0)
         set(value) = sharedPreferences.edit().putInt("viakissNormal", value).apply()
-    var viakissHard: Int
-        get() = sharedPreferences.getInt("viakissHard", 0)
-        set(value) = sharedPreferences.edit().putInt("viakissHard", value).apply()
-    var koutusatonNormal: Int
+    var koutusaton: Int
         get() = sharedPreferences.getInt("koutusatonNormal", 0)
         set(value) = sharedPreferences.edit().putInt("koutusatonNormal", value).apply()
     var abrelshould12: Int
@@ -356,7 +340,7 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("chaosDungeonNoti", 1) * 2
         set(value) = sharedPreferences.edit().putInt("chaosDungeonNoti", value).apply()
 
-    fun getWeeklyNotiList(): ArrayList<Int> = arrayListOf( challengeGuardianNoti, weeklyEfonaNoti, argos1Noti, argos2Noti, argos3Noti, ghostShipNoti, orehaNormalNoti, orehaHardNoti )
+    fun getWeeklyNotiList(): ArrayList<Int> = arrayListOf( challengeGuardianNoti, weeklyEfonaNoti, argos1Noti, argos2Noti, argos3Noti, ghostShipNoti, orehaNoti )
 
     var challengeGuardianNoti: Int
         get() = sharedPreferences.getInt("challengeGuardianNoti", 1) * 3
@@ -376,29 +360,20 @@ class AppPreference constructor(private val context: Context ) {
     var ghostShipNoti: Int
         get() = sharedPreferences.getInt("ghostShipNoti", 1)
         set(value) = sharedPreferences.edit().putInt("ghostShipNoti", value).apply()
-    var orehaNormalNoti: Int
-        get() = sharedPreferences.getInt("orehaNormalNoti", 1)
-        set(value) = sharedPreferences.edit().putInt("orehaNormalNoti", value).apply()
-    var orehaHardNoti: Int
-        get() = sharedPreferences.getInt("orehaHardNoti", 1)
-        set(value) = sharedPreferences.edit().putInt("orehaHardNoti", value).apply()
+    var orehaNoti: Int
+        get() = sharedPreferences.getInt("orehaNoti", 1)
+        set(value) = sharedPreferences.edit().putInt("orehaNoti", value).apply()
 
 
-    fun getRaidNotiList(): ArrayList<Int> = arrayListOf( bartanNormalNoti, bartanHardNoti, viakissNormalNoti, viakissHardNoti, koukosatonRehearsalNoti, abrelshould12Noti, abrelshould34Noti, abrelshould56Noti )
+    fun getRaidNotiList(): ArrayList<Int> = arrayListOf( bartanNoti, viakissNoti, koutosatonNoti, abrelshould12Noti, abrelshould34Noti, abrelshould56Noti )
 
-    var bartanNormalNoti: Int
+    var bartanNoti: Int
         get() = sharedPreferences.getInt("bartanNormalNoti", 1)
         set(value) = sharedPreferences.edit().putInt("bartanNormalNoti", value).apply()
-    var bartanHardNoti: Int
-        get() = sharedPreferences.getInt("bartanHardNoti", 1)
-        set(value) = sharedPreferences.edit().putInt("bartanHardNoti", value).apply()
-    var viakissNormalNoti: Int
+    var viakissNoti: Int
         get() = sharedPreferences.getInt("ViakissNormalNoti", 1)
         set(value) = sharedPreferences.edit().putInt("ViakissNormalNoti", value).apply()
-    var viakissHardNoti: Int
-        get() = sharedPreferences.getInt("viakissHardNoti", 1)
-        set(value) = sharedPreferences.edit().putInt("viakissHardNoti", value).apply()
-    var koutosatonNormalNoti: Int
+    var koutosatonNoti: Int
         get() = sharedPreferences.getInt("koutosatonNormalNoti", 1)
         set(value) = sharedPreferences.edit().putInt("koutosatonNormalNoti", value).apply()
     var abrelshould12Noti: Int

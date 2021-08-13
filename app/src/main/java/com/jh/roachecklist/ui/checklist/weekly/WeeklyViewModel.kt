@@ -111,28 +111,10 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                 weekly.value!![pos].checkedCount = pref.ghostShip
 
             }
-            WeeklyWork.OREHA_NOMAL -> {
+            WeeklyWork.OREHA -> {
 
-                pref.orehaNomal = pref.orehaNomal + 1
-                weekly.value!![pos].checkedCount = pref.orehaNomal
-                if ( pref.orehaHard == 1 ) {
-
-                    pref.orehaHard = pref.orehaHard - 1
-                    otherDifficulty?.let { weekly.value!![it].checkedCount = pref.orehaHard }
-
-                }
-
-            }
-            WeeklyWork.OREHA_HARD -> {
-
-                pref.orehaHard = pref.orehaHard + 1
-                weekly.value!![pos].checkedCount = pref.orehaHard
-                if ( pref.orehaNomal == 1 ) {
-
-                    pref.orehaNomal = pref.orehaNomal - 1
-                    otherDifficulty?.let { weekly.value!![it].checkedCount = pref.orehaNomal }
-
-                }
+                pref.oreha = pref.oreha + 1
+                weekly.value!![pos].checkedCount = pref.oreha
 
             }
 
@@ -180,16 +162,10 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                 weekly.value!![pos].checkedCount = pref.ghostShip
 
             }
-            WeeklyWork.OREHA_NOMAL -> {
+            WeeklyWork.OREHA -> {
 
-                pref.orehaNomal = pref.orehaNomal - 1
-                weekly.value!![pos].checkedCount = pref.orehaNomal
-
-            }
-            WeeklyWork.OREHA_HARD -> {
-
-                pref.orehaHard = pref.orehaHard - 1
-                weekly.value!![pos].checkedCount = pref.orehaHard
+                pref.oreha = pref.oreha - 1
+                weekly.value!![pos].checkedCount = pref.oreha
 
             }
 
@@ -268,25 +244,14 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             }
 
-            Const.WeeklyWork.OREHA_NOMAL -> {
+            Const.WeeklyWork.OREHA -> {
 
-                if ( pref.orehaNormalNoti >= Const.NotiState.YES )
-                    pref.orehaNormalNoti = Const.NotiState.NO
+                if ( pref.orehaNoti >= Const.NotiState.YES )
+                    pref.orehaNoti = Const.NotiState.NO
                 else
-                    pref.orehaNormalNoti = Const.NotiState.YES
+                    pref.orehaNoti = Const.NotiState.YES
 
-                weekly.value!![pos].isNoti = pref.orehaNormalNoti
-
-            }
-
-            Const.WeeklyWork.OREHA_HARD -> {
-
-                if ( pref.orehaHardNoti >= Const.NotiState.YES )
-                    pref.orehaHardNoti = Const.NotiState.NO
-                else
-                    pref.orehaHardNoti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.orehaHardNoti
+                weekly.value!![pos].isNoti = pref.orehaNoti
 
             }
 

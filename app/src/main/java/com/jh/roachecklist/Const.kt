@@ -74,8 +74,7 @@ object Const {
         const val ARGOS_2 = 4
         const val ARGOS_3 = 5
         const val GHOST_SHIP = 6
-        const val OREHA_NOMAL = 7
-        const val OREHA_HARD = 8
+        const val OREHA = 7
 
     }
 
@@ -87,18 +86,15 @@ object Const {
         const val ARGOS_2 = "아르고스 페이즈 2"
         const val ARGOS_3 = "아르고스 페이즈 3"
         const val GHOST_SHIP = "유령선"
-        const val OREHA_NOMAL = "오레하의 우물 노멀"
-        const val OREHA_HARD = "오레하의 우물 하드"
+        const val OREHA = "오레하의 우물"
 
     }
 
     object Raid {
 
-        const val BALTAN_NORMAL = "발탄 노멀"
-        const val BALRAN_HARD = "발탄 하드"
-        const val VIAKISS_NORMAL = "비아키스 노멀"
-        const val VIAKISS_HARD = "비아키스 하드"
-        const val KOUKUSATON_NORMAL = "쿠크세이튼 노멀"
+        const val BALTAN = "발탄"
+        const val VIAKISS = "비아키스"
+        const val KOUKUSATON = "쿠크세이튼"
         const val ABRELSHOULD_1_2 = "아브렐슈드 1/2 관문"
         const val ABRELSHOULD_3_4 = "아브렐슈드 3/4 관문"
         const val ABRELSHOULD_5_6 = "아브렐슈드 5/6 관문"

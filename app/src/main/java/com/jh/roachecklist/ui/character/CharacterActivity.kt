@@ -107,10 +107,10 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         dataBinding.btnTest.setOnClickListener {
 
-//            checkListUtil.alarmExpedition()
-//            checkListUtil.alarmRaid()
+            checkListUtil.alarmRaid()
             checkListUtil.alarmWeekly()
             checkListUtil.alarmDaily()
+//            checkListUtil.alarmExpedition()
 
         }
 
