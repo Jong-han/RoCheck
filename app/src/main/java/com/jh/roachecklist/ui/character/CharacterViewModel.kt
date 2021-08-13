@@ -67,9 +67,9 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     }
 
-    fun addCharacter(nickName: String, level: Int, klass: String ) {
+    fun addCharacter(nickName: String, level: Int, klass: String, favorite: Int ) {
 
-        val character = CharacterEntity( nickName, klass, level, Const.Favorite.BARRACK )
+        val character = CharacterEntity( nickName, klass, level, favorite )
 
         viewModelScope.launch(Dispatchers.IO) {
             val isExist = repository.isExist( character )
@@ -135,5 +135,20 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
     }
 
     fun getHighestLevel() = level
+
+    fun editFavoriteType( characterEntity: CharacterEntity, favorite: Int ) {
+
+        viewModelScope.launch {
+
+            characterEntity.favorite = favorite
+            withContext( Dispatchers.IO ) {
+
+                repository.updateCharacter( characterEntity )
+
+            }
+
+        }
+
+    }
 
 }

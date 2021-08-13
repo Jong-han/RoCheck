@@ -58,8 +58,8 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         viewModel.clickAddCharacter.observe( this, {
 
-            DialogUtil.showAddCharacterDialog( this, layoutInflater ) { name: String, level: Int, klass: String ->
-                viewModel.addCharacter( name, level, klass )
+            DialogUtil.showAddCharacterDialog( this, layoutInflater ) { name: String, level: Int, klass: String, favorite: Int ->
+                viewModel.addCharacter( name, level, klass, favorite )
             }
 
         })
@@ -123,7 +123,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     private val longClickListener = { pos: Int ->
 
         val item = characterAdapter.currentList[pos]
-        DialogUtil.showEditMenuDialog( this, layoutInflater, item, updateCharacter, deleteCharacter )
+        DialogUtil.showEditMenuDialog( this, layoutInflater, item, updateCharacter, deleteCharacter, editType )
 
     }
 
@@ -145,6 +145,13 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         alarmManager.cancel( pendingIntent )
         Log.i("zxcv","세팅알람")
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
+
+    }
+
+    private val editType = { characterEntity: CharacterEntity, favorite: Int ->
+
+        viewModel.editFavoriteType( characterEntity, favorite )
+        characterAdapter.notifyItemChanged( characterAdapter.currentList.indexOf( characterEntity ) )
 
     }
 

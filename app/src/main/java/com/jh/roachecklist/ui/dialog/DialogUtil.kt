@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
+import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
@@ -19,7 +20,7 @@ import java.util.*
 
 object DialogUtil {
 
-    fun showAddCharacterDialog(context: Context, layoutInflater: LayoutInflater, onOk: (String, Int, String)->(Unit) ) {
+    fun showAddCharacterDialog(context: Context, layoutInflater: LayoutInflater, onOk: (String, Int, String, Int)->(Unit) ) {
 
         val binding = ActivityCharacterAddDialogBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -34,8 +35,15 @@ object DialogUtil {
         binding.run {
 
             btnOk.setOnClickListener {
+                val favorite = when (radioGroup.checkedRadioButtonId) {
+
+                    R.id.radio_main -> Const.Favorite.MAIN
+                    R.id.radio_sub -> Const.Favorite.SUB
+                    else -> Const.Favorite.BARRACK
+
+                }
                 if ( !etLevel.text.isNullOrBlank() && !etName.text.isNullOrBlank() )
-                    onOk.invoke( etName.text.toString(), etLevel.text.toString().toInt(), (spinner.selectedItem as String) )
+                    onOk.invoke( etName.text.toString(), etLevel.text.toString().toInt(), (spinner.selectedItem as String), favorite )
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
@@ -52,7 +60,7 @@ object DialogUtil {
 
     }
 
-    fun showEditMenuDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onUpdate: (CharacterEntity, Int) -> Unit, onDelete: (CharacterEntity)->(Unit) ) {
+    fun showEditMenuDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onUpdate: (CharacterEntity, Int) -> Unit, onDelete: (CharacterEntity)->(Unit), onEditType: (CharacterEntity, Int)->(Unit) ) {
 
         val binding = ActivityCharacterEditMenuDialogBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -73,6 +81,12 @@ object DialogUtil {
             btnDeleteCharacter.setOnClickListener {
                 showDeleteDialog( context, layoutInflater, item, onUpdate, onDelete )
                 dialog.dismiss()
+            }
+            btnEditType.setOnClickListener {
+
+                showEditTypeDialog( context, layoutInflater, item, onEditType )
+                dialog.dismiss()
+
             }
 
         }
@@ -215,6 +229,39 @@ object DialogUtil {
 
             btnOk.setOnClickListener {
                 onModify.invoke( etEfona.text.toString().toInt(), etGuardian.text.toString().toInt(), etChaos.text.toString().toInt() )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    private fun showEditTypeDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onOk: (CharacterEntity, Int)->(Unit) ) {
+
+        val binding = ActivityCharacterEditTypeDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                val favorite = when (radioGroup.checkedRadioButtonId) {
+
+                    R.id.radio_main -> Const.Favorite.MAIN
+                    R.id.radio_sub -> Const.Favorite.SUB
+                    else -> Const.Favorite.BARRACK
+
+                }
+                onOk.invoke( item, favorite )
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
