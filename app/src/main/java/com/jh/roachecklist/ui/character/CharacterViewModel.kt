@@ -3,6 +3,7 @@ package com.jh.roachecklist.ui.character
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.jh.roachecklist.Const
 import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
@@ -68,7 +69,7 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun addCharacter(nickName: String, level: Int, klass: String ) {
 
-        val character = CharacterEntity(nickName, klass, level)
+        val character = CharacterEntity( nickName, klass, level, Const.Favorite.BARRACK )
 
         viewModelScope.launch(Dispatchers.IO) {
             val isExist = repository.isExist( character )

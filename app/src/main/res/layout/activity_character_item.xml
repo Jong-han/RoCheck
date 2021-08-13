@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -7,53 +8,72 @@
             type="com.jh.roachecklist.db.CharacterEntity" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:background="@drawable/bg_character_item"
-        android:padding="10dp">
+        android:layout_margin="15dp">
 
         <ImageView
-            android:id="@+id/iv_photo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="10dp"
-            android:layout_weight="3"
-            android:src="@drawable/baseline_account_circle_24" />
-        <TextView
-            android:id="@+id/tb_character_name"
+            android:id="@+id/iv_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/primary_text_size"
-            android:textStyle="bold"
-            android:text="@{item.nickName}" />
+            android:src="@{item.favorite == 2 ? @drawable/baseline_star_24 : item.favorite == 1 ? @drawable/baseline_star_outline_24 : null}"
+            android:layout_margin="15dp"
+            android:elevation="1dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
-        <TextView
-            android:id="@+id/tb_class"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/secondary_text_size"
-            android:text="@{`클래스 : ` + item.klass}" />
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_character_item"
+            android:padding="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tb_level"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="start"
-            android:textSize="@dimen/secondary_text_size"
-            android:textColor="@color/primary_color"
-            android:text="@{`아이템 레벨 : ` + Integer.valueOf(item.level).toString()}" />
+            <ImageView
+                android:id="@+id/iv_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_weight="3"
+                android:src="@drawable/baseline_account_circle_24" />
+            <TextView
+                android:id="@+id/tb_character_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/primary_text_size"
+                android:textStyle="bold"
+                android:text="@{item.nickName}" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tb_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/secondary_text_size"
+                android:text="@{`클래스 : ` + item.klass}" />
+
+            <TextView
+                android:id="@+id/tb_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:textSize="@dimen/secondary_text_size"
+                android:textColor="@color/primary_color"
+                android:text="@{`아이템 레벨 : ` + Integer.valueOf(item.level).toString()}" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

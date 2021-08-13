@@ -8,7 +8,7 @@ interface CharacterDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: CharacterEntity)
 
-    @Query("SELECT * FROM Character")
+    @Query("SELECT * FROM Character ORDER BY favorite DESC")
     fun getAll(): LiveData<List<CharacterEntity>>
 
     @Query("DELETE FROM Character")
