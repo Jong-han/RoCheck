@@ -105,6 +105,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmDaily() {
+        Log.i("asdf","++++++++++++++++++START ALARM DAILY+++++++++++++++++++")
 
         CoroutineScope( Dispatchers.IO).launch {
 
@@ -159,6 +160,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
                     Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
 
                 }
+                alarmExpedition()
 
             }
 
@@ -168,6 +170,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmWeekly() {
+        Log.i("asdf","++++++++++++++++++START ALARM WEEKLY+++++++++++++++++++")
 
         CoroutineScope( Dispatchers.IO).launch {
 
@@ -218,6 +221,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                 } else {
 
+                    alarmRaid()
                     Log.i("asdf","weeklyCheckedCount:: $weeklyCheckedCount")
                     Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
 
@@ -231,7 +235,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmRaid() {
-
+        Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
         CoroutineScope( Dispatchers.IO).launch {
 
             val characterList = repository.getAllCharacterList()
@@ -294,6 +298,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmExpedition() {
+        Log.i("asdf","++++++++++++++++++START ALARM EXPEDITION+++++++++++++++++++")
 
         CoroutineScope( Dispatchers.IO).launch {
 
@@ -344,6 +349,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                 } else {
 
+//                    alarmRaid()
+                    alarmWeekly()
                     Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
                     Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
 

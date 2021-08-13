@@ -32,7 +32,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        checkListUtil.resetCheckList()
+//        checkListUtil.resetCheckList()
+        checkListUtil.alarmDaily()
 
     }
 
