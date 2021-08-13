@@ -332,7 +332,7 @@ class AppPreference constructor(private val context: Context ) {
     fun getDailyNotiList(): ArrayList<Int> = arrayListOf( guildNoti, dailyEfonaNoti, favorabilityNoti, islandNoti, fieldBossNoti, dailyGuardianNoti, chaosGateNoti, chaosDungeonNoti )
 
     var guildNoti: Int
-        get() = sharedPreferences.getInt("guildNoti", 0)
+        get() = sharedPreferences.getInt("guildNoti", 1)
         set(value) = sharedPreferences.edit().putInt("guildNoti", value).apply()
     var dailyEfonaNoti: Int
         get() = sharedPreferences.getInt("dailyEfonaNoti", 1)

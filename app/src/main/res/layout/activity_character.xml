@@ -22,17 +22,17 @@
             app:layout_constraintTop_toTopOf="parent"
             android:background="@color/primary_color">
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/character_title"
-                    android:textSize="@dimen/title_text_size"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_color"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/character_title"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/text_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -72,6 +72,7 @@
             android:textSize="@dimen/title_text_size"
             android:gravity="center"
             android:onClick="@{()->viewModel.clickExpedition()}"
+            android:invisibleIf="@{viewModel.rvItems.empty}"
             app:layout_constraintTop_toBottomOf="@id/tb_character"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -83,6 +84,22 @@
             android:layout_height="0dp"
             android:overScrollMode="never"
             app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/title_text_size"
+            android:text="@string/character_no_list"
+            android:visibleIf="@{viewModel.rvItems.empty}"
+            app:layout_constraintVertical_bias="0.45"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
