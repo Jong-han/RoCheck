@@ -4,6 +4,14 @@ object Const {
 
     const val MAX_LEVEL = 10000
 
+    object Favorite {
+
+        const val MAIN = 2
+        const val SUB = 1
+        const val BARRACK = 0
+
+    }
+
     object NotiState {
 
         const val YES = 1
