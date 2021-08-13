@@ -218,7 +218,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
 
             Const.Raid.BALTAN_NORMAL -> {
 
-                if ( pref.bartanNormalNoti == Const.NotiState.YES )
+                if ( pref.bartanNormalNoti >= Const.NotiState.YES )
                     pref.bartanNormalNoti = Const.NotiState.NO
                 else
                     pref.bartanNormalNoti = Const.NotiState.YES
@@ -228,7 +228,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.BALRAN_HARD -> {
 
-                if ( pref.bartanHardNoti == Const.NotiState.YES )
+                if ( pref.bartanHardNoti >= Const.NotiState.YES )
                     pref.bartanHardNoti = Const.NotiState.NO
                 else
                     pref.bartanHardNoti = Const.NotiState.YES
@@ -237,7 +237,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.VIAKISS_NORMAL -> {
 
-                if ( pref.viakissNormalNoti == Const.NotiState.YES )
+                if ( pref.viakissNormalNoti >= Const.NotiState.YES )
                     pref.viakissNormalNoti = Const.NotiState.NO
                 else
                     pref.viakissNormalNoti = Const.NotiState.YES
@@ -246,7 +246,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.VIAKISS_HARD -> {
 
-                if ( pref.viakissHardNoti == Const.NotiState.YES )
+                if ( pref.viakissHardNoti >= Const.NotiState.YES )
                     pref.viakissHardNoti = Const.NotiState.NO
                 else
                     pref.viakissHardNoti = Const.NotiState.YES
@@ -255,7 +255,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.KOUKUSATON_NORMAL -> {
 
-                if ( pref.koutosatonNormalNoti == Const.NotiState.YES )
+                if ( pref.koutosatonNormalNoti >= Const.NotiState.YES )
                     pref.koutosatonNormalNoti = Const.NotiState.NO
                 else
                     pref.koutosatonNormalNoti = Const.NotiState.YES
@@ -264,7 +264,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.ABRELSHOULD_1_2 -> {
 
-                if ( pref.abrelshould12Noti == Const.NotiState.YES )
+                if ( pref.abrelshould12Noti >= Const.NotiState.YES )
                     pref.abrelshould12Noti = Const.NotiState.NO
                 else
                     pref.abrelshould12Noti = Const.NotiState.YES
@@ -273,7 +273,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.ABRELSHOULD_3_4 -> {
 
-                if ( pref.abrelshould34Noti == Const.NotiState.YES )
+                if ( pref.abrelshould34Noti >= Const.NotiState.YES )
                     pref.abrelshould34Noti = Const.NotiState.NO
                 else
                     pref.abrelshould34Noti = Const.NotiState.YES
@@ -282,7 +282,7 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
             }
             Const.Raid.ABRELSHOULD_5_6 -> {
 
-                if ( pref.abrelshould56Noti == Const.NotiState.YES )
+                if ( pref.abrelshould56Noti >= Const.NotiState.YES )
                     pref.abrelshould56Noti = Const.NotiState.NO
                 else
                     pref.abrelshould56Noti = Const.NotiState.YES

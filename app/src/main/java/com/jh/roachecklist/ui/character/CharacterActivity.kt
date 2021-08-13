@@ -17,8 +17,10 @@ import com.jh.roachecklist.ui.base.setSupportActionBar
 import com.jh.roachecklist.ui.checklist.CheckListActivity
 import com.jh.roachecklist.ui.checklist.expedition.ExpeditionActivity
 import com.jh.roachecklist.ui.dialog.DialogUtil
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewModel>() {
@@ -30,6 +32,8 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         const val EXTRA_HIGHEST_LEVEL = "EXTRA_HIGHEST_LEVEL"
 
     }
+
+    @Inject lateinit var checkListUtil: CheckListUtil
 
     override val viewModel: CharacterViewModel by viewModels()
 
@@ -100,6 +104,15 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             }
 
         })
+
+        dataBinding.btnTest.setOnClickListener {
+
+//            checkListUtil.alarmExpedition()
+//            checkListUtil.alarmRaid()
+            checkListUtil.alarmWeekly()
+            checkListUtil.alarmDaily()
+
+        }
 
     }
 

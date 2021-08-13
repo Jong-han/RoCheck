@@ -23,6 +23,12 @@ class Repository( private val db: RoCheckDB ) {
 
     }
 
+    fun getAllCharacterList(): List<CharacterEntity> {
+
+        return db.characterDAO().getAllList()
+
+    }
+
     fun addCharacter( characterEntity: CharacterEntity ) {
 
         db.characterDAO().insert( characterEntity )
@@ -97,15 +103,19 @@ class Repository( private val db: RoCheckDB ) {
 
     fun getDailyCheckList(): List<CheckListEntity> = db.checkListDAO().getAllTypedList(Const.WorkType.DAILY)
     fun getDailyFilteredCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getFilteredList(Const.WorkType.DAILY, level)
+    fun getDailyCantCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getCantList( Const.WorkType.DAILY, level )
 
     fun getWeeklyCheckList(): List<CheckListEntity> = db.checkListDAO().getAllTypedList(Const.WorkType.WEEKLY)
     fun getWeeklyFilteredCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getFilteredList(Const.WorkType.WEEKLY, level)
+    fun getWeeklyCantCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getCantList( Const.WorkType.WEEKLY, level )
 
     fun getExpeditionCheckList(): List<CheckListEntity> = db.checkListDAO().getAllTypedList(Const.WorkType.EXPEDITION)
     fun getExpeditionFilteredCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getFilteredList(Const.WorkType.EXPEDITION, level)
+    fun getExpeditionCantCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getCantList( Const.WorkType.EXPEDITION, level )
 
     fun getRaidCheckList(): List<CheckListEntity> = db.checkListDAO().getAllTypedList(Const.WorkType.RAID)
     fun getRaidFilteredCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getFilteredList(Const.WorkType.RAID, level)
+    fun getRaidCantCheckList( level: Int ): List<CheckListEntity> = db.checkListDAO().getCantList( Const.WorkType.RAID, level )
 
 
 

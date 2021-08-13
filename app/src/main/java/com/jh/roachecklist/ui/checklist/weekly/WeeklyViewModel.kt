@@ -204,7 +204,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.CHALLENGE_GUARDIAN -> {
 
-                if ( pref.challengeGuardianNoti == Const.NotiState.YES )
+                if ( pref.challengeGuardianNoti >= Const.NotiState.YES )
                     pref.challengeGuardianNoti = Const.NotiState.NO
                 else
                     pref.challengeGuardianNoti = Const.NotiState.YES
@@ -215,7 +215,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.WEEKLY_EFONA -> {
 
-                if ( pref.weeklyEfonaNoti == Const.NotiState.YES )
+                if ( pref.weeklyEfonaNoti >= Const.NotiState.YES )
                     pref.weeklyEfonaNoti = Const.NotiState.NO
                 else
                     pref.weeklyEfonaNoti = Const.NotiState.YES
@@ -226,7 +226,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_1 -> {
 
-                if ( pref.argos1Noti == Const.NotiState.YES )
+                if ( pref.argos1Noti >= Const.NotiState.YES )
                     pref.argos1Noti = Const.NotiState.NO
                 else
                     pref.argos1Noti = Const.NotiState.YES
@@ -237,7 +237,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_2 -> {
 
-                if ( pref.argos2Noti == Const.NotiState.YES )
+                if ( pref.argos2Noti >= Const.NotiState.YES )
                     pref.argos2Noti = Const.NotiState.NO
                 else
                     pref.argos2Noti = Const.NotiState.YES
@@ -248,7 +248,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_3 -> {
 
-                if ( pref.argos3Noti == Const.NotiState.YES )
+                if ( pref.argos3Noti >= Const.NotiState.YES )
                     pref.argos3Noti = Const.NotiState.NO
                 else
                     pref.argos3Noti = Const.NotiState.YES
@@ -259,7 +259,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.GHOST_SHIP -> {
 
-                if ( pref.ghostShipNoti == Const.NotiState.YES )
+                if ( pref.ghostShipNoti >= Const.NotiState.YES )
                     pref.ghostShipNoti = Const.NotiState.NO
                 else
                     pref.ghostShipNoti = Const.NotiState.YES
@@ -270,7 +270,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.OREHA_NOMAL -> {
 
-                if ( pref.orehaNormalNoti == Const.NotiState.YES )
+                if ( pref.orehaNormalNoti >= Const.NotiState.YES )
                     pref.orehaNormalNoti = Const.NotiState.NO
                 else
                     pref.orehaNormalNoti = Const.NotiState.YES
@@ -281,7 +281,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.OREHA_HARD -> {
 
-                if ( pref.orehaHardNoti == Const.NotiState.YES )
+                if ( pref.orehaHardNoti >= Const.NotiState.YES )
                     pref.orehaHardNoti = Const.NotiState.NO
                 else
                     pref.orehaHardNoti = Const.NotiState.YES

@@ -20,4 +20,7 @@ interface CheckListDao {
     @Query("SELECT * FROM CheckList WHERE type = :type and :level >= minLevel and :level < maxLevel")
     fun getFilteredList( type: String, level: Int ): List<CheckListEntity>
 
+    @Query("SELECT * FROM CheckList WHERE type = :type and ( :level < minLevel or :level >= maxLevel )")
+    fun getCantList( type: String, level: Int ): List<CheckListEntity>
+
 }

@@ -143,7 +143,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
 
             Expedition.CHALLENGE_ABYSS_DUNGEON -> {
 
-                if ( pref.abyssDungeonNoti == Const.NotiState.YES )
+                if ( pref.abyssDungeonNoti >= Const.NotiState.YES )
                     pref.abyssDungeonNoti = Const.NotiState.NO
                 else
                     pref.abyssDungeonNoti = Const.NotiState.YES
@@ -153,7 +153,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
             }
             Expedition.ABRELSHOULD_DEJAVU -> {
 
-                if ( pref.abrelshouldDevajuNoti == Const.NotiState.YES )
+                if ( pref.abrelshouldDevajuNoti >= Const.NotiState.YES )
                     pref.abrelshouldDevajuNoti = Const.NotiState.NO
                 else
                     pref.abrelshouldDevajuNoti = Const.NotiState.YES
@@ -162,7 +162,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
             }
             Expedition.KOUKUSATON_REHEARSAL -> {
 
-                if ( pref.koukosatonRehearsalNoti == Const.NotiState.YES )
+                if ( pref.koukosatonRehearsalNoti >= Const.NotiState.YES )
                     pref.koukosatonRehearsalNoti = Const.NotiState.NO
                 else
                     pref.koukosatonRehearsalNoti = Const.NotiState.YES

@@ -120,6 +120,11 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
         viewModelScope.launch( Dispatchers.IO ) {
 
             val result =  repository.getDailyCheckList()
+//            Log.i("zxcv","test daily :: ${repository.getDailyCantCheckList( level ).size}")
+//            Log.i("zxcv","test expedition :: ${repository.getExpeditionCantCheckList( level ).size}")
+//            Log.i("zxcv","test raid :: ${repository.getRaidCantCheckList( level ).size}")
+//            Log.i("zxcv","test weekly :: ${repository.getWeeklyCantCheckList( level ).size}")
+
             withContext( Dispatchers.Main ) {
 
                 daily.value = result
@@ -293,7 +298,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
 
             DailyWork.GUILD -> {
 
-                if ( pref.guildNoti == Const.NotiState.YES )
+                if ( pref.guildNoti >= Const.NotiState.YES )
                     pref.guildNoti = Const.NotiState.NO
                 else
                     pref.guildNoti = Const.NotiState.YES
@@ -303,7 +308,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.DAILY_EFONA -> {
 
-                if ( pref.dailyEfonaNoti == Const.NotiState.YES )
+                if ( pref.dailyEfonaNoti >= Const.NotiState.YES )
                     pref.dailyEfonaNoti = Const.NotiState.NO
                 else
                     pref.dailyEfonaNoti = Const.NotiState.YES
@@ -312,7 +317,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.FAVORABILITY -> {
 
-                if ( pref.favorabilityNoti == Const.NotiState.YES )
+                if ( pref.favorabilityNoti >= Const.NotiState.YES )
                     pref.favorabilityNoti = Const.NotiState.NO
                 else
                     pref.favorabilityNoti = Const.NotiState.YES
@@ -321,7 +326,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.ISLAND -> {
 
-                if ( pref.islandNoti == Const.NotiState.YES )
+                if ( pref.islandNoti >= Const.NotiState.YES )
                     pref.islandNoti = Const.NotiState.NO
                 else
                     pref.islandNoti = Const.NotiState.YES
@@ -330,7 +335,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.FIELD_BOSS -> {
 
-                if ( pref.fieldBossNoti == Const.NotiState.YES )
+                if ( pref.fieldBossNoti >= Const.NotiState.YES )
                     pref.fieldBossNoti = Const.NotiState.NO
                 else
                     pref.fieldBossNoti = Const.NotiState.YES
@@ -339,7 +344,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.DAILY_GUARDIAN -> {
 
-                if ( pref.dailyGuardianNoti == Const.NotiState.YES )
+                if ( pref.dailyGuardianNoti >= Const.NotiState.YES )
                     pref.dailyGuardianNoti = Const.NotiState.NO
                 else
                     pref.dailyGuardianNoti = Const.NotiState.YES
@@ -349,7 +354,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.CHAOS_GATE -> {
 
-                if ( pref.chaosGateNoti == Const.NotiState.YES )
+                if ( pref.chaosGateNoti >= Const.NotiState.YES )
                     pref.chaosGateNoti = Const.NotiState.NO
                 else
                     pref.chaosGateNoti = Const.NotiState.YES
@@ -359,7 +364,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.CHAOS_DUNGEON -> {
 
-                if ( pref.chaosDungeonNoti == Const.NotiState.YES )
+                if ( pref.chaosDungeonNoti >= Const.NotiState.YES )
                     pref.chaosDungeonNoti = Const.NotiState.NO
                 else
                     pref.chaosDungeonNoti = Const.NotiState.YES

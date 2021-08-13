@@ -335,7 +335,7 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("guildNoti", 1)
         set(value) = sharedPreferences.edit().putInt("guildNoti", value).apply()
     var dailyEfonaNoti: Int
-        get() = sharedPreferences.getInt("dailyEfonaNoti", 1)
+        get() = sharedPreferences.getInt("dailyEfonaNoti", 1) * 3
         set(value) = sharedPreferences.edit().putInt("dailyEfonaNoti", value).apply()
     var favorabilityNoti: Int
         get() = sharedPreferences.getInt("favorabilityNoti", 1)
@@ -347,22 +347,22 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("fieldBossNoti", 1)
         set(value) = sharedPreferences.edit().putInt("fieldBossNoti", value).apply()
     var dailyGuardianNoti: Int
-        get() = sharedPreferences.getInt("dailyGuardianNoti", 1)
+        get() = sharedPreferences.getInt("dailyGuardianNoti", 1) * 2
         set(value) = sharedPreferences.edit().putInt("dailyGuardianNoti", value).apply()
     var chaosGateNoti: Int
         get() = sharedPreferences.getInt("chaosGateNoti", 1)
         set(value) = sharedPreferences.edit().putInt("chaosGateNoti", value).apply()
     var chaosDungeonNoti: Int
-        get() = sharedPreferences.getInt("chaosDungeonNoti", 1)
+        get() = sharedPreferences.getInt("chaosDungeonNoti", 1) * 2
         set(value) = sharedPreferences.edit().putInt("chaosDungeonNoti", value).apply()
 
     fun getWeeklyNotiList(): ArrayList<Int> = arrayListOf( challengeGuardianNoti, weeklyEfonaNoti, argos1Noti, argos2Noti, argos3Noti, ghostShipNoti, orehaNormalNoti, orehaHardNoti )
 
     var challengeGuardianNoti: Int
-        get() = sharedPreferences.getInt("challengeGuardianNoti", 1)
+        get() = sharedPreferences.getInt("challengeGuardianNoti", 1) * 3
         set(value) = sharedPreferences.edit().putInt("challengeGuardianNoti", value).apply()
     var weeklyEfonaNoti: Int
-        get() = sharedPreferences.getInt("weeklyEfonaNoti", 1)
+        get() = sharedPreferences.getInt("weeklyEfonaNoti", 1) * 3
         set(value) = sharedPreferences.edit().putInt("weeklyEfonaNoti", value).apply()
     var argos1Noti: Int
         get() = sharedPreferences.getInt("argos1Noti", 1)

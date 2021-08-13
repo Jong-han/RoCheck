@@ -28,10 +28,10 @@ class AlarmReceiver : BroadcastReceiver() {
 
     @Inject lateinit var pref: AppPreference
     @Inject lateinit var repository: Repository
+    @Inject lateinit var checkListUtil: CheckListUtil
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        val checkListUtil = CheckListUtil( context, pref, repository )
         checkListUtil.resetCheckList()
 
     }
