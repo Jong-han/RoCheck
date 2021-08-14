@@ -30,7 +30,7 @@ class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        checkListUtil.alarmDaily()
+        checkListUtil.validAlarm()
 
     }
 

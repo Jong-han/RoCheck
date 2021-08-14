@@ -105,265 +105,236 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    fun alarmDaily() {
+    fun validAlarm() {
+
+        CoroutineScope( Dispatchers.IO ).launch {
+
+            if ( alarmDaily() )
+                DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
+
+            if ( alarmExpedition() )
+                DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+            else {
+
+                if ( alarmWeekly() )
+                    DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+                else {
+
+                    if ( alarmRaid() )
+                        DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+
+                }
+
+            }
+
+        }
+
+    }
+
+    private suspend fun alarmDaily(): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM DAILY+++++++++++++++++++")
 
-        CoroutineScope( Dispatchers.IO).launch {
+        val characterList = repository.getAllCharacterList()
 
-            val characterList = repository.getAllCharacterList()
+        var result = false
 
-            Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
+        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
-            for ( character in characterList ) {
+        for ( character in characterList ) {
 
-                pref.getPref( character.nickName )
-                val cantDailyList = repository.getDailyCantCheckList( character.level )
-                val dailyList = pref.getDailyList()
+            pref.getPref( character.nickName )
+            val cantDailyList = repository.getDailyCantCheckList( character.level )
+            val dailyList = pref.getDailyList()
 
-                val notiList = pref.getDailyNotiList()
-                val notiYesList = notiList.filter { it >= 1 }
-                val dailyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantDailyList )
+            val notiList = pref.getDailyNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val dailyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantDailyList )
 
-                Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-                Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
+            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
+            Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
 
-                var dailyCheckedCount = 0
+            var dailyCheckedCount = 0
 
-                for ( index in 0 until notiList.size ) {
+            for ( index in 0 until notiList.size ) {
 
-                    if ( notiList[index] >= 1 ) {
-                        Log.i("asdf","알람 켜놓음 :: $index")
-                        dailyCheckedCount += dailyList[index]
-                        Log.i("asdf","dailyCheckedCount:: $dailyCheckedCount")
+                if ( notiList[index] >= 1 ) {
+                    Log.i("asdf","알람 켜놓음 :: $index")
+                    dailyCheckedCount += dailyList[index]
+                    Log.i("asdf","dailyCheckedCount:: $dailyCheckedCount")
 
-
-                    } else {
-
-                        Log.i("asdf","알람 꺼놓음 :: $index")
-
-                    }
-
-                }
-                if ( dailyCheckedCount < dailyTotalNotiCount ) {
-
-                    withContext( Dispatchers.Main ) {
-
-                        Log.i("asdf","dailyCheckedCount:: $dailyCheckedCount")
-                        Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
-
-                        DefaultNotification.startDailyNotification( context, "일일 숙제 안한게 있어요." )
-
-                    }
 
                 } else {
 
-                    Log.i("asdf","dailyCheckedCount:: $dailyCheckedCount")
-                    Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
+                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
-                val calendar = Calendar.getInstance()
-                Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것")
-                if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
-                    alarmExpedition()
+
+            }
+            if ( dailyCheckedCount < dailyTotalNotiCount ) {
+
+                result = true
+                break
 
             }
 
-
         }
+        val calendar = Calendar.getInstance()
+        Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것")
+        if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+            alarmExpedition()
+
+        return result
 
     }
 
-    private fun alarmWeekly() {
+    private suspend fun alarmWeekly(): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM WEEKLY+++++++++++++++++++")
 
-        CoroutineScope( Dispatchers.IO).launch {
+        var result = false
+        val characterList = repository.getAllCharacterList()
 
-            val characterList = repository.getAllCharacterList()
+        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
-            Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
+        for ( character in characterList ) {
 
-            for ( character in characterList ) {
+            pref.getPref( character.nickName )
+            val cantWeeklyList = repository.getWeeklyCantCheckList( character.level )
+            val weeklyList = pref.getWeeklyList()
 
-                pref.getPref( character.nickName )
-                val cantWeeklyList = repository.getWeeklyCantCheckList( character.level )
-                val weeklyList = pref.getWeeklyList()
+            val notiList = pref.getWeeklyNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val weeklyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantWeeklyList )
 
-                val notiList = pref.getWeeklyNotiList()
-                val notiYesList = notiList.filter { it >= 1 }
-                val weeklyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantWeeklyList )
+            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
+            Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
 
-                Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-                Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
+            var weeklyCheckedCount = 0
 
-                var weeklyCheckedCount = 0
+            for ( index in 0 until notiList.size ) {
 
-                for ( index in 0 until notiList.size ) {
-
-                    if ( notiList[index] >= 1 ) {
-                        Log.i("asdf","알람 켜놓음 :: $index")
-                        weeklyCheckedCount += weeklyList[index]
-                        Log.i("asdf","weeklyCheckedCount:: $weeklyCheckedCount")
-
-
-                    } else {
-
-                        Log.i("asdf","알람 꺼놓음 :: $index")
-
-                    }
-
-                }
-                if ( weeklyCheckedCount < weeklyTotalNotiCount ) {
-
-                    withContext( Dispatchers.Main ) {
-
-                        Log.i("asdf","weeklyCheckedCount:: $weeklyCheckedCount")
-                        Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
-
-                        DefaultNotification.startWeeklyNotification( context, "주간 숙제 안한게 있어요. 주간" )
-
-                    }
-
-                } else {
-
-                    alarmRaid()
+                if ( notiList[index] >= 1 ) {
+                    Log.i("asdf","알람 켜놓음 :: $index")
+                    weeklyCheckedCount += weeklyList[index]
                     Log.i("asdf","weeklyCheckedCount:: $weeklyCheckedCount")
-                    Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
 
-                }
-
-            }
-
-
-        }
-
-    }
-
-    private fun alarmRaid() {
-        Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
-        CoroutineScope( Dispatchers.IO).launch {
-
-            val characterList = repository.getAllCharacterList()
-
-            Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
-
-            for ( character in characterList ) {
-
-                pref.getPref( character.nickName )
-                val cantRaidList = repository.getRaidCantCheckList( character.level )
-                val raidList = pref.getRaidList()
-
-                val notiList = pref.getRaidNotiList()
-                val notiYesList = notiList.filter { it >= 1 }
-                val raidTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantRaidList )
-
-                Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-                Log.i("asdf","raidTotalNotiCount  :: $raidTotalNotiCount")
-
-                var raidCheckedCount = 0
-
-                for ( index in 0 until notiList.size ) {
-
-                    if ( notiList[index] >= 1 ) {
-                        Log.i("asdf","알람 켜놓음 :: $index")
-                        raidCheckedCount += raidList[index]
-                        Log.i("asdf","raidCheckedCount:: $raidCheckedCount")
-
-
-                    } else {
-
-                        Log.i("asdf","알람 꺼놓음 :: $index")
-
-                    }
-
-                }
-                if ( raidCheckedCount < raidTotalNotiCount ) {
-
-                    withContext( Dispatchers.Main ) {
-
-                        Log.i("asdf","raidCheckedCount:: $raidCheckedCount")
-                        Log.i("asdf","raidTotalNotiCount  :: $raidTotalNotiCount")
-
-                        DefaultNotification.startWeeklyNotification( context, "주간 숙제 안한게 있어요. 레이드" )
-
-                    }
 
                 } else {
 
-                    Log.i("asdf","raidCheckedCount:: $raidCheckedCount")
-                    Log.i("asdf","raidTotalNotiCount  :: $raidTotalNotiCount")
+                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 
             }
+            if ( weeklyCheckedCount < weeklyTotalNotiCount ) {
 
+                result = true
+                break
+
+            }
 
         }
+        return result
 
     }
 
-    private fun alarmExpedition() {
+    private suspend fun alarmRaid(): Boolean {
+        Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
+
+        var result = false
+        val characterList = repository.getAllCharacterList()
+
+        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
+
+        for ( character in characterList ) {
+
+            pref.getPref( character.nickName )
+            val cantRaidList = repository.getRaidCantCheckList( character.level )
+            val raidList = pref.getRaidList()
+
+            val notiList = pref.getRaidNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val raidTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantRaidList )
+
+            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
+            Log.i("asdf","raidTotalNotiCount  :: $raidTotalNotiCount")
+
+            var raidCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+                    Log.i("asdf","알람 켜놓음 :: $index")
+                    raidCheckedCount += raidList[index]
+                    Log.i("asdf","raidCheckedCount:: $raidCheckedCount")
+
+
+                } else {
+
+                    Log.i("asdf","알람 꺼놓음 :: $index")
+
+                }
+
+            }
+            if ( raidCheckedCount < raidTotalNotiCount ) {
+
+                result = true
+                break
+
+            }
+
+        }
+        return result
+
+    }
+
+    private suspend fun alarmExpedition(): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM EXPEDITION+++++++++++++++++++")
 
-        CoroutineScope( Dispatchers.IO).launch {
+        var result = false
+        val characterList = repository.getAllCharacterList()
 
-            val characterList = repository.getAllCharacterList()
+        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
-            Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
+        for ( character in characterList ) {
 
-            for ( character in characterList ) {
+            pref.getPref()
+            val cantExpeditionList = repository.getExpeditionCantCheckList( character.level )
+            val expeditionList = pref.getExpeditionList()
 
-                pref.getPref()
-                val cantExpeditionList = repository.getExpeditionCantCheckList( character.level )
-                val expeditionList = pref.getExpeditionList()
+            val notiList = pref.getExpeditionNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
 
-                val notiList = pref.getExpeditionNotiList()
-                val notiYesList = notiList.filter { it >= 1 }
-                val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
+            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
+            Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
 
-                Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-                Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
+            var expeditionCheckedCount = 0
 
-                var expeditionCheckedCount = 0
+            for ( index in 0 until notiList.size ) {
 
-                for ( index in 0 until notiList.size ) {
+                if ( notiList[index] >= 1 ) {
+                    Log.i("asdf","알람 켜놓음 :: $index")
+                    expeditionCheckedCount += expeditionList[index]
+                    Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
 
-                    if ( notiList[index] >= 1 ) {
-                        Log.i("asdf","알람 켜놓음 :: $index")
-                        expeditionCheckedCount += expeditionList[index]
-                        Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
-
-
-                    } else {
-
-                        Log.i("asdf","알람 꺼놓음 :: $index")
-
-                    }
-
-                }
-                if ( expeditionCheckedCount < expeditionTotalNotiCount ) {
-
-                    withContext( Dispatchers.Main ) {
-
-                        Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
-                        Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
-
-                        DefaultNotification.startWeeklyNotification( context, "주간 숙제 안한게 있어요. 원정대" )
-
-                    }
 
                 } else {
 
-//                    alarmRaid()
-                    alarmWeekly()
-                    Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
-                    Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
+                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 
             }
+            if ( expeditionCheckedCount < expeditionTotalNotiCount ) {
 
+                result = true
+                break
+
+            }
 
         }
+
+        return result
 
     }
 
