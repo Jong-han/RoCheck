@@ -9,15 +9,16 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jh.roachecklist.BR
+import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCharacterBinding
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.ui.base.BaseActivity
 import com.jh.roachecklist.ui.base.setSupportActionBar
 import com.jh.roachecklist.ui.checklist.CheckListActivity
 import com.jh.roachecklist.ui.checklist.expedition.ExpeditionActivity
 import com.jh.roachecklist.ui.dialog.DialogUtil
-import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -33,7 +34,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     }
 
-    @Inject lateinit var checkListUtil: CheckListUtil
+    @Inject lateinit var pref: AppPreference
 
     override val viewModel: CharacterViewModel by viewModels()
 
@@ -70,7 +71,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         viewModel.clickSetting.observe( this, {
 
-            DialogUtil.showSettingDialog( this, layoutInflater, settingAlarm, DefaultNotification.NOTIFICATION_CODE_DEFAULT )
+            DialogUtil.showSettingDialog( this, layoutInflater, pref, settingAlarm, DefaultNotification.NOTIFICATION_CODE_DEFAULT )
 
         })
 
@@ -145,8 +146,11 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     private val settingAlarm = { hour: Int, minute: Int, triggerTime: Long, alarmManager: AlarmManager, pendingIntent: PendingIntent ->
 
         alarmManager.cancel( pendingIntent )
-        Log.i("zxcv","세팅알람")
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY, pendingIntent)
+        val realTriggerTime = if ( triggerTime > System.currentTimeMillis() )
+            triggerTime
+        else
+            triggerTime + Const.INTERVAL
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, realTriggerTime, AlarmManager.INTERVAL_DAY, pendingIntent)
         viewModel.saveTime( hour, minute )
 
     }

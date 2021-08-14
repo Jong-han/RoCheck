@@ -1,5 +1,6 @@
 package com.jh.roachecklist.ui.dialog
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
@@ -14,6 +15,7 @@ import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.service.AlarmReceiver
 import com.jh.roachecklist.utils.DefaultNotification
 import java.util.*
@@ -146,7 +148,8 @@ object DialogUtil {
 
     }
 
-    fun showSettingDialog( context: Context, layoutInflater: LayoutInflater, onOk: ( Int, Int, Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
+    @SuppressLint("SetTextI18n")
+    fun showSettingDialog(context: Context, layoutInflater: LayoutInflater, pref: AppPreference, onOk: (Int, Int, Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
 
         val binding = ActivityCharacterSettingAlarmBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -165,11 +168,12 @@ object DialogUtil {
             context, requestCode, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
+        pref.getPref()
+
         binding.run {
 
+            tvLastTime.text = "최근 설정된 시간 : ${pref.hour} : ${pref.minute}"
             btnOk.setOnClickListener {
-
-//                DefaultNotification.startNotification( context, "로첵", "타입" )
 
                 val hour = timePicker.hour
                 val minute = timePicker.minute

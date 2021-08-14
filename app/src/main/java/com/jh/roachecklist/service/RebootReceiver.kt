@@ -49,12 +49,17 @@ class RebootReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val alarmCalendar = Calendar.getInstance()
-            alarmCalendar.set(Calendar.HOUR_OF_DAY, pref.hour )
-            alarmCalendar.set(Calendar.MINUTE, pref.minute )
+            alarmCalendar.set(Calendar.HOUR_OF_DAY, 12 )
+            alarmCalendar.set(Calendar.MINUTE, 38 )
             alarmCalendar.set(Calendar.SECOND, 0)
             alarmCalendar.set(Calendar.MILLISECOND, 0)
 
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCalendar.timeInMillis, AlarmManager.INTERVAL_HOUR, alarmPendingIntent)
+            val alarmTriggerTime = if ( alarmCalendar.timeInMillis > System.currentTimeMillis() )
+                alarmCalendar.timeInMillis
+            else
+                alarmCalendar.timeInMillis + Const.INTERVAL
+
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmPendingIntent)
 
             val refreshIntent = Intent( context, RefreshReceiver::class.java )
             val refreshPendingIntent = PendingIntent.getBroadcast(
@@ -62,12 +67,17 @@ class RebootReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val refreshCalendar = Calendar.getInstance()
-            refreshCalendar.set(Calendar.HOUR_OF_DAY, 10)
-            refreshCalendar.set(Calendar.MINUTE, 0)
+            refreshCalendar.set(Calendar.HOUR_OF_DAY, 12)
+            refreshCalendar.set(Calendar.MINUTE, 38)
             refreshCalendar.set(Calendar.SECOND, 0)
             refreshCalendar.set(Calendar.MILLISECOND, 0)
 
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, refreshCalendar.timeInMillis, AlarmManager.INTERVAL_HOUR, refreshPendingIntent)
+            val refreshTriggerTime = if ( refreshCalendar.timeInMillis > System.currentTimeMillis() )
+                refreshCalendar.timeInMillis
+            else
+                refreshCalendar.timeInMillis + Const.INTERVAL
+
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, refreshTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, refreshPendingIntent)
 
 
         }

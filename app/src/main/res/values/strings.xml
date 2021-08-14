@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RoaCheckList</string>
+    <string name="app_name">RoCheck</string>
 
     <string name="character_title">캐릭터 선택</string>
     <string name="character_no_list">+ 버튼을 눌러\n캐릭터를 추가해주세요.</string>
@@ -14,7 +14,7 @@
     <string name="character_add_barrack">배럭</string>
     <string name="character_add_title">캐릭터 추가</string>
     <string name="character_setting">설정</string>
-    <string name="character_setting_title">알람 시간 설정</string>
+    <string name="character_setting_title">알람 시간 변경</string>
 
     <string name="character_dialog_change_level">아이템 레벨 변경</string>
     <string name="character_dialog_delete">캐릭터 삭제</string>
