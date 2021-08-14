@@ -1,5 +1,7 @@
 package com.jh.roachecklist.ui.checklist
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -28,6 +30,7 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
         const val EXTRA_BUNDLE_NICKNAME = "EXTRA_BUNDLE_NICKNAME"
         const val EXTRA_BUNDLE_LEVEL = "EXTRA_BUNDLE_LEVEL"
+        const val RESULT_POSITION = "RESULT_POSITION"
 
     }
 
@@ -113,6 +116,15 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
         bundle.putString( EXTRA_BUNDLE_NICKNAME, nickName)
 
         return bundle
+
+    }
+
+    override fun finish() {
+
+        val resultIntent = Intent()
+        resultIntent.putExtra( RESULT_POSITION, intent.getIntExtra( CharacterActivity.EXTRA_POSITION, 0 ) )
+        setResult( Activity.RESULT_OK, resultIntent )
+        super.finish()
 
     }
 

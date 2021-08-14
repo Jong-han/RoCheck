@@ -14,4 +14,7 @@ data class CharacterEntity(
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    @Ignore var dailySuccess = false
+    @Ignore var weeklySuccess = false
 }

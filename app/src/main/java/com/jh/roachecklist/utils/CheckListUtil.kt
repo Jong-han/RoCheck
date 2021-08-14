@@ -3,6 +3,7 @@ package com.jh.roachecklist.utils
 import android.content.Context
 import android.util.Log
 import com.jh.roachecklist.Const
+import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.db.CheckListEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
@@ -97,7 +98,6 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
                     }
 
                 }
-//                DefaultNotification.( context, "로첵", "타입" )
 
             }
 
@@ -109,19 +109,27 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
         CoroutineScope( Dispatchers.IO ).launch {
 
-            if ( alarmDaily() )
+            val characterList = repository.getAllCharacterList()
+
+            if ( alarmDaily( characterList) )
                 DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
 
-            if ( alarmExpedition() )
-                DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
-            else {
+            val calendar = Calendar.getInstance()
 
-                if ( alarmWeekly() )
+            if ( calendar.get( Calendar.DAY_OF_WEEK ) == Calendar.TUESDAY ) {
+
+                if ( alarmExpedition( characterList ) )
                     DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
                 else {
 
-                    if ( alarmRaid() )
+                    if ( alarmWeekly( characterList ) )
                         DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+                    else {
+
+                        if ( alarmRaid( characterList ) )
+                            DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+
+                    }
 
                 }
 
@@ -131,10 +139,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    private suspend fun alarmDaily(): Boolean {
+    fun alarmDaily( characterList: List<CharacterEntity> ): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM DAILY+++++++++++++++++++")
-
-        val characterList = repository.getAllCharacterList()
 
         var result = false
 
@@ -171,27 +177,26 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             }
             if ( dailyCheckedCount < dailyTotalNotiCount ) {
-
+                Log.i("asdf","${character.nickName} return :: true")
                 result = true
                 break
+
+            } else {
+
+                Log.i("asdf","${character.nickName} return :: false")
 
             }
 
         }
-        val calendar = Calendar.getInstance()
-        Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것")
-        if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
-            alarmExpedition()
 
         return result
 
     }
 
-    private suspend fun alarmWeekly(): Boolean {
+    fun alarmWeekly( characterList: List<CharacterEntity> ): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM WEEKLY+++++++++++++++++++")
 
         var result = false
-        val characterList = repository.getAllCharacterList()
 
         Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
@@ -226,9 +231,13 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             }
             if ( weeklyCheckedCount < weeklyTotalNotiCount ) {
-
+                Log.i("asdf","${character.nickName} return :: true")
                 result = true
                 break
+
+            } else {
+
+                Log.i("asdf","${character.nickName} return :: false")
 
             }
 
@@ -237,11 +246,10 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    private suspend fun alarmRaid(): Boolean {
+    fun alarmRaid( characterList: List<CharacterEntity> ): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
 
         var result = false
-        val characterList = repository.getAllCharacterList()
 
         Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
@@ -276,22 +284,24 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             }
             if ( raidCheckedCount < raidTotalNotiCount ) {
-
+                Log.i("asdf","${character.nickName} return :: true")
                 result = true
                 break
 
-            }
+            } else {
 
+                Log.i("asdf","${character.nickName} return :: false")
+
+            }
         }
         return result
 
     }
 
-    private suspend fun alarmExpedition(): Boolean {
+    fun alarmExpedition( characterList: List<CharacterEntity> ): Boolean {
         Log.i("asdf","++++++++++++++++++START ALARM EXPEDITION+++++++++++++++++++")
 
         var result = false
-        val characterList = repository.getAllCharacterList()
 
         Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 

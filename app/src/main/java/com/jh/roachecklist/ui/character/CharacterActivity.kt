@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +20,7 @@ import com.jh.roachecklist.ui.base.setSupportActionBar
 import com.jh.roachecklist.ui.checklist.CheckListActivity
 import com.jh.roachecklist.ui.checklist.expedition.ExpeditionActivity
 import com.jh.roachecklist.ui.dialog.DialogUtil
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,11 +32,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         const val EXTRA_LEVEL = "EXTRA_LEVEL"
         const val EXTRA_NICK_NAME = "EXTRA_NICK_NAME"
-        const val EXTRA_HIGHEST_LEVEL = "EXTRA_HIGHEST_LEVEL"
+        const val EXTRA_POSITION = "EXTRA_POSITION"
 
     }
 
     @Inject lateinit var pref: AppPreference
+    @Inject lateinit var checkListUtil: CheckListUtil
 
     override val viewModel: CharacterViewModel by viewModels()
 
@@ -106,6 +109,16 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     }
 
+    private val resultForCharacter = registerForActivityResult( ActivityResultContracts.StartActivityForResult() ) {
+
+        Log.i("asdf","돌아옴!!!!!!!!!!")
+        val pos = it.data?.getIntExtra( CheckListActivity.RESULT_POSITION, 999) ?: 9999
+        Log.i("asdf","position :: $pos")
+        viewModel.updateSuccessState( pos )
+        characterAdapter.notifyItemChanged( pos )
+
+    }
+
     private val startCheckList: Function1<Int, Unit> = { pos: Int ->
 
         val item = characterAdapter.currentList[pos]
@@ -113,11 +126,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
             putExtra( EXTRA_LEVEL, item.level )
             putExtra( EXTRA_NICK_NAME, item.nickName )
+            putExtra( EXTRA_POSITION, pos )
 
             val optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
 
-            startActivity( this, optionsCompat.toBundle() )
+            resultForCharacter.launch( this, optionsCompat )
 
         }
 
@@ -161,5 +175,10 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         characterAdapter.notifyItemChanged( characterAdapter.currentList.indexOf( characterEntity ) )
 
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        characterAdapter.notifyDataSetChanged()
+//    }
 
 }

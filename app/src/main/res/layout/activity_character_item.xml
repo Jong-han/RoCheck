@@ -23,6 +23,28 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
+        <TextView
+            android:id="@+id/tv_daily_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일"
+            android:layout_marginHorizontal="5dp"
+            android:elevation="1dp"
+            android:invisibleIf="@{item.dailySuccess}"
+            app:layout_constraintTop_toTopOf="@id/iv_star"
+            app:layout_constraintEnd_toStartOf="@id/tv_weekly_indicator"/>
+
+        <TextView
+            android:id="@+id/tv_weekly_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="주"
+            android:elevation="1dp"
+            android:invisibleIf="@{item.weeklySuccess}"
+            app:layout_constraintTop_toTopOf="@id/iv_star"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <LinearLayout
             android:id="@+id/container"
             android:layout_width="match_parent"

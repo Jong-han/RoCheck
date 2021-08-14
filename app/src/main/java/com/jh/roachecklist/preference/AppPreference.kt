@@ -2,6 +2,7 @@ package com.jh.roachecklist.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.jh.roachecklist.Const
 import java.io.File
 
@@ -12,7 +13,7 @@ class AppPreference constructor(private val context: Context ) {
     private lateinit var sharedPreferences: SharedPreferences
 
     fun getPref( nickName: String = "expedition" ) {
-
+        Log.i("asdf","now pref :: $nickName")
         sharedPreferences = context.getSharedPreferences( nickName, 0 )
 
     }

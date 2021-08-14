@@ -8,16 +8,18 @@ import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.ListLiveData
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference ): BaseViewModel() {
+class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference, private val checkListUtil: CheckListUtil ): BaseViewModel() {
 
     enum class CharacterEvent { EXIST }
 
@@ -107,7 +109,24 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun setRvItems(items: List<CharacterEntity>) {
 
-        rvItems.value = items
+        rvItems.value = items.map {
+
+            it.apply {
+
+                runBlocking {
+
+                    launch(Dispatchers.IO) {
+
+                        dailySuccess = !checkListUtil.alarmDaily( listOf( it ) )
+                        weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( it ) ) || checkListUtil.alarmRaid( listOf( it ) ) )
+
+                    }
+
+                }
+
+            }
+
+        }
 
     }
 
@@ -131,6 +150,45 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         pref.getPref()
         pref.hour = hour
         pref.minute = minute
+
+    }
+
+    fun updateSuccessState( pos: Int ) {
+
+//        rvItems.value = rvItems.value?.map {
+//
+//            it.apply {
+//
+//                runBlocking {
+//
+//                    launch(Dispatchers.IO) {
+//
+//                        dailySuccess = !checkListUtil.alarmDaily( listOf( it ) )
+//                        weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( it ) ) || checkListUtil.alarmRaid( listOf( it ) ) )
+//
+//                    }
+//
+//                }
+//
+//            }
+//
+//        }
+
+        rvItems.value!![pos].run {
+
+            runBlocking {
+
+                launch(Dispatchers.IO) {
+
+                    dailySuccess = !checkListUtil.alarmDaily( listOf( this@run ) )
+                    weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( this@run ) ) || checkListUtil.alarmRaid( listOf( this@run ) ) )
+
+                }
+
+            }
+
+        }
+        rvItems.value = rvItems.value
 
     }
 
