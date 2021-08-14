@@ -146,7 +146,7 @@ object DialogUtil {
 
     }
 
-    fun showSettingDialog( context: Context, layoutInflater: LayoutInflater, onOk: ( Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
+    fun showSettingDialog( context: Context, layoutInflater: LayoutInflater, onOk: ( Int, Int, Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
 
         val binding = ActivityCharacterSettingAlarmBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -180,9 +180,7 @@ object DialogUtil {
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
 
-//                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
-
-                onOk.invoke( calendar.timeInMillis, alarmManager, pendingIntent )
+                onOk.invoke( hour, minute, calendar.timeInMillis, alarmManager, pendingIntent )
                 dialog.dismiss()
 
             }

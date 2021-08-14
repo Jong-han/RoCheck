@@ -88,7 +88,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                     }
                     pref.resetDaily()
-                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY ) {
+                    Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것 ${calendar.get(Calendar.DAY_OF_WEEK)}  ${Calendar.SATURDAY}")
+                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ) {
 
                         pref.resetWeekly()
                         pref.resetExpedition()
@@ -160,7 +161,10 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
                     Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
 
                 }
-                alarmExpedition()
+                val calendar = Calendar.getInstance()
+                Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것")
+                if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY)
+                    alarmExpedition()
 
             }
 
@@ -169,7 +173,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    fun alarmWeekly() {
+    private fun alarmWeekly() {
         Log.i("asdf","++++++++++++++++++START ALARM WEEKLY+++++++++++++++++++")
 
         CoroutineScope( Dispatchers.IO).launch {
@@ -234,7 +238,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    fun alarmRaid() {
+    private fun alarmRaid() {
         Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
         CoroutineScope( Dispatchers.IO).launch {
 
@@ -297,7 +301,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    fun alarmExpedition() {
+    private fun alarmExpedition() {
         Log.i("asdf","++++++++++++++++++START ALARM EXPEDITION+++++++++++++++++++")
 
         CoroutineScope( Dispatchers.IO).launch {

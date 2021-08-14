@@ -95,8 +95,6 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
             Intent( this, ExpeditionActivity::class.java ).apply {
 
-                putExtra( EXTRA_HIGHEST_LEVEL, viewModel.getHighestLevel())
-                Log.i("zxcv","level :: ${viewModel.getHighestLevel()}")
                 val optionsCompat =
                     ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
                 startActivity( this, optionsCompat.toBundle() )
@@ -104,15 +102,6 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             }
 
         })
-
-        dataBinding.btnTest.setOnClickListener {
-
-//            checkListUtil.alarmRaid()
-//            checkListUtil.alarmWeekly()
-            checkListUtil.alarmDaily()
-//            checkListUtil.alarmExpedition()
-
-        }
 
     }
 
@@ -153,11 +142,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     }
 
-    private val settingAlarm = { triggerTime: Long, alarmManager: AlarmManager, pendingIntent: PendingIntent ->
+    private val settingAlarm = { hour: Int, minute: Int, triggerTime: Long, alarmManager: AlarmManager, pendingIntent: PendingIntent ->
 
         alarmManager.cancel( pendingIntent )
         Log.i("zxcv","세팅알람")
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, AlarmManager.INTERVAL_DAY, pendingIntent)
+        viewModel.saveTime( hour, minute )
 
     }
 

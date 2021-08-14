@@ -24,13 +24,13 @@ import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AlarmReceiver : BroadcastReceiver() {
+class RefreshReceiver : BroadcastReceiver() {
 
     @Inject lateinit var checkListUtil: CheckListUtil
 
     override fun onReceive(context: Context, intent: Intent) {
 
-        checkListUtil.alarmDaily()
+        checkListUtil.resetCheckList()
 
     }
 

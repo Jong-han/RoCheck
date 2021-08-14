@@ -13,6 +13,19 @@
         android:background="@drawable/bg_cm_dialog"
         android:padding="@dimen/default_layout_padding">
 
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/character_setting_title"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/title_text_size"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TimePicker
             android:id="@+id/time_picker"
             android:layout_width="wrap_content"
@@ -20,7 +33,7 @@
             android:timePickerMode="spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_msg" />
 
         <Button
             android:id="@+id/btn_ok"

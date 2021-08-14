@@ -14,6 +14,7 @@
     <string name="character_add_barrack">배럭</string>
     <string name="character_add_title">캐릭터 추가</string>
     <string name="character_setting">설정</string>
+    <string name="character_setting_title">알람 시간 설정</string>
 
     <string name="character_dialog_change_level">아이템 레벨 변경</string>
     <string name="character_dialog_delete">캐릭터 삭제</string>

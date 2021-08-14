@@ -27,24 +27,11 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     val event = MutableLiveData<CharacterEvent>()
 
-    var level = 0
-
-    init {
-
-        viewModelScope.launch( Dispatchers.IO) {
-
-            setHighestLevel()
-
-        }
-
-    }
-
     val clickExpedition = SingleLiveEvent<Any>()
     fun clickExpedition() {
 
         viewModelScope.launch( Dispatchers.IO) {
 
-            setHighestLevel()
             withContext( Dispatchers.Main ) {
 
                 clickExpedition.call()
@@ -124,18 +111,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     }
 
-    private fun setHighestLevel() {
-
-        viewModelScope.launch ( Dispatchers.IO ) {
-
-            level = repository.getHighestLevel() ?: 0
-
-        }
-
-    }
-
-    fun getHighestLevel() = level
-
     fun editFavoriteType( characterEntity: CharacterEntity, favorite: Int ) {
 
         viewModelScope.launch {
@@ -148,6 +123,14 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             }
 
         }
+
+    }
+
+    fun saveTime( hour: Int, minute: Int ) {
+
+        pref.getPref()
+        pref.hour = hour
+        pref.minute = minute
 
     }
 

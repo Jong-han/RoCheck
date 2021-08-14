@@ -1,47 +1,51 @@
-package com.jh.roachecklist
+package com.jh.roachecklist.service
 
 import android.app.AlarmManager
-import android.app.Application
 import android.app.PendingIntent
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
+import com.jh.roachecklist.Const
+import com.jh.roachecklist.Const.Rest.CHAOS_DUNGEON_COUNT
+import com.jh.roachecklist.Const.Rest.CHARGE_REST_BONUS
+import com.jh.roachecklist.Const.Rest.CONSUME_REST_BONUS
+import com.jh.roachecklist.Const.Rest.DAILY_EFONA_COUNT
+import com.jh.roachecklist.Const.Rest.DAILY_GUARDIAN_COUNT
+import com.jh.roachecklist.Const.Rest.MAX_REST_BONUS
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
-import com.jh.roachecklist.service.AlarmReceiver
-import com.jh.roachecklist.service.RefreshReceiver
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
-import dagger.hilt.android.HiltAndroidApp
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
-@HiltAndroidApp
-class App: Application() {
+@AndroidEntryPoint
+class RebootReceiver : BroadcastReceiver() {
 
-    @Inject
-    lateinit var pref: AppPreference
-    @Inject
-    lateinit var repository: Repository
+    @Inject lateinit var pref: AppPreference
 
-    override fun onCreate() {
+    override fun onReceive(context: Context, intent: Intent) {
 
-        super.onCreate()
-        pref.getPref()
-        if ( pref.isFirst ) {
+        if (intent.action.equals("android.intent.action.BOOT_COMPLETED")) {
 
-            CoroutineScope( Dispatchers.IO).launch {
+            pref.getPref()
 
-                repository.insertCheckList()
-                pref.isFirst = false
+            Log.i("asdf","기기가 부팅됨")
 
-            }
-            val alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            Toast.makeText(context, "hour: ${pref.hour} minute: ${pref.minute}", Toast.LENGTH_LONG).show();
 
-            val alarmIntent = Intent( applicationContext, AlarmReceiver::class.java )
+            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+            val alarmIntent = Intent( context, AlarmReceiver::class.java )
             val alarmPendingIntent = PendingIntent.getBroadcast(
-                applicationContext, DefaultNotification.NOTIFICATION_CODE_DEFAULT, alarmIntent,
+                context, DefaultNotification.NOTIFICATION_CODE_DEFAULT, alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val alarmCalendar = Calendar.getInstance()
@@ -52,9 +56,9 @@ class App: Application() {
 
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmCalendar.timeInMillis, AlarmManager.INTERVAL_HOUR, alarmPendingIntent)
 
-            val refreshIntent = Intent( applicationContext, RefreshReceiver::class.java )
+            val refreshIntent = Intent( context, RefreshReceiver::class.java )
             val refreshPendingIntent = PendingIntent.getBroadcast(
-                applicationContext, DefaultNotification.NOTIFICATION_CODE_DEFAULT, refreshIntent,
+                context, DefaultNotification.NOTIFICATION_CODE_DEFAULT, refreshIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val refreshCalendar = Calendar.getInstance()

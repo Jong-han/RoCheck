@@ -22,7 +22,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
                                                private val pref: AppPreference,
                                                savedState: SavedStateHandle): BaseViewModel() {
 
-    val level = savedState.get<Int>(CharacterActivity.EXTRA_HIGHEST_LEVEL) ?: 0
+    private var level = 0
 
     var expedition = MutableLiveData<List<CheckListEntity>>()
 
@@ -56,6 +56,8 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
         pref.getPref()
 
         viewModelScope.launch( Dispatchers.IO ) {
+
+            level = repository.getHighestLevel() ?: 0
 
             val result =  repository.getExpeditionCheckList()
             withContext( Dispatchers.Main ) {

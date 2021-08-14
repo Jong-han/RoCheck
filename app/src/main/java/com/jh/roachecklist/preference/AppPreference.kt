@@ -34,6 +34,13 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getBoolean("isFirst", true)
         set(value) = sharedPreferences.edit().putBoolean("isFirst", value).apply()
 
+    var hour: Int
+        get() = sharedPreferences.getInt("hour", 18)
+        set(value) = sharedPreferences.edit().putInt("hour", value).apply()
+
+    var minute: Int
+        get() = sharedPreferences.getInt("minute", 0)
+        set(value) = sharedPreferences.edit().putInt("minute", value).apply()
     /**
      * 일일 숙제 리스트
      */
