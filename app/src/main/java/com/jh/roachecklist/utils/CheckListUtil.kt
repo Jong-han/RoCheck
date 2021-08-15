@@ -84,8 +84,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                     }
                     pref.resetDaily()
-                    Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것 ${calendar.get(Calendar.DAY_OF_WEEK)}  ${Calendar.SATURDAY}")
-                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ) {
+                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY ) {
 
                         pref.resetWeekly()
                         pref.resetExpedition()
