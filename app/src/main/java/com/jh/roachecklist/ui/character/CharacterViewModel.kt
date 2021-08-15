@@ -3,21 +3,21 @@ package com.jh.roachecklist.ui.character
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jh.roachecklist.Const
 import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
-import com.jh.roachecklist.utils.ListLiveData
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference ): BaseViewModel() {
+class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference, private val checkListUtil: CheckListUtil ): BaseViewModel() {
 
     enum class CharacterEvent { EXIST }
 
@@ -27,24 +27,11 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     val event = MutableLiveData<CharacterEvent>()
 
-    var level = 0
-
-    init {
-
-        viewModelScope.launch( Dispatchers.IO) {
-
-            setHighestLevel()
-
-        }
-
-    }
-
     val clickExpedition = SingleLiveEvent<Any>()
     fun clickExpedition() {
 
         viewModelScope.launch( Dispatchers.IO) {
 
-            setHighestLevel()
             withContext( Dispatchers.Main ) {
 
                 clickExpedition.call()
@@ -52,6 +39,13 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             }
 
         }
+
+    }
+
+    val clickReset = SingleLiveEvent<Any>()
+    fun clickReset() {
+
+        clickReset.call()
 
     }
 
@@ -74,7 +68,7 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch(Dispatchers.IO) {
             val isExist = repository.isExist( character )
             if ( isExist ) {
-                Log.i("zxcvzxcv","캐릭터가 존재합니다.")
+
                 withContext( Dispatchers.Main ) {
 
                     event.value = CharacterEvent.EXIST
@@ -83,7 +77,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
             } else {
 
-                Log.i("zxcvzxcv", " 캐릭터생성")
                 repository.addCharacter(character)
 
             }
@@ -120,21 +113,26 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun setRvItems(items: List<CharacterEntity>) {
 
-        rvItems.value = items
+        rvItems.value = items.map {
 
-    }
+            it.apply {
 
-    private fun setHighestLevel() {
+                runBlocking {
 
-        viewModelScope.launch ( Dispatchers.IO ) {
+                    launch(Dispatchers.IO) {
 
-            level = repository.getHighestLevel() ?: 0
+                        dailySuccess = !checkListUtil.alarmDaily( listOf( it ) )
+                        weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( it ) ) || checkListUtil.alarmRaid( listOf( it ) ) )
+
+                    }
+
+                }
+
+            }
 
         }
 
     }
-
-    fun getHighestLevel() = level
 
     fun editFavoriteType( characterEntity: CharacterEntity, favorite: Int ) {
 
@@ -148,6 +146,34 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             }
 
         }
+
+    }
+
+    fun saveTime( hour: Int, minute: Int ) {
+
+        pref.getPref()
+        pref.hour = hour
+        pref.minute = minute
+
+    }
+
+    fun updateSuccessState( pos: Int ) {
+
+        rvItems.value!![pos].run {
+
+            runBlocking {
+
+                launch(Dispatchers.IO) {
+
+                    dailySuccess = !checkListUtil.alarmDaily( listOf( this@run ) )
+                    weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( this@run ) ) || checkListUtil.alarmRaid( listOf( this@run ) ) )
+
+                }
+
+            }
+
+        }
+        rvItems.value = rvItems.value
 
     }
 

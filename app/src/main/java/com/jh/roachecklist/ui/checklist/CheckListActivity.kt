@@ -1,16 +1,16 @@
 package com.jh.roachecklist.ui.checklist
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListBinding
 import com.jh.roachecklist.ui.base.BaseActivity
-import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.ui.character.CharacterActivity
 import com.jh.roachecklist.ui.checklist.daily.DailyFragment
 import com.jh.roachecklist.ui.checklist.raid.RaidFragment
@@ -28,6 +28,7 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
         const val EXTRA_BUNDLE_NICKNAME = "EXTRA_BUNDLE_NICKNAME"
         const val EXTRA_BUNDLE_LEVEL = "EXTRA_BUNDLE_LEVEL"
+        const val RESULT_POSITION = "RESULT_POSITION"
 
     }
 
@@ -46,6 +47,9 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
     private val fragmentList = arrayListOf( dailyFragment, weeklyFragment, raidFragment )
 
     override fun initViewAndEvent() {
+
+        val adRequest = AdRequest.Builder().build()
+        dataBinding.adView.loadAd( adRequest )
 
         val bundle = setBundle()
 
@@ -113,6 +117,15 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
         bundle.putString( EXTRA_BUNDLE_NICKNAME, nickName)
 
         return bundle
+
+    }
+
+    override fun finish() {
+
+        val resultIntent = Intent()
+        resultIntent.putExtra( RESULT_POSITION, intent.getIntExtra( CharacterActivity.EXTRA_POSITION, 0 ) )
+        setResult( Activity.RESULT_OK, resultIntent )
+        super.finish()
 
     }
 

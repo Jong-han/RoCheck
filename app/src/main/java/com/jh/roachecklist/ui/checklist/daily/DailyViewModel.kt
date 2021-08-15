@@ -6,10 +6,10 @@ import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.DailyIndex
 import com.jh.roachecklist.Const.DailyWork
-import com.jh.roachecklist.preference.AppPreference
-import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.db.CheckListEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
+import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,14 +42,12 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
     }
 
     private fun filterList(level: Int ) {
-        Log.i("asdf","필터 리스트 시작 ")
 
         daily.value = daily.value?.filter { model ->
 
             level >= model.minLevel ?: 0 &&  level < model.maxLevel ?: 10000
 
         } as ArrayList<CheckListEntity>
-        Log.i("asdf","필터 리스트 종료 ")
 
     }
 
@@ -120,6 +118,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
         viewModelScope.launch( Dispatchers.IO ) {
 
             val result =  repository.getDailyCheckList()
+
             withContext( Dispatchers.Main ) {
 
                 daily.value = result
@@ -287,13 +286,12 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${daily.value!![pos].work}")
 
         when ( daily.value!![pos].work ) {
 
             DailyWork.GUILD -> {
 
-                if ( pref.guildNoti == Const.NotiState.YES )
+                if ( pref.guildNoti >= Const.NotiState.YES )
                     pref.guildNoti = Const.NotiState.NO
                 else
                     pref.guildNoti = Const.NotiState.YES
@@ -303,7 +301,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.DAILY_EFONA -> {
 
-                if ( pref.dailyEfonaNoti == Const.NotiState.YES )
+                if ( pref.dailyEfonaNoti >= Const.NotiState.YES )
                     pref.dailyEfonaNoti = Const.NotiState.NO
                 else
                     pref.dailyEfonaNoti = Const.NotiState.YES
@@ -312,7 +310,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.FAVORABILITY -> {
 
-                if ( pref.favorabilityNoti == Const.NotiState.YES )
+                if ( pref.favorabilityNoti >= Const.NotiState.YES )
                     pref.favorabilityNoti = Const.NotiState.NO
                 else
                     pref.favorabilityNoti = Const.NotiState.YES
@@ -321,7 +319,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.ISLAND -> {
 
-                if ( pref.islandNoti == Const.NotiState.YES )
+                if ( pref.islandNoti >= Const.NotiState.YES )
                     pref.islandNoti = Const.NotiState.NO
                 else
                     pref.islandNoti = Const.NotiState.YES
@@ -330,7 +328,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.FIELD_BOSS -> {
 
-                if ( pref.fieldBossNoti == Const.NotiState.YES )
+                if ( pref.fieldBossNoti >= Const.NotiState.YES )
                     pref.fieldBossNoti = Const.NotiState.NO
                 else
                     pref.fieldBossNoti = Const.NotiState.YES
@@ -339,7 +337,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.DAILY_GUARDIAN -> {
 
-                if ( pref.dailyGuardianNoti == Const.NotiState.YES )
+                if ( pref.dailyGuardianNoti >= Const.NotiState.YES )
                     pref.dailyGuardianNoti = Const.NotiState.NO
                 else
                     pref.dailyGuardianNoti = Const.NotiState.YES
@@ -349,7 +347,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.CHAOS_GATE -> {
 
-                if ( pref.chaosGateNoti == Const.NotiState.YES )
+                if ( pref.chaosGateNoti >= Const.NotiState.YES )
                     pref.chaosGateNoti = Const.NotiState.NO
                 else
                     pref.chaosGateNoti = Const.NotiState.YES
@@ -359,7 +357,7 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
             }
             DailyWork.CHAOS_DUNGEON -> {
 
-                if ( pref.chaosDungeonNoti == Const.NotiState.YES )
+                if ( pref.chaosDungeonNoti >= Const.NotiState.YES )
                     pref.chaosDungeonNoti = Const.NotiState.NO
                 else
                     pref.chaosDungeonNoti = Const.NotiState.YES

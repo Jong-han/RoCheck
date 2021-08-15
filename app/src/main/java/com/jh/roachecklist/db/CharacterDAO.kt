@@ -11,6 +11,9 @@ interface CharacterDAO {
     @Query("SELECT * FROM Character ORDER BY favorite DESC")
     fun getAll(): LiveData<List<CharacterEntity>>
 
+    @Query("SELECT * FROM Character ORDER BY favorite DESC")
+    fun getAllList(): List<CharacterEntity>
+
     @Query("DELETE FROM Character")
     fun clearTable()
 

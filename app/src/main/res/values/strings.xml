@@ -1,5 +1,9 @@
 <resources>
-    <string name="app_name">RoaCheckList</string>
+    <string name="app_name">RoCheck</string>
+    <string name="admob_app_id">ca-app-pub-7741681524529243~9907625789</string>
+    <string name="admob_app_id_for_test">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="banner_ad_unit_id">ca-app-pub-7741681524529243/5968380779</string>
+    <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
 
     <string name="character_title">캐릭터 선택</string>
     <string name="character_no_list">+ 버튼을 눌러\n캐릭터를 추가해주세요.</string>
@@ -13,7 +17,14 @@
     <string name="character_add_sub">부캐</string>
     <string name="character_add_barrack">배럭</string>
     <string name="character_add_title">캐릭터 추가</string>
+    <string name="character_reset_btn_title">오전 6시가 지나도 초기화되지 않았나요?</string>
+    <string name="character_reset_title">숙제 초기화</string>
+    <string name="character_reset_msg">디바이스가 꺼진 상태에서는 자동 초기화가 진행되지 않습니다.\n오전 6시가 지났는데 초기화 되지 않았다면 수동으로 초기화 해주세요.</string>
+    <string name="character_reset">초기화</string>
+    <string name="character_reset_really">초기화 하시겠습니까?</string>
+    <string name="character_reset_really_ok">확인</string>
     <string name="character_setting">설정</string>
+    <string name="character_setting_title">알람 시간 변경</string>
 
     <string name="character_dialog_change_level">아이템 레벨 변경</string>
     <string name="character_dialog_delete">캐릭터 삭제</string>

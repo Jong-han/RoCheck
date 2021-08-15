@@ -3,6 +3,8 @@ package com.jh.roachecklist.utils
 import android.content.Context
 import android.util.Log
 import com.jh.roachecklist.Const
+import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.db.CheckListEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import kotlinx.coroutines.CoroutineScope
@@ -23,15 +25,10 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             withContext( Dispatchers.Main ) {
 
-                Log.i("asdf","닉네임 리스트 :: ${nickNameList.size}")
-                Log.i("asdf","오늘 요일 :: ${calendar.get(Calendar.DAY_OF_WEEK)}")
-
                 for ( nickName in nickNameList ) {
 
                     pref.getPref( nickName )
                     val dailyList = pref.getDailyList()
-
-                    Log.i("asdf","start calculate ::$nickName")
 
                     for ( index in 0 until dailyList.size ) {
 
@@ -87,7 +84,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                     }
                     pref.resetDaily()
-                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY ) {
+                    Log.i("asdf","토요일로 되잇는거 꼭 화요일로 바꾸고 출시할것 ${calendar.get(Calendar.DAY_OF_WEEK)}  ${Calendar.SATURDAY}")
+                    if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ) {
 
                         pref.resetWeekly()
                         pref.resetExpedition()
@@ -96,13 +94,217 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                 }
 
+            }
 
-                DefaultNotification.startNotification( context, "로첵", "타입" )
+        }
+
+    }
+
+    fun validAlarm() {
+
+        CoroutineScope( Dispatchers.IO ).launch {
+
+            val characterList = repository.getAllCharacterList()
+
+            if ( alarmDaily( characterList) )
+                DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
+
+            val calendar = Calendar.getInstance()
+
+            if ( calendar.get( Calendar.DAY_OF_WEEK ) == Calendar.TUESDAY ) {
+
+                if ( alarmExpedition( characterList ) )
+                    DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+                else {
+
+                    if ( alarmWeekly( characterList ) )
+                        DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+                    else {
+
+                        if ( alarmRaid( characterList ) )
+                            DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+
+                    }
+
+                }
 
             }
 
         }
 
+    }
+
+    fun alarmDaily( characterList: List<CharacterEntity> ): Boolean {
+
+        var result = false
+
+        for ( character in characterList ) {
+
+            pref.getPref( character.nickName )
+            val cantDailyList = repository.getDailyCantCheckList( character.level )
+            val dailyList = pref.getDailyList()
+
+            val notiList = pref.getDailyNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val dailyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantDailyList )
+
+            var dailyCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+
+                    dailyCheckedCount += dailyList[index]
+
+                }
+
+            }
+            if ( dailyCheckedCount < dailyTotalNotiCount ) {
+                result = true
+                break
+
+            }
+
+        }
+
+        return result
+
+    }
+
+    fun alarmWeekly( characterList: List<CharacterEntity> ): Boolean {
+
+        var result = false
+
+        for ( character in characterList ) {
+
+            pref.getPref( character.nickName )
+            val cantWeeklyList = repository.getWeeklyCantCheckList( character.level )
+            val weeklyList = pref.getWeeklyList()
+
+            val notiList = pref.getWeeklyNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val weeklyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantWeeklyList )
+
+            var weeklyCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+
+                    weeklyCheckedCount += weeklyList[index]
+
+                }
+
+            }
+            if ( weeklyCheckedCount < weeklyTotalNotiCount ) {
+
+                result = true
+                break
+
+            }
+
+        }
+        return result
+
+    }
+
+    fun alarmRaid( characterList: List<CharacterEntity> ): Boolean {
+
+        var result = false
+
+        for ( character in characterList ) {
+
+            pref.getPref( character.nickName )
+            val cantRaidList = repository.getRaidCantCheckList( character.level )
+            val raidList = pref.getRaidList()
+
+            val notiList = pref.getRaidNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val raidTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantRaidList )
+
+            var raidCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+
+                    raidCheckedCount += raidList[index]
+
+                }
+
+            }
+            if ( raidCheckedCount < raidTotalNotiCount ) {
+
+                result = true
+                break
+
+            }
+
+        }
+        return result
+
+    }
+
+    private fun alarmExpedition(characterList: List<CharacterEntity> ): Boolean {
+
+        var result = false
+
+        for ( character in characterList ) {
+
+            pref.getPref()
+            val cantExpeditionList = repository.getExpeditionCantCheckList( character.level )
+            val expeditionList = pref.getExpeditionList()
+
+            val notiList = pref.getExpeditionNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
+
+            var expeditionCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+
+                    expeditionCheckedCount += expeditionList[index]
+
+                }
+
+            }
+            if ( expeditionCheckedCount < expeditionTotalNotiCount ) {
+
+                result = true
+                break
+
+            }
+
+        }
+
+        return result
+
+    }
+
+
+    private fun getNotiCount( list: List<CheckListEntity> ): Int {
+
+        var result = 0
+        for ( checkList in list ) {
+
+            result += checkList.count
+
+        }
+        return result
+
+    }
+
+    private fun getNotiYesCount( list: List<Int> ): Int {
+
+        var result = 0
+        for ( count in list ) {
+
+            result += count
+
+        }
+        return result
     }
 
 }

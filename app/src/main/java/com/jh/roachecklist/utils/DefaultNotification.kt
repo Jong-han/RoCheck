@@ -14,23 +14,20 @@ import com.jh.roachecklist.ui.character.CharacterActivity
 
 object DefaultNotification {
 
-    // Notification Channel
-    private const val NOTIFICATION_ID_EVENT_1 = "sample notification 1"
-    private const val NOTIFICATION_NAME_EVENT_1 = "test notification 1"
+    private const val NOTIFICATION_ID_DAILY = "NOTIFICATION_ID_DAILY"
+    private const val NOTIFICATION_NAME_DAILY = "일일 숙제 알림"
 
-    private const val NOTIFICATION_ID_EVENT_2 = "sample notification 2"
-    private const val NOTIFICATION_NAME_EVENT_2 = "test notification 2"
+    private const val NOTIFICATION_ID_WEEKLY = "NOTIFICATION_ID_WEEKLY"
+    private const val NOTIFICATION_NAME_WEEKLY = "주간 숙제 알림"
 
     // Notification Code
     const val NOTIFICATION_CODE_DEFAULT = 8001024
 
-    // Push Data
-    private const val PUSH_DATA_PUSH_KEY_MSG_TYPE = "MT"
-    private const val PUSH_DATA_PUSH_TYPE_LINK = "LINK"
-    private const val PUSH_DATA_PUSH_KEY_URL = "URL"
+    private const val NOTIFICATION_CODE_DAILY = 1000
+    private const val NOTIFICATION_CODE_WEEKLY = 1001
 
-    fun startNotification(context: Context, content: String?, type: String,
-                          mipmapId: Int = R.mipmap.ic_launcher) {
+
+    fun startDailyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.ic_launcher) {
 
         val notificationManager = context.getSystemService( Context.NOTIFICATION_SERVICE ) as NotificationManager
 
@@ -38,7 +35,7 @@ object DefaultNotification {
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel = NotificationChannel( NOTIFICATION_ID_EVENT_1, NOTIFICATION_NAME_EVENT_1, importance ).apply {
+            val notificationChannel = NotificationChannel( NOTIFICATION_ID_DAILY, NOTIFICATION_NAME_DAILY, importance ).apply {
                 enableLights( false )
                 enableVibration( true )
                 setShowBadge( false )
@@ -50,12 +47,11 @@ object DefaultNotification {
         // Make Intent go Activity When Notification Click
         val processIntent = Intent( context, CharacterActivity::class.java )
         processIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK )
-//        processIntent.putExtra( PUSH_DATA_PUSH_KEY_MSG_TYPE, type)
 
         val pIntent = PendingIntent.getActivity( context, System.currentTimeMillis().toInt(), processIntent, 0)
 
         // builder
-        val builder = NotificationCompat.Builder( context, NOTIFICATION_ID_EVENT_1 )
+        val builder = NotificationCompat.Builder( context, NOTIFICATION_ID_DAILY )
         builder.setLargeIcon( BitmapFactory.decodeResource( context.resources, R.mipmap.ic_launcher ) )
         builder.setSmallIcon( mipmapId )
         builder.setTicker( content )
@@ -66,25 +62,52 @@ object DefaultNotification {
         builder.setContentIntent( pIntent )
         builder.setAutoCancel( true )
 
-        /** set Notification when Expand */
 
-        /* set Picture */
-//        builder.setStyle( NotificationCompat.BigPictureStyle()
-//            .bigPicture( ContextCompat.getDrawable(context, R.drawable.flag_aland_islands)?.toBitmap(100, 100 )) )
+        val notification: Notification = builder.build()
 
-        /* set Text */
-//        builder.setStyle( NotificationCompat.BigTextStyle().bigText( "txt for test") )
+        notificationManager.notify( NOTIFICATION_CODE_DAILY, notification )
 
-        /* set Inbox */
-//        builder.setStyle(
-//            NotificationCompat.InboxStyle()
-//                .addLine("line 1")
-//                .addLine("line 2"))
+    }
+
+    fun startWeeklyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.ic_launcher) {
+
+        val notificationManager = context.getSystemService( Context.NOTIFICATION_SERVICE ) as NotificationManager
+
+        // version for O upper
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val notificationChannel = NotificationChannel( NOTIFICATION_ID_WEEKLY, NOTIFICATION_NAME_WEEKLY, importance ).apply {
+                enableLights( false )
+                enableVibration( true )
+                setShowBadge( false )
+            }
+            notificationManager.createNotificationChannel( notificationChannel )
+
+        }
+
+        // Make Intent go Activity When Notification Click
+        val processIntent = Intent( context, CharacterActivity::class.java )
+        processIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK )
+
+        val pIntent = PendingIntent.getActivity( context, System.currentTimeMillis().toInt(), processIntent, 0)
+
+        // builder
+        val builder = NotificationCompat.Builder( context, NOTIFICATION_ID_WEEKLY )
+        builder.setLargeIcon( BitmapFactory.decodeResource( context.resources, R.mipmap.ic_launcher ) )
+        builder.setSmallIcon( mipmapId )
+        builder.setTicker( content )
+        builder.setWhen( System.currentTimeMillis() )
+        builder.setNumber( 0 )
+        builder.setContentTitle( context.getString( R.string.app_name ) )
+        builder.setContentText( content ?: "" )
+        builder.setContentIntent( pIntent )
+        builder.setAutoCancel( true )
 
 
         val notification: Notification = builder.build()
 
-        notificationManager.notify( NOTIFICATION_CODE_DEFAULT, notification )
+        notificationManager.notify( NOTIFICATION_CODE_WEEKLY, notification )
 
     }
 

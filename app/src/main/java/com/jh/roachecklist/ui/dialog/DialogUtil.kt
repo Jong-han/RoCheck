@@ -1,11 +1,11 @@
 package com.jh.roachecklist.ui.dialog
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -14,8 +14,8 @@ import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.service.AlarmReceiver
-import com.jh.roachecklist.utils.DefaultNotification
 import java.util.*
 
 object DialogUtil {
@@ -146,7 +146,8 @@ object DialogUtil {
 
     }
 
-    fun showSettingDialog( context: Context, layoutInflater: LayoutInflater, onOk: ( Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
+    @SuppressLint("SetTextI18n")
+    fun showSettingDialog(context: Context, layoutInflater: LayoutInflater, pref: AppPreference, onOk: (Int, Int, Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
 
         val binding = ActivityCharacterSettingAlarmBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -165,11 +166,12 @@ object DialogUtil {
             context, requestCode, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
 
+        pref.getPref()
+
         binding.run {
 
+            tvLastTime.text = "최근 설정된 시간 : ${pref.hour} : ${pref.minute}"
             btnOk.setOnClickListener {
-
-//                DefaultNotification.startNotification( context, "로첵", "타입" )
 
                 val hour = timePicker.hour
                 val minute = timePicker.minute
@@ -180,9 +182,7 @@ object DialogUtil {
                 calendar.set(Calendar.SECOND, 0)
                 calendar.set(Calendar.MILLISECOND, 0)
 
-//                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 10000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
-
-                onOk.invoke( calendar.timeInMillis, alarmManager, pendingIntent )
+                onOk.invoke( hour, minute, calendar.timeInMillis, alarmManager, pendingIntent )
                 dialog.dismiss()
 
             }
@@ -262,6 +262,58 @@ object DialogUtil {
 
                 }
                 onOk.invoke( item, favorite )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                showReallyResetDialog( context, layoutInflater, onOk )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showReallyResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetReallyDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                onOk.invoke()
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {

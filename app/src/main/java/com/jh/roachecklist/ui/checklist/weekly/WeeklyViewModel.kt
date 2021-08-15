@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.WeeklyWork
-import com.jh.roachecklist.preference.AppPreference
-import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.db.CheckListEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
+import com.jh.roachecklist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,9 +70,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
     fun increaseCheckedCount( pos: Int, otherDifficulty: Int? ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( weekly.value!![pos].work ) {
 
             WeeklyWork.CHALLENGE_GUARDIAN -> {
@@ -111,28 +108,10 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                 weekly.value!![pos].checkedCount = pref.ghostShip
 
             }
-            WeeklyWork.OREHA_NOMAL -> {
+            WeeklyWork.OREHA -> {
 
-                pref.orehaNomal = pref.orehaNomal + 1
-                weekly.value!![pos].checkedCount = pref.orehaNomal
-                if ( pref.orehaHard == 1 ) {
-
-                    pref.orehaHard = pref.orehaHard - 1
-                    otherDifficulty?.let { weekly.value!![it].checkedCount = pref.orehaHard }
-
-                }
-
-            }
-            WeeklyWork.OREHA_HARD -> {
-
-                pref.orehaHard = pref.orehaHard + 1
-                weekly.value!![pos].checkedCount = pref.orehaHard
-                if ( pref.orehaNomal == 1 ) {
-
-                    pref.orehaNomal = pref.orehaNomal - 1
-                    otherDifficulty?.let { weekly.value!![it].checkedCount = pref.orehaNomal }
-
-                }
+                pref.oreha = pref.oreha + 1
+                weekly.value!![pos].checkedCount = pref.oreha
 
             }
 
@@ -180,16 +159,10 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                 weekly.value!![pos].checkedCount = pref.ghostShip
 
             }
-            WeeklyWork.OREHA_NOMAL -> {
+            WeeklyWork.OREHA -> {
 
-                pref.orehaNomal = pref.orehaNomal - 1
-                weekly.value!![pos].checkedCount = pref.orehaNomal
-
-            }
-            WeeklyWork.OREHA_HARD -> {
-
-                pref.orehaHard = pref.orehaHard - 1
-                weekly.value!![pos].checkedCount = pref.orehaHard
+                pref.oreha = pref.oreha - 1
+                weekly.value!![pos].checkedCount = pref.oreha
 
             }
 
@@ -198,13 +171,12 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${weekly.value!![pos].work}")
 
         when ( weekly.value!![pos].work ) {
 
             Const.WeeklyWork.CHALLENGE_GUARDIAN -> {
 
-                if ( pref.challengeGuardianNoti == Const.NotiState.YES )
+                if ( pref.challengeGuardianNoti >= Const.NotiState.YES )
                     pref.challengeGuardianNoti = Const.NotiState.NO
                 else
                     pref.challengeGuardianNoti = Const.NotiState.YES
@@ -215,7 +187,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.WEEKLY_EFONA -> {
 
-                if ( pref.weeklyEfonaNoti == Const.NotiState.YES )
+                if ( pref.weeklyEfonaNoti >= Const.NotiState.YES )
                     pref.weeklyEfonaNoti = Const.NotiState.NO
                 else
                     pref.weeklyEfonaNoti = Const.NotiState.YES
@@ -226,7 +198,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_1 -> {
 
-                if ( pref.argos1Noti == Const.NotiState.YES )
+                if ( pref.argos1Noti >= Const.NotiState.YES )
                     pref.argos1Noti = Const.NotiState.NO
                 else
                     pref.argos1Noti = Const.NotiState.YES
@@ -237,7 +209,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_2 -> {
 
-                if ( pref.argos2Noti == Const.NotiState.YES )
+                if ( pref.argos2Noti >= Const.NotiState.YES )
                     pref.argos2Noti = Const.NotiState.NO
                 else
                     pref.argos2Noti = Const.NotiState.YES
@@ -248,7 +220,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.ARGOS_3 -> {
 
-                if ( pref.argos3Noti == Const.NotiState.YES )
+                if ( pref.argos3Noti >= Const.NotiState.YES )
                     pref.argos3Noti = Const.NotiState.NO
                 else
                     pref.argos3Noti = Const.NotiState.YES
@@ -259,7 +231,7 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             Const.WeeklyWork.GHOST_SHIP -> {
 
-                if ( pref.ghostShipNoti == Const.NotiState.YES )
+                if ( pref.ghostShipNoti >= Const.NotiState.YES )
                     pref.ghostShipNoti = Const.NotiState.NO
                 else
                     pref.ghostShipNoti = Const.NotiState.YES
@@ -268,25 +240,14 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             }
 
-            Const.WeeklyWork.OREHA_NOMAL -> {
+            Const.WeeklyWork.OREHA -> {
 
-                if ( pref.orehaNormalNoti == Const.NotiState.YES )
-                    pref.orehaNormalNoti = Const.NotiState.NO
+                if ( pref.orehaNoti >= Const.NotiState.YES )
+                    pref.orehaNoti = Const.NotiState.NO
                 else
-                    pref.orehaNormalNoti = Const.NotiState.YES
+                    pref.orehaNoti = Const.NotiState.YES
 
-                weekly.value!![pos].isNoti = pref.orehaNormalNoti
-
-            }
-
-            Const.WeeklyWork.OREHA_HARD -> {
-
-                if ( pref.orehaHardNoti == Const.NotiState.YES )
-                    pref.orehaHardNoti = Const.NotiState.NO
-                else
-                    pref.orehaHardNoti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.orehaHardNoti
+                weekly.value!![pos].isNoti = pref.orehaNoti
 
             }
 

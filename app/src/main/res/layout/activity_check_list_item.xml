@@ -18,9 +18,10 @@
             android:id="@+id/iv_noti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/cm_ripple_bound_oval"
             android:layout_gravity="center"
             android:padding="10dp"
-            android:src="@{model.isNoti == 1 ? @drawable/baseline_notifications_active_24 : @drawable/baseline_notifications_off_24}"/>
+            android:src="@{model.isNoti >= 1 ? @drawable/baseline_notifications_active_24 : @drawable/baseline_notifications_off_24}"/>
 
 
         <TextView

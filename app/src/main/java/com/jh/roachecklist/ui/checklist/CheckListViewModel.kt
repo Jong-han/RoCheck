@@ -1,11 +1,8 @@
 package com.jh.roachecklist.ui.checklist
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.ui.base.BaseViewModel
-import com.jh.roachecklist.ui.character.CharacterActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

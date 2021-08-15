@@ -6,11 +6,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.Expedition
-import com.jh.roachecklist.preference.AppPreference
-import com.jh.roachecklist.ui.base.BaseViewModel
-import com.jh.roachecklist.ui.character.CharacterActivity
 import com.jh.roachecklist.db.CheckListEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
+import com.jh.roachecklist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +21,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
                                                private val pref: AppPreference,
                                                savedState: SavedStateHandle): BaseViewModel() {
 
-    val level = savedState.get<Int>(CharacterActivity.EXTRA_HIGHEST_LEVEL) ?: 0
+    private var level = 0
 
     var expedition = MutableLiveData<List<CheckListEntity>>()
 
@@ -42,7 +41,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
         val expeditionNotiList = pref.getExpeditionNotiList()
 
         for ( index in 0 until expeditionList.size ) {
-            Log.i("zxcv", "index :: ${index} :: ${expeditionList[index]}")
 
             expedition.value!![index].checkedCount = expeditionList[index]
             expedition.value!![index].isNoti = expeditionNotiList[index]
@@ -56,6 +54,8 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
         pref.getPref()
 
         viewModelScope.launch( Dispatchers.IO ) {
+
+            level = repository.getHighestLevel() ?: 0
 
             val result =  repository.getExpeditionCheckList()
             withContext( Dispatchers.Main ) {
@@ -71,9 +71,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
     }
 
     fun increaseCheckedCount( pos: Int ) {
-
-//        Log.i("zxcv", "work:: $work")
-
 
         when ( expedition.value!![pos].work ) {
 
@@ -105,9 +102,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
 
     fun decreaseCheckedCount( pos: Int ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( expedition.value!![pos].work ) {
 
             Expedition.CHALLENGE_ABYSS_DUNGEON -> {
@@ -137,13 +131,12 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${expedition.value!![pos].work}")
 
         when ( expedition.value!![pos].work ) {
 
             Expedition.CHALLENGE_ABYSS_DUNGEON -> {
 
-                if ( pref.abyssDungeonNoti == Const.NotiState.YES )
+                if ( pref.abyssDungeonNoti >= Const.NotiState.YES )
                     pref.abyssDungeonNoti = Const.NotiState.NO
                 else
                     pref.abyssDungeonNoti = Const.NotiState.YES
@@ -153,7 +146,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
             }
             Expedition.ABRELSHOULD_DEJAVU -> {
 
-                if ( pref.abrelshouldDevajuNoti == Const.NotiState.YES )
+                if ( pref.abrelshouldDevajuNoti >= Const.NotiState.YES )
                     pref.abrelshouldDevajuNoti = Const.NotiState.NO
                 else
                     pref.abrelshouldDevajuNoti = Const.NotiState.YES
@@ -162,7 +155,7 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
             }
             Expedition.KOUKUSATON_REHEARSAL -> {
 
-                if ( pref.koukosatonRehearsalNoti == Const.NotiState.YES )
+                if ( pref.koukosatonRehearsalNoti >= Const.NotiState.YES )
                     pref.koukosatonRehearsalNoti = Const.NotiState.NO
                 else
                     pref.koukosatonRehearsalNoti = Const.NotiState.YES
