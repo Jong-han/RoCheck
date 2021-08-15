@@ -3,13 +3,11 @@ package com.jh.roachecklist.ui.character
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.jh.roachecklist.Const
 import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.utils.CheckListUtil
-import com.jh.roachecklist.utils.ListLiveData
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -116,6 +114,7 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun setRvItems(items: List<CharacterEntity>) {
 
+        Log.i("zxcvzxcv","setRvItems start ${System.currentTimeMillis()}")
         rvItems.value = items.map {
 
             it.apply {
@@ -134,6 +133,8 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             }
 
         }
+        Log.i("zxcvzxcv","setRvItems end ${System.currentTimeMillis()}")
+
 
     }
 

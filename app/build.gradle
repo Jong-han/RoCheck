@@ -4,7 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
+//    id 'com.google.firebase.crashlytics'
 
 }
 
@@ -77,8 +77,12 @@ dependencies {
 
     //firebase
     implementation platform('com.google.firebase:firebase-bom:28.3.1')
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+//    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+//    implementation 'com.google.firebase:firebase-ads:20.2.0'
+
+    //admob
+    implementation 'com.google.android.gms:play-services-ads:20.2.0'
 
 
 }

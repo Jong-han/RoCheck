@@ -88,6 +88,7 @@
             android:layout_marginTop="10dp"
             android:gravity="end"
             android:padding="5dp"
+            android:invisibleIf="@{viewModel.rvItems.empty}"
             android:onClick="@{()->viewModel.clickReset()}"
             app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -99,7 +100,7 @@
             android:layout_height="0dp"
             android:overScrollMode="never"
             app:layout_constraintTop_toBottomOf="@id/rest_setting"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/adView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -118,6 +119,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent">
+        </com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

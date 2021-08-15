@@ -14,15 +14,11 @@ import com.jh.roachecklist.ui.character.CharacterActivity
 
 object DefaultNotification {
 
-    // Notification Channel
-    private const val NOTIFICATION_ID_EVENT_1 = "sample notification 1"
-    private const val NOTIFICATION_NAME_EVENT_1 = "test notification 1"
-
     private const val NOTIFICATION_ID_DAILY = "NOTIFICATION_ID_DAILY"
-    private const val NOTIFICATION_NAME_DAILY = "NOTIFICATION_NAME_DAILY"
+    private const val NOTIFICATION_NAME_DAILY = "일일 숙제 알림"
 
     private const val NOTIFICATION_ID_WEEKLY = "NOTIFICATION_ID_WEEKLY"
-    private const val NOTIFICATION_NAME_WEEKLY = "NOTIFICATION_NAME_WEEKLY"
+    private const val NOTIFICATION_NAME_WEEKLY = "주간 숙제 알림"
 
     // Notification Code
     const val NOTIFICATION_CODE_DEFAULT = 8001024

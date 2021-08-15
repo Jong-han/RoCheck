@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/rocheck_logo_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RoaCheckList" >
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
         <activity android:name=".ui.splash.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,7 +26,6 @@
         <activity android:name=".ui.checklist.CheckListActivity" />
         <activity android:name=".ui.checklist.expedition.ExpeditionActivity" />
         <activity android:name=".ui.character.CharacterActivity"/>
-        <activity android:name=".MainActivity" />
         <receiver
             android:name=".service.AlarmReceiver"
             android:exported="false" >

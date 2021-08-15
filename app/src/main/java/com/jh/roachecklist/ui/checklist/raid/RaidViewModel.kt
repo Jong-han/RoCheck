@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.Const.Raid
-import com.jh.roachecklist.preference.AppPreference
-import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.db.CheckListEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
+import com.jh.roachecklist.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

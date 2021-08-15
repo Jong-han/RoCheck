@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "332313993727-iir8a0l6benkh95opkmgr5k7kafeg8m5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jh.roachecklist",
+            "certificate_hash": "648b17104d9c96ed35b52ab8c0b1d9f83c4ce8cb"
+          }
+        },
+        {
           "client_id": "332313993727-2ivj0ebkjdi2pt8g01krbh8s1tlsc1m5.apps.googleusercontent.com",
           "client_type": 3
         }

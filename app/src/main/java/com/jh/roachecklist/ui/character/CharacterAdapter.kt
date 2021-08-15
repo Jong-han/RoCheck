@@ -10,11 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCharacterItemBinding
 import com.jh.roachecklist.db.CharacterEntity
-import com.jh.roachecklist.utils.CheckListUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CharacterAdapter( private val onClick: (Int)->(Unit), private val onLongClick: (Int)->Unit ): ListAdapter<CharacterEntity, CharacterAdapter.CharacterViewHolder>( CharacterDiffUtil() ) {
 

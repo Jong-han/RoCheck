@@ -28,6 +28,7 @@ class App: Application() {
     override fun onCreate() {
 
         super.onCreate()
+
         pref.getPref()
         if ( pref.isFirst ) {
 

@@ -2,17 +2,16 @@ package com.jh.roachecklist.ui.checklist
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListBinding
 import com.jh.roachecklist.ui.base.BaseActivity
-import com.jh.roachecklist.ui.base.BaseViewModel
 import com.jh.roachecklist.ui.character.CharacterActivity
 import com.jh.roachecklist.ui.checklist.daily.DailyFragment
 import com.jh.roachecklist.ui.checklist.raid.RaidFragment
@@ -49,6 +48,9 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
     private val fragmentList = arrayListOf( dailyFragment, weeklyFragment, raidFragment )
 
     override fun initViewAndEvent() {
+        MobileAds.initialize(this) {}
+        val adRequest = AdRequest.Builder().build()
+        dataBinding.adView.loadAd( adRequest )
 
         val bundle = setBundle()
 

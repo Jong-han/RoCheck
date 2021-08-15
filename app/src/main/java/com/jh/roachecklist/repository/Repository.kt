@@ -1,13 +1,10 @@
 package com.jh.roachecklist.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.baycon.mobilefax.db.RoCheckDB
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.db.CheckListEntity
-import com.jh.roachecklist.preference.AppPreference
 
 class Repository( private val db: RoCheckDB ) {
 
@@ -59,7 +56,7 @@ class Repository( private val db: RoCheckDB ) {
 
     }
 
-    suspend fun getHighestLevel(): Int? = db.characterDAO().getHighestLevel()
+    fun getHighestLevel(): Int? = db.characterDAO().getHighestLevel()
 
     fun getNickNameList(): List<String> = db.characterDAO().getCharacterNickNameList()
 

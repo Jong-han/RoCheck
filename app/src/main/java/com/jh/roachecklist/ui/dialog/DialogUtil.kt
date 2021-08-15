@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
@@ -17,7 +16,6 @@ import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.service.AlarmReceiver
-import com.jh.roachecklist.utils.DefaultNotification
 import java.util.*
 
 object DialogUtil {

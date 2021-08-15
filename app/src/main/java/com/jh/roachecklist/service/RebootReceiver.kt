@@ -8,21 +8,9 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.jh.roachecklist.Const
-import com.jh.roachecklist.Const.Rest.CHAOS_DUNGEON_COUNT
-import com.jh.roachecklist.Const.Rest.CHARGE_REST_BONUS
-import com.jh.roachecklist.Const.Rest.CONSUME_REST_BONUS
-import com.jh.roachecklist.Const.Rest.DAILY_EFONA_COUNT
-import com.jh.roachecklist.Const.Rest.DAILY_GUARDIAN_COUNT
-import com.jh.roachecklist.Const.Rest.MAX_REST_BONUS
 import com.jh.roachecklist.preference.AppPreference
-import com.jh.roachecklist.repository.Repository
-import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import javax.inject.Inject
 
@@ -38,8 +26,6 @@ class RebootReceiver : BroadcastReceiver() {
             pref.getPref()
 
             Log.i("asdf","기기가 부팅됨")
-
-            Toast.makeText(context, "hour: ${pref.hour} minute: ${pref.minute}", Toast.LENGTH_LONG).show();
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
