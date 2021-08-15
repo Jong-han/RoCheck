@@ -1,17 +1,26 @@
 package com.jh.roachecklist.ui.dialog
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.AlertDialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.jh.roachecklist.databinding.ActivityCharacterAddDialogBinding
-import com.jh.roachecklist.databinding.ActivityCharacterEditLevelDialogBinding
-import com.jh.roachecklist.databinding.ActivityCharacterEditMenuDialogBinding
+import android.widget.ArrayAdapter
+import androidx.core.widget.doOnTextChanged
+import com.jh.roachecklist.Const
+import com.jh.roachecklist.R
+import com.jh.roachecklist.databinding.*
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
+import com.jh.roachecklist.service.AlarmReceiver
+import java.util.*
 
 object DialogUtil {
 
-    fun showAddCharacterDialog(context: Context, layoutInflater: LayoutInflater, onOk: (String, Int, String)->(Unit) ) {
+    fun showAddCharacterDialog(context: Context, layoutInflater: LayoutInflater, onOk: (String, Int, String, Int)->(Unit) ) {
 
         val binding = ActivityCharacterAddDialogBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
@@ -26,25 +35,38 @@ object DialogUtil {
         binding.run {
 
             btnOk.setOnClickListener {
-                if ( !etKlass.text.isNullOrBlank() && !etLevel.text.isNullOrBlank() && !etName.text.isNullOrBlank() )
-                    onOk.invoke( etName.text.toString(), etLevel.text.toString().toInt(), etKlass.text.toString() )
+                val favorite = when (radioGroup.checkedRadioButtonId) {
+
+                    R.id.radio_main -> Const.Favorite.MAIN
+                    R.id.radio_sub -> Const.Favorite.SUB
+                    else -> Const.Favorite.BARRACK
+
+                }
+                if ( !etLevel.text.isNullOrBlank() && !etName.text.isNullOrBlank() )
+                    onOk.invoke( etName.text.toString(), etLevel.text.toString().toInt(), (spinner.selectedItem as String), favorite )
                 dialog.dismiss()
             }
             btnCancel.setOnClickListener {
                 dialog.dismiss()
             }
 
+            val classList = context.resources.getStringArray(R.array.klass)
+
+            spinner.adapter = ArrayAdapter( context, android.R.layout.simple_spinner_dropdown_item, classList )
+
+
+
         }
 
     }
 
-    fun showEditMenuDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onUpdate: (CharacterEntity, Int) -> Unit, onDelete: (CharacterEntity)->(Unit) ) {
+    fun showEditMenuDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onUpdate: (CharacterEntity, Int) -> Unit, onDelete: (CharacterEntity)->(Unit), onEditType: (CharacterEntity, Int)->(Unit) ) {
 
         val binding = ActivityCharacterEditMenuDialogBinding.inflate( layoutInflater )
         val builder = AlertDialog.Builder( context )
 
         builder.setView( binding.root )
-        builder.setCancelable( false )
+        builder.setCancelable( true )
 
         val dialog = builder.create()
         dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
@@ -57,8 +79,14 @@ object DialogUtil {
                 dialog.dismiss()
             }
             btnDeleteCharacter.setOnClickListener {
-                onDelete.invoke( item )
+                showDeleteDialog( context, layoutInflater, item, onUpdate, onDelete )
                 dialog.dismiss()
+            }
+            btnEditType.setOnClickListener {
+
+                showEditTypeDialog( context, layoutInflater, item, onEditType )
+                dialog.dismiss()
+
             }
 
         }
@@ -92,67 +120,208 @@ object DialogUtil {
 
     }
 
-//
-//    /** make Default Alert Dialog */
-//    fun showDefaultDialog(context: Context, layoutInflater: LayoutInflater,
-//                          title: String?, content: Any, subContent: String?,
-//                          cancelText: String?, confirmText: String?, isAutoCancel: Boolean,
-//                          dialogClickListener: DialogDefaultClickListener?, obj: Any? ) {
-//
-//        val binding = ViewDialogDefaultBinding.inflate( layoutInflater )
-//        // use Style which you want
-//        val builder = AlertDialog.Builder( context, R.style.AppTheme_FullScreenDialog )
-//
-//        // setting Default Dialog title ( tv_title ) default visibility = gone
-//        title?.let {
-//            binding.tvTitle.visibility = View.VISIBLE
-//            binding.tvTitle.text = it
-//        }
-//
-//        // setting Default Dialog MainContent ( tv_content )
-//        if ( content is String || content is CharSequence ) {
-//
-//            binding.tvContent.text = content.toString()
-//
-//        }
-//
-//        // setting Default Dialog SubContent ( tv_sub_content ) default visibility = gone
-//        subContent?.let {
-//
-//            binding.tvSubContent.visibility = View.VISIBLE
-//            binding.tvSubContent.text = subContent
-//
-//        }
-//
-//        // dialog builder setting
-//        builder.setView( binding.root )
-//        builder.setCancelable( isAutoCancel )
-//
-//        // dialog setting
-//        val dialog = builder.create()
-//        // dialog Full Screen Setting
-//        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
-//        dialog.window?.setBackgroundDrawable( ColorDrawable( Color.TRANSPARENT ) )
-//        dialog.show()
-//
-//        // btn right Setting ( btn_right )
-//        binding.btnRight.text = confirmText
-//        binding.btnRight.setOnClickListener {
-//            dialogClickListener?.onOk( obj )
-//            dialog.dismiss()
-//        }
-//
-//        // btn_left Setting  ( btn_left ) btn_left default visibility = gone
-//        cancelText?.let {
-//
-//            binding.btnLeft.visibility = View.VISIBLE
-//            binding.btnLeft.text = cancelText
-//            binding.btnLeft.setOnClickListener {
-//                dialogClickListener?.onCancel( obj )
-//                dialog.dismiss()
-//            }
-//
-//        }
-//
-//    }
+    private fun showDeleteDialog( context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onUpdate: (CharacterEntity, Int) -> Unit, onDelete: (CharacterEntity)->(Unit) ) {
+
+        val binding = ActivityCharacterEditDeleteDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                onDelete.invoke( item )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun showSettingDialog(context: Context, layoutInflater: LayoutInflater, pref: AppPreference, onOk: (Int, Int, Long, AlarmManager, PendingIntent )->(Unit), requestCode: Int ) {
+
+        val binding = ActivityCharacterSettingAlarmBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent( context, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, requestCode, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+        pref.getPref()
+
+        binding.run {
+
+            tvLastTime.text = "최근 설정된 시간 : ${pref.hour} : ${pref.minute}"
+            btnOk.setOnClickListener {
+
+                val hour = timePicker.hour
+                val minute = timePicker.minute
+
+                val calendar = Calendar.getInstance()
+                calendar.set(Calendar.HOUR_OF_DAY, hour)
+                calendar.set(Calendar.MINUTE, minute)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+
+                onOk.invoke( hour, minute, calendar.timeInMillis, alarmManager, pendingIntent )
+                dialog.dismiss()
+
+            }
+            btnCancel.setOnClickListener {
+
+                dialog.dismiss()
+
+            }
+
+        }
+
+    }
+
+    fun showSettingRestDialog( context: Context, layoutInflater: LayoutInflater, onModify: (Int, Int, Int) -> Unit ) {
+
+        val binding = ActivityCheckListDailyRestEditDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            etEfona.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+            }
+
+            etChaos.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            etGuardian.doOnTextChanged { _, _, _, _ ->
+
+                btnOk.isEnabled = !etEfona.text.isNullOrBlank() && !etGuardian.text.isNullOrBlank() && !etChaos.text.isNullOrBlank()
+
+            }
+
+            btnOk.setOnClickListener {
+                onModify.invoke( etEfona.text.toString().toInt(), etGuardian.text.toString().toInt(), etChaos.text.toString().toInt() )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    private fun showEditTypeDialog(context: Context, layoutInflater: LayoutInflater, item: CharacterEntity, onOk: (CharacterEntity, Int)->(Unit) ) {
+
+        val binding = ActivityCharacterEditTypeDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                val favorite = when (radioGroup.checkedRadioButtonId) {
+
+                    R.id.radio_main -> Const.Favorite.MAIN
+                    R.id.radio_sub -> Const.Favorite.SUB
+                    else -> Const.Favorite.BARRACK
+
+                }
+                onOk.invoke( item, favorite )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                showReallyResetDialog( context, layoutInflater, onOk )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showReallyResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetReallyDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                onOk.invoke()
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
 }

@@ -1,16 +1,17 @@
 package com.jh.roachecklist.ui.checklist
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityCheckListBinding
 import com.jh.roachecklist.ui.base.BaseActivity
-import com.jh.roachecklist.ui.base.BaseViewModel
+import com.jh.roachecklist.ui.character.CharacterActivity
 import com.jh.roachecklist.ui.checklist.daily.DailyFragment
 import com.jh.roachecklist.ui.checklist.raid.RaidFragment
 import com.jh.roachecklist.ui.checklist.weekly.WeeklyFragment
@@ -25,6 +26,10 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
         const val WEEKLY = 1
         const val RAID = 2
 
+        const val EXTRA_BUNDLE_NICKNAME = "EXTRA_BUNDLE_NICKNAME"
+        const val EXTRA_BUNDLE_LEVEL = "EXTRA_BUNDLE_LEVEL"
+        const val RESULT_POSITION = "RESULT_POSITION"
+
     }
 
     override val viewModel: CheckListViewModel by viewModels()
@@ -33,15 +38,34 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
     override fun getLayoutId(): Int = R.layout.activity_check_list
 
-    private val dailyFragment: Fragment? = null
-    private val weeklyFragment: Fragment? = null
-    private val raidFragment: Fragment? = null
+    private val dailyFragment: Fragment = DailyFragment()
+    private val weeklyFragment: Fragment = WeeklyFragment()
+    private val raidFragment: Fragment = RaidFragment()
 
-    private var activeFragment: Fragment? = null
+    private var activeFragment: Fragment = dailyFragment
 
     private val fragmentList = arrayListOf( dailyFragment, weeklyFragment, raidFragment )
 
     override fun initViewAndEvent() {
+
+        val adRequest = AdRequest.Builder().build()
+        dataBinding.adView.loadAd( adRequest )
+
+        val bundle = setBundle()
+
+        dailyFragment.arguments = bundle
+        weeklyFragment.arguments = bundle
+        raidFragment.arguments = bundle
+
+        supportFragmentManager.beginTransaction()
+            .add( R.id.fragment_container, dailyFragment )
+            .add( R.id.fragment_container, weeklyFragment )
+            .add( R.id.fragment_container, raidFragment )
+            .hide( weeklyFragment )
+            .hide( raidFragment )
+            .show( activeFragment )
+            .commit()
+
 
         addOrShowFragment( DAILY )
 
@@ -69,47 +93,39 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
     private fun addOrShowFragment( index: Int ) {
 
-        var fragment = fragmentList[index]
+        val fragment=  fragmentList[index]
 
         val transaction = supportFragmentManager.beginTransaction()
 
-        if ( fragment == null ) {
+        transaction.hide( activeFragment  ).show( fragment )
 
-            fragment = when ( index ) {
-
-                DAILY -> DailyFragment()
-                WEEKLY -> WeeklyFragment()
-                else -> RaidFragment()
-
-            }
-            transaction.add( R.id.fragment_container, fragment )
-            fragmentList[index] = fragment
-
-            if ( activeFragment != null ) {
-
-                transaction.show( fragment ).hide( activeFragment ?: DailyFragment() )
-
-            } else {
-
-                transaction.show( fragment )
-
-            }
-
-        } else {
-
-            if ( activeFragment != null ) {
-
-                transaction.hide( activeFragment ?: DailyFragment() ).show( fragment )
-
-            } else {
-
-                transaction.show( fragment )
-
-            }
-
-        }
         transaction.commit()
+
         activeFragment = fragment
+
+        viewModel.setActiveFragment( index )
+
+    }
+
+    private fun setBundle(): Bundle {
+
+        val nickName = intent.getStringExtra( CharacterActivity.EXTRA_NICK_NAME )
+        val level = intent.getIntExtra( CharacterActivity.EXTRA_LEVEL, 0 )
+
+        val bundle = Bundle()
+        bundle.putInt( EXTRA_BUNDLE_LEVEL, level )
+        bundle.putString( EXTRA_BUNDLE_NICKNAME, nickName)
+
+        return bundle
+
+    }
+
+    override fun finish() {
+
+        val resultIntent = Intent()
+        resultIntent.putExtra( RESULT_POSITION, intent.getIntExtra( CharacterActivity.EXTRA_POSITION, 0 ) )
+        setResult( Activity.RESULT_OK, resultIntent )
+        super.finish()
 
     }
 

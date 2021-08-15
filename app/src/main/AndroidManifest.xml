@@ -1,24 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jh.roachecklist">
+    package="com.jh.roachecklist" >
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".App"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:icon="@mipmap/rocheck_logo_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/rocheck_logo_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RoaCheckList">
-        <activity android:name=".ui.checklist.CheckListActivity"></activity>
-        <activity android:name=".ui.character.CharacterActivity">
+        android:theme="@style/Theme.RoaCheckList" >
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
+        <activity android:name=".ui.splash.SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ui.checklist.CheckListActivity" />
+        <activity android:name=".ui.checklist.expedition.ExpeditionActivity" />
+        <activity android:name=".ui.character.CharacterActivity"/>
+        <receiver
+            android:name=".service.AlarmReceiver"
+            android:exported="false" >
+        </receiver>
+        <receiver
+            android:name=".service.RebootReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".service.RefreshReceiver"
+            android:exported="false" >
+        </receiver>
     </application>
 
 </manifest>

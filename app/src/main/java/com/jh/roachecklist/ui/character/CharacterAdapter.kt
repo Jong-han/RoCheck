@@ -1,5 +1,6 @@
 package com.jh.roachecklist.ui.character
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -31,7 +32,7 @@ class CharacterAdapter( private val onClick: (Int)->(Unit), private val onLongCl
 
             binding.run {
 
-                this.item = item
+                this@run.item = item
 
                 container.setOnClickListener {
 

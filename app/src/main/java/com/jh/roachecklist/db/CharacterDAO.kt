@@ -5,11 +5,14 @@ import androidx.room.*
 
 @Dao
 interface CharacterDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insert(entity: CharacterEntity)
 
-    @Query("SELECT * FROM Character")
-    fun getAll(): List<CharacterEntity>
+    @Query("SELECT * FROM Character ORDER BY favorite DESC")
+    fun getAll(): LiveData<List<CharacterEntity>>
+
+    @Query("SELECT * FROM Character ORDER BY favorite DESC")
+    fun getAllList(): List<CharacterEntity>
 
     @Query("DELETE FROM Character")
     fun clearTable()
@@ -22,4 +25,14 @@ interface CharacterDAO {
 
     @Delete
     fun deleteCharacter(entity: CharacterEntity)
+
+    @Query("SELECT * FROM Character WHERE nick_name = :nickName ")
+    fun searchCharacter( nickName: String ): CharacterEntity?
+
+    @Query("SELECT level FROM Character ORDER BY level DESC LIMIT 1")
+    fun getHighestLevel(): Int?
+
+    @Query("SELECT nick_name FROM Character")
+    fun getCharacterNickNameList(): List<String>
+
 }

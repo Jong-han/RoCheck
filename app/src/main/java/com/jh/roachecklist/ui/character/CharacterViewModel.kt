@@ -1,38 +1,51 @@
 package com.jh.roachecklist.ui.character
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.jh.roachecklist.db.CharacterEntity
+import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
-import com.jh.roachecklist.utils.ListLiveData
+import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterViewModel @Inject constructor( private val repository: Repository ): BaseViewModel() {
+class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference, private val checkListUtil: CheckListUtil ): BaseViewModel() {
 
-    val rvItems = ListLiveData<CharacterEntity>()
+    enum class CharacterEvent { EXIST }
 
-    init {
+    val rvItems = MutableLiveData<List<CharacterEntity>>()
 
-        viewModelScope.launch( Dispatchers.IO ) {
+    val originalList = repository.getAllCharacters()
 
-            val temp = repository.getAllCharacters()
+    val event = MutableLiveData<CharacterEvent>()
+
+    val clickExpedition = SingleLiveEvent<Any>()
+    fun clickExpedition() {
+
+        viewModelScope.launch( Dispatchers.IO) {
+
             withContext( Dispatchers.Main ) {
-//
-                rvItems.addAll( temp )
+
+                clickExpedition.call()
 
             }
 
         }
+
+    }
+
+    val clickReset = SingleLiveEvent<Any>()
+    fun clickReset() {
+
+        clickReset.call()
 
     }
 
@@ -41,16 +54,34 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         clickAddCharacter.call()
     }
 
-    fun addCharacter(name: String, level: Int, klass: String ) {
+    val clickSetting = SingleLiveEvent<Any>()
+    fun clickSetting() {
 
-        val character = CharacterEntity( name, klass, level )
+        clickSetting.call()
 
-        viewModelScope.launch( Dispatchers.IO ) {
+    }
 
-            repository.addCharacter( character )
+    fun addCharacter(nickName: String, level: Int, klass: String, favorite: Int ) {
+
+        val character = CharacterEntity( nickName, klass, level, favorite )
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val isExist = repository.isExist( character )
+            if ( isExist ) {
+
+                withContext( Dispatchers.Main ) {
+
+                    event.value = CharacterEvent.EXIST
+
+                }
+
+            } else {
+
+                repository.addCharacter(character)
+
+            }
 
         }
-        rvItems.add( character )
 
     }
     fun updateCharacter( character: CharacterEntity, level: Int ) {
@@ -59,11 +90,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
             character.level = level
             repository.updateCharacter( character )
-            withContext( Dispatchers.Main ) {
-
-                rvItems.get( rvItems.indexOf( character ) ).level = level
-
-            }
 
         }
 
@@ -75,8 +101,79 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch( Dispatchers.IO ) {
 
             repository.deleteCharacter( character )
+            withContext( Dispatchers.Main ) {
+
+                pref.deletePref( character.nickName )
+
+            }
 
         }
+
+    }
+
+    fun setRvItems(items: List<CharacterEntity>) {
+
+        rvItems.value = items.map {
+
+            it.apply {
+
+                runBlocking {
+
+                    launch(Dispatchers.IO) {
+
+                        dailySuccess = !checkListUtil.alarmDaily( listOf( it ) )
+                        weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( it ) ) || checkListUtil.alarmRaid( listOf( it ) ) )
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    fun editFavoriteType( characterEntity: CharacterEntity, favorite: Int ) {
+
+        viewModelScope.launch {
+
+            characterEntity.favorite = favorite
+            withContext( Dispatchers.IO ) {
+
+                repository.updateCharacter( characterEntity )
+
+            }
+
+        }
+
+    }
+
+    fun saveTime( hour: Int, minute: Int ) {
+
+        pref.getPref()
+        pref.hour = hour
+        pref.minute = minute
+
+    }
+
+    fun updateSuccessState( pos: Int ) {
+
+        rvItems.value!![pos].run {
+
+            runBlocking {
+
+                launch(Dispatchers.IO) {
+
+                    dailySuccess = !checkListUtil.alarmDaily( listOf( this@run ) )
+                    weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( this@run ) ) || checkListUtil.alarmRaid( listOf( this@run ) ) )
+
+                }
+
+            }
+
+        }
+        rvItems.value = rvItems.value
 
     }
 

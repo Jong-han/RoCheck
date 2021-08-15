@@ -10,7 +10,11 @@ data class CharacterEntity(
     @ColumnInfo(name = "nick_name") val nickName: String,
     @ColumnInfo(name = "klass") val klass: String,
     @ColumnInfo(name = "level") var level: Int,
+    @ColumnInfo(name = "favorite") var favorite: Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    @Ignore var dailySuccess = false
+    @Ignore var weeklySuccess = false
 }

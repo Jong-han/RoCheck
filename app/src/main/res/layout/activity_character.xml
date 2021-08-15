@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/text_color"
         tools:context=".ui.character.CharacterActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -19,45 +20,119 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/black">
+            android:background="@color/primary_color">
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="캐선"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/character_title"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/text_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
         </androidx.appcompat.widget.Toolbar>
 
-        <TextView
+        <ImageView
             android:id="@+id/btn_add_character"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
             android:padding="10dp"
-            android:text="추가"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@color/white"
+            android:src="@drawable/baseline_add_24"
+            android:background="@drawable/cm_ripple_bound_oval"
             android:onClick="@{()->viewModel.clickAddCharacter()}"
             app:layout_constraintTop_toTopOf="@id/tb_character"
             app:layout_constraintBottom_toBottomOf="@id/tb_character"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/btn_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@drawable/cm_ripple_bound_oval"
+            android:src="@drawable/baseline_notifications_active_24_2"
+            android:onClick="@{()->viewModel.clickSetting()}"
+            app:layout_constraintTop_toTopOf="@id/tb_character"
+            app:layout_constraintBottom_toBottomOf="@id/tb_character"
+            app:layout_constraintEnd_toStartOf="@id/btn_add_character"/>
+
+        <TextView
+            android:id="@+id/btn_weekly_expedition"
+            android:background="@drawable/bg_character_item"
+            android:padding="15dp"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/expedition_title"
+            android:textStyle="bold"
+            android:textColor="@color/primary_color"
+            android:textSize="@dimen/title_text_size"
+            android:gravity="center"
+            android:onClick="@{()->viewModel.clickExpedition()}"
+            android:invisibleIf="@{viewModel.rvItems.empty}"
+            app:layout_constraintTop_toBottomOf="@id/tb_character"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/rest_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/character_reset_btn_title"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:padding="5dp"
+            android:invisibleIf="@{viewModel.rvItems.empty}"
+            android:onClick="@{()->viewModel.clickReset()}"
+            app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_character"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/tb_character"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/rest_setting"
+            app:layout_constraintBottom_toTopOf="@id/adView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/primary_color"
+            android:textStyle="bold"
+            android:textSize="@dimen/title_text_size"
+            android:text="@string/character_no_list"
+            android:visibleIf="@{viewModel.rvItems.empty}"
+            app:layout_constraintVertical_bias="0.45"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent">
+        </com.google.android.gms.ads.AdView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
