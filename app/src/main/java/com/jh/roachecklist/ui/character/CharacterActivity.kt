@@ -3,6 +3,7 @@ package com.jh.roachecklist.ui.character
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +25,8 @@ import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.system.exitProcess
+
 
 @AndroidEntryPoint
 class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewModel>() {
@@ -53,10 +56,27 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         dataBinding.rvCharacter.apply {
 
-            layoutManager = GridLayoutManager( this@CharacterActivity, 2 )
+            layoutManager = GridLayoutManager(this@CharacterActivity, 2)
             adapter = characterAdapter
 
         }
+
+        viewModel.clickReset.observe( this, {
+
+            DialogUtil.showResetDialog( this, layoutInflater ) {
+
+                checkListUtil.resetCheckList()
+
+                val packageManager: PackageManager = packageManager
+                val intent: Intent? = packageManager.getLaunchIntentForPackage(packageName)
+                val componentName = intent?.component
+                val mainIntent = Intent.makeRestartActivityTask(componentName)
+                startActivity(mainIntent)
+                System.runFinalization()
+
+            }
+
+        })
 
         viewModel.originalList.observe( this, {
 

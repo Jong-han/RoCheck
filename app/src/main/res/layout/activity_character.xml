@@ -79,13 +79,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <TextView
+            android:id="@+id/rest_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/character_reset_btn_title"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:padding="5dp"
+            android:onClick="@{()->viewModel.clickReset()}"
+            app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_character"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+            app:layout_constraintTop_toBottomOf="@id/rest_setting"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

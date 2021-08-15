@@ -274,4 +274,56 @@ object DialogUtil {
 
     }
 
+    fun showResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                showReallyResetDialog( context, layoutInflater, onOk )
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
+    fun showReallyResetDialog(context: Context, layoutInflater: LayoutInflater, onOk: ()->(Unit) ) {
+
+        val binding = ActivityCharacterResetReallyDialogBinding.inflate( layoutInflater )
+        val builder = AlertDialog.Builder( context )
+
+        builder.setView( binding.root )
+        builder.setCancelable( false )
+
+        val dialog = builder.create()
+        dialog?.window?.setLayout( ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT )
+        dialog.show()
+
+        binding.run {
+
+            btnOk.setOnClickListener {
+                onOk.invoke()
+                dialog.dismiss()
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+
+        }
+
+    }
+
 }

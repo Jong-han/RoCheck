@@ -13,6 +13,12 @@
     <string name="character_add_sub">부캐</string>
     <string name="character_add_barrack">배럭</string>
     <string name="character_add_title">캐릭터 추가</string>
+    <string name="character_reset_btn_title">오전 6시가 지나도 초기화되지 않았나요?</string>
+    <string name="character_reset_title">숙제 초기화</string>
+    <string name="character_reset_msg">디바이스가 꺼진 상태에서는 자동 초기화가 진행되지 않습니다.\n오전 6시가 지났는데 초기화 되지 않았다면 수동으로 초기화 해주세요.</string>
+    <string name="character_reset">초기화</string>
+    <string name="character_reset_really">초기화 하시겠습니까?</string>
+    <string name="character_reset_really_ok">확인</string>
     <string name="character_setting">설정</string>
     <string name="character_setting_title">알람 시간 변경</string>
 

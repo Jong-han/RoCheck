@@ -44,6 +44,13 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     }
 
+    val clickReset = SingleLiveEvent<Any>()
+    fun clickReset() {
+
+        clickReset.call()
+
+    }
+
     val clickAddCharacter = SingleLiveEvent<Any>()
     fun clickAddCharacter() {
         clickAddCharacter.call()
