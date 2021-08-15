@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdRequest
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
@@ -25,7 +26,6 @@ import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.system.exitProcess
 
 
 @AndroidEntryPoint
@@ -53,6 +53,8 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     override fun initViewAndEvent() {
 
         setSupportActionBar( dataBinding.tbCharacter, false )
+        val adRequest = AdRequest.Builder().build()
+        dataBinding.adView.loadAd( adRequest )
 
         dataBinding.rvCharacter.apply {
 
@@ -131,9 +133,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     private val resultForCharacter = registerForActivityResult( ActivityResultContracts.StartActivityForResult() ) {
 
-        Log.i("asdf","돌아옴!!!!!!!!!!")
         val pos = it.data?.getIntExtra( CheckListActivity.RESULT_POSITION, 999) ?: 9999
-        Log.i("asdf","position :: $pos")
         viewModel.updateSuccessState( pos )
         characterAdapter.notifyItemChanged( pos )
 
@@ -183,8 +183,8 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         val realTriggerTime = if ( triggerTime > System.currentTimeMillis() )
             triggerTime
         else
-            triggerTime + Const.TEST_INTERVAL
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, realTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
+            triggerTime + Const.INTERVAL
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, realTriggerTime, AlarmManager.INTERVAL_DAY, pendingIntent)
         viewModel.saveTime( hour, minute )
 
     }
@@ -195,10 +195,5 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         characterAdapter.notifyItemChanged( characterAdapter.currentList.indexOf( characterEntity ) )
 
     }
-
-//    override fun onStart() {
-//        super.onStart()
-//        characterAdapter.notifyDataSetChanged()
-//    }
 
 }

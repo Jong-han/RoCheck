@@ -5,7 +5,7 @@ object Const {
     const val MAX_LEVEL = 10000
 
     const val INTERVAL: Long = 1000 * 60 * 60 * 24
-    const val TEST_INTERVAL: Long = 1000 * 60 * 3
+    const val TEST_INTERVAL: Long = 1000 * 60 * 5
 
 
     object Favorite {
