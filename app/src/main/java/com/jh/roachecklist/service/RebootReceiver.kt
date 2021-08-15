@@ -49,15 +49,15 @@ class RebootReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val alarmCalendar = Calendar.getInstance()
-            alarmCalendar.set(Calendar.HOUR_OF_DAY, 12 )
-            alarmCalendar.set(Calendar.MINUTE, 38 )
+            alarmCalendar.set(Calendar.HOUR_OF_DAY, pref.hour )
+            alarmCalendar.set(Calendar.MINUTE, pref.minute )
             alarmCalendar.set(Calendar.SECOND, 0)
             alarmCalendar.set(Calendar.MILLISECOND, 0)
 
             val alarmTriggerTime = if ( alarmCalendar.timeInMillis > System.currentTimeMillis() )
                 alarmCalendar.timeInMillis
             else
-                alarmCalendar.timeInMillis + Const.INTERVAL
+                alarmCalendar.timeInMillis + Const.TEST_INTERVAL
 
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, alarmPendingIntent)
 
@@ -67,15 +67,15 @@ class RebootReceiver : BroadcastReceiver() {
                 PendingIntent.FLAG_UPDATE_CURRENT)
 
             val refreshCalendar = Calendar.getInstance()
-            refreshCalendar.set(Calendar.HOUR_OF_DAY, 12)
-            refreshCalendar.set(Calendar.MINUTE, 38)
+            refreshCalendar.set(Calendar.HOUR_OF_DAY, 13)
+            refreshCalendar.set(Calendar.MINUTE, 25)
             refreshCalendar.set(Calendar.SECOND, 0)
             refreshCalendar.set(Calendar.MILLISECOND, 0)
 
             val refreshTriggerTime = if ( refreshCalendar.timeInMillis > System.currentTimeMillis() )
                 refreshCalendar.timeInMillis
             else
-                refreshCalendar.timeInMillis + Const.INTERVAL
+                refreshCalendar.timeInMillis + Const.TEST_INTERVAL
 
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, refreshTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, refreshPendingIntent)
 

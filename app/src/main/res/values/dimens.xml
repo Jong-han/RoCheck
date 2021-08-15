@@ -5,4 +5,7 @@
     <dimen name="secondary_text_size">14dp</dimen>
 
     <dimen name="default_layout_padding">25dp</dimen>
+
+    <dimen name="indicator_single_margin">10dp</dimen>
+    <dimen name="indicator_double_margin">3dp</dimen>
 </resources>

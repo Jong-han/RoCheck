@@ -155,25 +155,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun updateSuccessState( pos: Int ) {
 
-//        rvItems.value = rvItems.value?.map {
-//
-//            it.apply {
-//
-//                runBlocking {
-//
-//                    launch(Dispatchers.IO) {
-//
-//                        dailySuccess = !checkListUtil.alarmDaily( listOf( it ) )
-//                        weeklySuccess = ! ( checkListUtil.alarmWeekly( listOf( it ) ) || checkListUtil.alarmRaid( listOf( it ) ) )
-//
-//                    }
-//
-//                }
-//
-//            }
-//
-//        }
-
         rvItems.value!![pos].run {
 
             runBlocking {

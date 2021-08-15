@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "332313993727",
+    "project_id": "rocheck-89622",
+    "storage_bucket": "rocheck-89622.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332313993727:android:9ac9cd4055983899cf47ca",
+        "android_client_info": {
+          "package_name": "com.jh.roachecklist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332313993727-2ivj0ebkjdi2pt8g01krbh8s1tlsc1m5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrmYMWtt_idxpcPA8j0smYhi249dzAOlw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332313993727-2ivj0ebkjdi2pt8g01krbh8s1tlsc1m5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -163,8 +163,8 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         val realTriggerTime = if ( triggerTime > System.currentTimeMillis() )
             triggerTime
         else
-            triggerTime + Const.INTERVAL
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, realTriggerTime, AlarmManager.INTERVAL_DAY, pendingIntent)
+            triggerTime + Const.TEST_INTERVAL
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, realTriggerTime, AlarmManager.INTERVAL_FIFTEEN_MINUTES, pendingIntent)
         viewModel.saveTime( hour, minute )
 
     }
