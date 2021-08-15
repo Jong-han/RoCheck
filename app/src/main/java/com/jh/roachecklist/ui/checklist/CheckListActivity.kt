@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
@@ -48,7 +47,7 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
     private val fragmentList = arrayListOf( dailyFragment, weeklyFragment, raidFragment )
 
     override fun initViewAndEvent() {
-        MobileAds.initialize(this) {}
+
         val adRequest = AdRequest.Builder().build()
         dataBinding.adView.loadAd( adRequest )
 

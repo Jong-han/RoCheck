@@ -42,14 +42,12 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
     }
 
     private fun filterList(level: Int ) {
-        Log.i("asdf","필터 리스트 시작 ")
 
         daily.value = daily.value?.filter { model ->
 
             level >= model.minLevel ?: 0 &&  level < model.maxLevel ?: 10000
 
         } as ArrayList<CheckListEntity>
-        Log.i("asdf","필터 리스트 종료 ")
 
     }
 
@@ -120,10 +118,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
         viewModelScope.launch( Dispatchers.IO ) {
 
             val result =  repository.getDailyCheckList()
-//            Log.i("zxcv","test daily :: ${repository.getDailyCantCheckList( level ).size}")
-//            Log.i("zxcv","test expedition :: ${repository.getExpeditionCantCheckList( level ).size}")
-//            Log.i("zxcv","test raid :: ${repository.getRaidCantCheckList( level ).size}")
-//            Log.i("zxcv","test weekly :: ${repository.getWeeklyCantCheckList( level ).size}")
 
             withContext( Dispatchers.Main ) {
 
@@ -292,7 +286,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${daily.value!![pos].work}")
 
         when ( daily.value!![pos].work ) {
 

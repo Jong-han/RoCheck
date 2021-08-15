@@ -13,21 +13,16 @@ class AppPreference constructor(private val context: Context ) {
     private lateinit var sharedPreferences: SharedPreferences
 
     fun getPref( nickName: String = "expedition" ) {
-        Log.i("asdf","now pref :: $nickName")
         sharedPreferences = context.getSharedPreferences( nickName, 0 )
 
     }
 
     fun deletePref( nickName: String ) {
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            context.deleteSharedPreferences( nickName )
-//        } else {
             context.getSharedPreferences( nickName, 0 ).edit().clear().apply()
             val deletePrefFile =
                 File( context.cacheDir.parent + "/shared_prefs/" + nickName + ".xml")
             deletePrefFile.delete()
-//        }
 
     }
 

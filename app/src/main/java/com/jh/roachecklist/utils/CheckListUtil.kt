@@ -25,15 +25,10 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             withContext( Dispatchers.Main ) {
 
-                Log.i("asdf","닉네임 리스트 :: ${nickNameList.size}")
-                Log.i("asdf","오늘 요일 :: ${calendar.get(Calendar.DAY_OF_WEEK)}")
-
                 for ( nickName in nickNameList ) {
 
                     pref.getPref( nickName )
                     val dailyList = pref.getDailyList()
-
-                    Log.i("asdf","start calculate ::$nickName")
 
                     for ( index in 0 until dailyList.size ) {
 
@@ -140,11 +135,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmDaily( characterList: List<CharacterEntity> ): Boolean {
-        Log.i("asdf","++++++++++++++++++START ALARM DAILY+++++++++++++++++++")
 
         var result = false
-
-        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
         for ( character in characterList ) {
 
@@ -156,34 +148,20 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
             val notiYesList = notiList.filter { it >= 1 }
             val dailyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantDailyList )
 
-            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-            Log.i("asdf","dailyTotalNotiCount  :: $dailyTotalNotiCount")
-
             var dailyCheckedCount = 0
 
             for ( index in 0 until notiList.size ) {
 
                 if ( notiList[index] >= 1 ) {
-                    Log.i("asdf","알람 켜놓음 :: $index")
+
                     dailyCheckedCount += dailyList[index]
-                    Log.i("asdf","dailyCheckedCount:: $dailyCheckedCount")
-
-
-                } else {
-
-                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 
             }
             if ( dailyCheckedCount < dailyTotalNotiCount ) {
-                Log.i("asdf","${character.nickName} return :: true")
                 result = true
                 break
-
-            } else {
-
-                Log.i("asdf","${character.nickName} return :: false")
 
             }
 
@@ -194,11 +172,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmWeekly( characterList: List<CharacterEntity> ): Boolean {
-        Log.i("asdf","++++++++++++++++++START ALARM WEEKLY+++++++++++++++++++")
 
         var result = false
-
-        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
         for ( character in characterList ) {
 
@@ -210,34 +185,21 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
             val notiYesList = notiList.filter { it >= 1 }
             val weeklyTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantWeeklyList )
 
-            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-            Log.i("asdf","weeklyTotalNotiCount  :: $weeklyTotalNotiCount")
-
             var weeklyCheckedCount = 0
 
             for ( index in 0 until notiList.size ) {
 
                 if ( notiList[index] >= 1 ) {
-                    Log.i("asdf","알람 켜놓음 :: $index")
+
                     weeklyCheckedCount += weeklyList[index]
-                    Log.i("asdf","weeklyCheckedCount:: $weeklyCheckedCount")
-
-
-                } else {
-
-                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 
             }
             if ( weeklyCheckedCount < weeklyTotalNotiCount ) {
-                Log.i("asdf","${character.nickName} return :: true")
+
                 result = true
                 break
-
-            } else {
-
-                Log.i("asdf","${character.nickName} return :: false")
 
             }
 
@@ -247,11 +209,8 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
     }
 
     fun alarmRaid( characterList: List<CharacterEntity> ): Boolean {
-        Log.i("asdf","++++++++++++++++++START ALARM RAID+++++++++++++++++++")
 
         var result = false
-
-        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
         for ( character in characterList ) {
 
@@ -263,47 +222,32 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
             val notiYesList = notiList.filter { it >= 1 }
             val raidTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantRaidList )
 
-            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-            Log.i("asdf","raidTotalNotiCount  :: $raidTotalNotiCount")
-
             var raidCheckedCount = 0
 
             for ( index in 0 until notiList.size ) {
 
                 if ( notiList[index] >= 1 ) {
-                    Log.i("asdf","알람 켜놓음 :: $index")
+
                     raidCheckedCount += raidList[index]
-                    Log.i("asdf","raidCheckedCount:: $raidCheckedCount")
-
-
-                } else {
-
-                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 
             }
             if ( raidCheckedCount < raidTotalNotiCount ) {
-                Log.i("asdf","${character.nickName} return :: true")
+
                 result = true
                 break
 
-            } else {
-
-                Log.i("asdf","${character.nickName} return :: false")
-
             }
+
         }
         return result
 
     }
 
-    fun alarmExpedition( characterList: List<CharacterEntity> ): Boolean {
-        Log.i("asdf","++++++++++++++++++START ALARM EXPEDITION+++++++++++++++++++")
+    private fun alarmExpedition(characterList: List<CharacterEntity> ): Boolean {
 
         var result = false
-
-        Log.i("asdf","닉네임 리스트 :: ${characterList.size}")
 
         for ( character in characterList ) {
 
@@ -315,22 +259,13 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
             val notiYesList = notiList.filter { it >= 1 }
             val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
 
-            Log.i("asdf","notiYestList size :: ${notiYesList.size}")
-            Log.i("asdf","expeditionTotalNotiCount  :: $expeditionTotalNotiCount")
-
             var expeditionCheckedCount = 0
 
             for ( index in 0 until notiList.size ) {
 
                 if ( notiList[index] >= 1 ) {
-                    Log.i("asdf","알람 켜놓음 :: $index")
+
                     expeditionCheckedCount += expeditionList[index]
-                    Log.i("asdf","expeditionCheckedCount:: $expeditionCheckedCount")
-
-
-                } else {
-
-                    Log.i("asdf","알람 꺼놓음 :: $index")
 
                 }
 

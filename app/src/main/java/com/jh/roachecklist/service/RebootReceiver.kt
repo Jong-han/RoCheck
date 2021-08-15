@@ -25,8 +25,6 @@ class RebootReceiver : BroadcastReceiver() {
 
             pref.getPref()
 
-            Log.i("asdf","기기가 부팅됨")
-
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             val alarmIntent = Intent( context, AlarmReceiver::class.java )

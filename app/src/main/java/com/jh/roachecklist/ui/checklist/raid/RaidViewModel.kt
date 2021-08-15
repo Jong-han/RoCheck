@@ -70,9 +70,6 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
 
     fun increaseCheckedCount( pos: Int, otherDifficulty: Int? ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( raid.value!![pos].work ) {
 
             Raid.BALTAN -> {
@@ -163,7 +160,6 @@ class RaidViewModel @Inject constructor( private val pref: AppPreference,
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${raid.value!![pos].work}")
 
         when ( raid.value!![pos].work ) {
 

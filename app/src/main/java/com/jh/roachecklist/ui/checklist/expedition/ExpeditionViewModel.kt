@@ -41,7 +41,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
         val expeditionNotiList = pref.getExpeditionNotiList()
 
         for ( index in 0 until expeditionList.size ) {
-            Log.i("zxcv", "index :: ${index} :: ${expeditionList[index]}")
 
             expedition.value!![index].checkedCount = expeditionList[index]
             expedition.value!![index].isNoti = expeditionNotiList[index]
@@ -73,9 +72,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
 
     fun increaseCheckedCount( pos: Int ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( expedition.value!![pos].work ) {
 
             Expedition.CHALLENGE_ABYSS_DUNGEON -> {
@@ -106,9 +102,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
 
     fun decreaseCheckedCount( pos: Int ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( expedition.value!![pos].work ) {
 
             Expedition.CHALLENGE_ABYSS_DUNGEON -> {
@@ -138,7 +131,6 @@ class ExpeditionViewModel @Inject constructor( private val repository: Repositor
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${expedition.value!![pos].work}")
 
         when ( expedition.value!![pos].work ) {
 

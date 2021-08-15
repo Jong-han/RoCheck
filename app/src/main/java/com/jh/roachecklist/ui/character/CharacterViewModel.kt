@@ -68,7 +68,7 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
         viewModelScope.launch(Dispatchers.IO) {
             val isExist = repository.isExist( character )
             if ( isExist ) {
-                Log.i("zxcvzxcv","캐릭터가 존재합니다.")
+
                 withContext( Dispatchers.Main ) {
 
                     event.value = CharacterEvent.EXIST
@@ -77,7 +77,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
             } else {
 
-                Log.i("zxcvzxcv", " 캐릭터생성")
                 repository.addCharacter(character)
 
             }
@@ -114,7 +113,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     fun setRvItems(items: List<CharacterEntity>) {
 
-        Log.i("zxcvzxcv","setRvItems start ${System.currentTimeMillis()}")
         rvItems.value = items.map {
 
             it.apply {
@@ -133,8 +131,6 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
             }
 
         }
-        Log.i("zxcvzxcv","setRvItems end ${System.currentTimeMillis()}")
-
 
     }
 

@@ -128,7 +128,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:adUnitId="@string/banner_ad_unit_id_for_test"
             ads:layout_constraintBottom_toBottomOf="parent"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintEnd_toEndOf="parent">

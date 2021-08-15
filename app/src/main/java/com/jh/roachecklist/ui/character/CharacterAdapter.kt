@@ -29,14 +29,10 @@ class CharacterAdapter( private val onClick: (Int)->(Unit), private val onLongCl
     inner class CharacterViewHolder( private val binding: ActivityCharacterItemBinding ): RecyclerView.ViewHolder( binding.root ) {
 
         fun bind( item: CharacterEntity ) {
-            Log.i("asdf","++++++++++++++++++START BIND+++++++++++++++++++")
 
             binding.run {
 
                 this@run.item = item
-
-                Log.i("asdf","${item.nickName} dailySuccess :: ${item.dailySuccess}")
-                Log.i("asdf","${item.nickName} weeklySuccess :: ${item.weeklySuccess}")
 
                 container.setOnClickListener {
 
@@ -50,21 +46,7 @@ class CharacterAdapter( private val onClick: (Int)->(Unit), private val onLongCl
 
                 }
 
-//                CoroutineScope( Dispatchers.IO ).launch {
-//
-//                    item.dailySuccess = !checkListUtil.alarmDaily( listOf( item ) )
-//                    item.weeklySuccess = !( checkListUtil.alarmWeekly( listOf( item ) ) && checkListUtil.alarmRaid( listOf( item ) ) )
-//
-//                    Log.i("zxcv","dailySuccess :: ${item.dailySuccess}")
-//                    Log.i("zxcv","weeklySuccess :: ${item.weeklySuccess}")
-//
-//                    withContext( Dispatchers.Main ) {
-//
-//                    }
-//                }
-
             }
-            Log.i("asdf","++++++++++++++++++END BIND+++++++++++++++++++")
 
         }
 

@@ -70,9 +70,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
     fun increaseCheckedCount( pos: Int, otherDifficulty: Int? ) {
 
-//        Log.i("zxcv", "work:: $work")
-
-
         when ( weekly.value!![pos].work ) {
 
             WeeklyWork.CHALLENGE_GUARDIAN -> {
@@ -174,7 +171,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
     }
 
     fun onClickNoti( pos: Int ) {
-        Log.i("zxcv","눌린거 :: ${weekly.value!![pos].work}")
 
         when ( weekly.value!![pos].work ) {
 
