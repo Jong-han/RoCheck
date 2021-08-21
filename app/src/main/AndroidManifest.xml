@@ -45,6 +45,13 @@
             android:name=".service.RefreshReceiver"
             android:exported="false" >
         </receiver>
+        <receiver
+            android:name=".service.UpdateReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
