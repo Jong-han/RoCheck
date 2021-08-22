@@ -26,7 +26,6 @@ class UpdateReceiver : BroadcastReceiver() {
             Toast.makeText( context, "app update!", Toast.LENGTH_SHORT).show()
 
             pref.getPref()
-            pref.isFirst = true
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 

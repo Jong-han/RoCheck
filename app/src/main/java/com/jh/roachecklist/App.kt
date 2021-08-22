@@ -31,17 +31,16 @@ class App: Application() {
         super.onCreate()
 
         pref.getPref()
+
+        CoroutineScope( Dispatchers.IO).launch {
+
+            repository.clearCheckList()
+            repository.insertCheckList()
+
+        }
+
         if ( pref.isFirst ) {
 
-            Log.i("asdf","제발제발제발제발")
-
-            CoroutineScope( Dispatchers.IO).launch {
-
-                repository.clearCheckList()
-                repository.insertCheckList()
-                pref.isFirst = false
-
-            }
             val alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             val alarmIntent = Intent( applicationContext, AlarmReceiver::class.java )
