@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.jh.roachecklist.ui.checklist.CheckListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +24,7 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/check_list_title"
+                android:text="@{@string/check_list_title + viewModel.nickname }"
                 android:textSize="@dimen/title_text_size"
                 android:textStyle="bold"
                 android:textColor="@color/text_color"

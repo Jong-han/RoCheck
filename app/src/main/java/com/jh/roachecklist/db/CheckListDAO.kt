@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 
 @Dao
-interface CheckListDao {
+interface CheckListDAO {
 
     @Query("SELECT * FROM CheckList")
     fun getAll(): List<CheckListEntity>
@@ -21,5 +21,8 @@ interface CheckListDao {
 
     @Query("SELECT * FROM CheckList WHERE type = :type and ( :level < minLevel or :level >= maxLevel )")
     fun getCantList( type: String, level: Int ): List<CheckListEntity>
+
+    @Query("DELETE FROM CheckList")
+    fun deleteAll()
 
 }

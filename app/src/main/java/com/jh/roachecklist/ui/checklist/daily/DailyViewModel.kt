@@ -152,24 +152,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                 }
 
             }
-            DailyWork.FAVORABILITY -> {
-
-                pref.favorability = pref.favorability + 1
-                daily.value!![pos].checkedCount = pref.favorability
-
-            }
-            DailyWork.ISLAND -> {
-
-                pref.island = pref.island + 1
-                daily.value!![pos].checkedCount = pref.island
-
-            }
-            DailyWork.FIELD_BOSS -> {
-
-                pref.fieldBoss = pref.fieldBoss + 1
-                daily.value!![pos].checkedCount = pref.fieldBoss
-
-            }
             DailyWork.DAILY_GUARDIAN -> {
 
                 pref.dailyGuardian = pref.dailyGuardian + 1
@@ -179,12 +161,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                     displayGuardianRestBonus.value = displayGuardianRestBonus.value?.minus( Const.Rest.CONSUME_REST_BONUS )
 
                 }
-
-            }
-            DailyWork.CHAOS_GATE -> {
-
-                pref.chaosGate = pref.chaosGate + 1
-                daily.value!![pos].checkedCount = pref.chaosGate
 
             }
             DailyWork.CHAOS_DUNGEON -> {
@@ -223,24 +199,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                 }
 
             }
-            DailyWork.FAVORABILITY -> {
-
-                pref.favorability = pref.favorability - 1
-                daily.value!![pos].checkedCount = pref.favorability
-
-            }
-            DailyWork.ISLAND -> {
-
-                pref.island = pref.island - 1
-                daily.value!![pos].checkedCount = pref.island
-
-            }
-            DailyWork.FIELD_BOSS -> {
-
-                pref.fieldBoss = pref.fieldBoss - 1
-                daily.value!![pos].checkedCount = pref.fieldBoss
-
-            }
             DailyWork.DAILY_GUARDIAN -> {
 
                 pref.dailyGuardian = pref.dailyGuardian - 1
@@ -250,12 +208,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                     displayGuardianRestBonus.value = displayGuardianRestBonus.value?.plus( Const.Rest.CONSUME_REST_BONUS )
 
                 }
-
-            }
-            DailyWork.CHAOS_GATE -> {
-
-                pref.chaosGate = pref.chaosGate - 1
-                daily.value!![pos].checkedCount = pref.chaosGate
 
             }
             DailyWork.CHAOS_DUNGEON -> {
@@ -308,33 +260,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                 daily.value!![pos].isNoti = pref.dailyEfonaNoti
 
             }
-            DailyWork.FAVORABILITY -> {
-
-                if ( pref.favorabilityNoti >= Const.NotiState.YES )
-                    pref.favorabilityNoti = Const.NotiState.NO
-                else
-                    pref.favorabilityNoti = Const.NotiState.YES
-                daily.value!![pos].isNoti = pref.favorabilityNoti
-
-            }
-            DailyWork.ISLAND -> {
-
-                if ( pref.islandNoti >= Const.NotiState.YES )
-                    pref.islandNoti = Const.NotiState.NO
-                else
-                    pref.islandNoti = Const.NotiState.YES
-                daily.value!![pos].isNoti = pref.islandNoti
-
-            }
-            DailyWork.FIELD_BOSS -> {
-
-                if ( pref.fieldBossNoti >= Const.NotiState.YES )
-                    pref.fieldBossNoti = Const.NotiState.NO
-                else
-                    pref.fieldBossNoti = Const.NotiState.YES
-                daily.value!![pos].isNoti = pref.fieldBossNoti
-
-            }
             DailyWork.DAILY_GUARDIAN -> {
 
                 if ( pref.dailyGuardianNoti >= Const.NotiState.YES )
@@ -343,16 +268,6 @@ class DailyViewModel @Inject constructor( private val pref: AppPreference, priva
                     pref.dailyGuardianNoti = Const.NotiState.YES
 
                 daily.value!![pos].isNoti = pref.dailyGuardianNoti
-
-            }
-            DailyWork.CHAOS_GATE -> {
-
-                if ( pref.chaosGateNoti >= Const.NotiState.YES )
-                    pref.chaosGateNoti = Const.NotiState.NO
-                else
-                    pref.chaosGateNoti = Const.NotiState.YES
-
-                daily.value!![pos].isNoti = pref.chaosGateNoti
 
             }
             DailyWork.CHAOS_DUNGEON -> {

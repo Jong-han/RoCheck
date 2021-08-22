@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.service.AlarmReceiver
@@ -29,21 +30,17 @@ class App: Application() {
 
         super.onCreate()
 
-//        val br = UpdateReceiver()
-//        val intentFilter = IntentFilter().apply {
-//            addAction(Intent.ACTION_MY_PACKAGE_REPLACED)
-//        }
-//        registerReceiver( br, intentFilter )
-
         pref.getPref()
+
+        CoroutineScope( Dispatchers.IO).launch {
+
+            repository.clearCheckList()
+            repository.insertCheckList()
+
+        }
+
         if ( pref.isFirst ) {
 
-            CoroutineScope( Dispatchers.IO).launch {
-
-                repository.insertCheckList()
-                pref.isFirst = false
-
-            }
             val alarmManager = applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
             val alarmIntent = Intent( applicationContext, AlarmReceiver::class.java )
