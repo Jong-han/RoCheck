@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.service.AlarmReceiver
@@ -29,14 +30,10 @@ class App: Application() {
 
         super.onCreate()
 
-//        val br = UpdateReceiver()
-//        val intentFilter = IntentFilter().apply {
-//            addAction(Intent.ACTION_MY_PACKAGE_REPLACED)
-//        }
-//        registerReceiver( br, intentFilter )
         pref.getPref()
-        pref.isFirst = true
         if ( pref.isFirst ) {
+
+            Log.i("asdf","제발제발제발제발")
 
             CoroutineScope( Dispatchers.IO).launch {
 
