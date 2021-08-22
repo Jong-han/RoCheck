@@ -34,12 +34,13 @@ class App: Application() {
 //            addAction(Intent.ACTION_MY_PACKAGE_REPLACED)
 //        }
 //        registerReceiver( br, intentFilter )
-
         pref.getPref()
+        pref.isFirst = true
         if ( pref.isFirst ) {
 
             CoroutineScope( Dispatchers.IO).launch {
 
+                repository.clearCheckList()
                 repository.insertCheckList()
                 pref.isFirst = false
 

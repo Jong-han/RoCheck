@@ -1,63 +1,109 @@
 package com.jh.roachecklist.ui.checklist.expedition
 
+import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
 import com.jh.roachecklist.databinding.ActivityExpeditonBinding
 import com.jh.roachecklist.ui.base.BaseActivity
+import com.jh.roachecklist.ui.character.CharacterActivity
+import com.jh.roachecklist.ui.checklist.CheckListActivity
+import com.jh.roachecklist.ui.checklist.expedition.daily.ExpeditionDailyFragment
+import com.jh.roachecklist.ui.checklist.expedition.weekly.ExpeditionWeeklyFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ExpeditionActivity: BaseActivity<ActivityExpeditonBinding, ExpeditionViewModel>() {
+
+    companion object {
+
+        const val DAILY = 0
+        const val WEEKLY = 1
+
+        const val EXTRA_BUNDLE_EXPEDITION_LEVEL = "EXTRA_BUNDLE_EXPEDITION_LEVEL"
+
+    }
+
     override val viewModel: ExpeditionViewModel by viewModels()
     override val bindingVariable: Int = BR.viewModel
 
     override fun getLayoutId(): Int = R.layout.activity_expediton
 
-    private val expeditionAdapter: ExpeditionAdapter by lazy { ExpeditionAdapter( onChecked, onClickNoti ) }
+    private val expeditionDailyFragment = ExpeditionDailyFragment()
+    private val expeditionWeeklyFragment = ExpeditionWeeklyFragment()
+    private val fragmentList = arrayListOf( expeditionDailyFragment, expeditionWeeklyFragment )
+
+    private var activeFragment: Fragment = expeditionDailyFragment
 
     override fun initViewAndEvent() {
 
         viewModel.setCharacterInfo()
 
-        dataBinding.rvExpedition.apply {
+        val bundle = setBundle()
 
-            adapter = expeditionAdapter
-            layoutManager = LinearLayoutManager( this@ExpeditionActivity )
+        expeditionDailyFragment.arguments = bundle
+        expeditionWeeklyFragment.arguments = bundle
 
-        }
+        supportFragmentManager.beginTransaction()
+            .add( R.id.container_expedition, expeditionDailyFragment )
+            .add( R.id.container_expedition, expeditionWeeklyFragment )
+            .hide( expeditionDailyFragment )
+            .hide( expeditionWeeklyFragment )
+            .show( activeFragment )
+            .commit()
 
-        viewModel.expedition.observe( this, {
 
-            expeditionAdapter.submitList( it )
+        addOrShowFragment( DAILY )
+
+        dataBinding.tabs.addOnTabSelectedListener( object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+
+                when ( tab?.position ) {
+
+                    DAILY -> addOrShowFragment(DAILY)
+                    WEEKLY -> addOrShowFragment(WEEKLY)
+
+                }
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
 
         })
 
     }
 
-    private val onChecked = { view: View, pos: Int ->
+    private fun addOrShowFragment( index: Int ) {
 
-        if ( ( view as CheckBox).isChecked ) {
+        val fragment= fragmentList[index]
 
-            viewModel.increaseCheckedCount(pos)
-            expeditionAdapter.notifyItemChanged( pos )
+        val transaction = supportFragmentManager.beginTransaction()
 
-        } else {
+        transaction.hide( activeFragment ).show( fragment )
 
-            viewModel.decreaseCheckedCount( pos )
-            expeditionAdapter.notifyItemChanged( pos )
+        transaction.commit()
 
-        }
+        activeFragment = fragment
+
 
     }
 
-    private val onClickNoti = { position: Int ->
+    private fun setBundle(): Bundle {
 
-        viewModel.onClickNoti( position )
-        expeditionAdapter.notifyItemChanged( position )
+        val level = viewModel.level
+
+        val bundle = Bundle()
+        bundle.putInt( EXTRA_BUNDLE_EXPEDITION_LEVEL, level )
+
+        return bundle
 
     }
 

@@ -24,6 +24,7 @@ class UpdateReceiver : BroadcastReceiver() {
         if (intent.action.equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
 
             pref.getPref()
+            pref.isFirst = true
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 

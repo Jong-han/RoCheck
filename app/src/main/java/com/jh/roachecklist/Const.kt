@@ -40,6 +40,8 @@ object Const {
         const val WEEKLY = "WEEKLY"
         const val RAID = "RAID"
         const val EXPEDITION = "EXPEDITION"
+        const val EXPEDITION_DAILY = "EXPEDITION_DAILY"
+        const val EXPEDITION_WEEKLY = "EXPEDITION_WEEKLY"
 
     }
 
@@ -60,11 +62,7 @@ object Const {
 
         const val GUILD = "길드 출석"
         const val DAILY_EFONA = "일일 에포나 의뢰"
-        const val FAVORABILITY = "호감도"
-        const val ISLAND = "모험섬"
-        const val FIELD_BOSS = "필드 보스"
         const val DAILY_GUARDIAN = "가디언 토벌"
-        const val CHAOS_GATE = "카오스 게이트"
         const val CHAOS_DUNGEON = "카오스 던전"
 
     }
@@ -89,7 +87,6 @@ object Const {
         const val ARGOS_1 = "아르고스 페이즈 1"
         const val ARGOS_2 = "아르고스 페이즈 2"
         const val ARGOS_3 = "아르고스 페이즈 3"
-        const val GHOST_SHIP = "유령선"
         const val OREHA = "오레하의 우물"
 
     }
@@ -105,11 +102,21 @@ object Const {
 
     }
 
-    object Expedition {
+    object ExpeditionWeekly {
 
         const val CHALLENGE_ABYSS_DUNGEON = "도전 어비스 던전"
         const val KOUKUSATON_REHEARSAL = "쿠크세이튼 리허설"
         const val ABRELSHOULD_DEJAVU = "아브렐슈드 데자뷰"
+        const val GHOST_SHIP = "유령선"
+
+    }
+
+    object ExpeditionDaily {
+
+        const val FAVORABILITY = "호감도"
+        const val ISLAND = "모험섬"
+        const val FIELD_BOSS = "필드 보스"
+        const val CHAOS_GATE = "카오스 게이트"
 
     }
 
