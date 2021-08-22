@@ -23,8 +23,6 @@ class UpdateReceiver : BroadcastReceiver() {
 
         if (intent.action.equals(Intent.ACTION_MY_PACKAGE_REPLACED)) {
 
-            Toast.makeText( context, "app update!", Toast.LENGTH_SHORT).show()
-
             pref.getPref()
 
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
