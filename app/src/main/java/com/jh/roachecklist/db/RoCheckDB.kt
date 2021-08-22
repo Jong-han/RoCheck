@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.jh.roachecklist.db.CharacterDAO
 import com.jh.roachecklist.db.CharacterEntity
-import com.jh.roachecklist.db.CheckListDao
+import com.jh.roachecklist.db.CheckListDAO
 import com.jh.roachecklist.db.CheckListEntity
 
 @Database(
@@ -13,5 +13,5 @@ import com.jh.roachecklist.db.CheckListEntity
 )
 abstract class RoCheckDB : RoomDatabase() {
     abstract fun characterDAO(): CharacterDAO
-    abstract fun checkListDAO(): CheckListDao
+    abstract fun checkListDAO(): CheckListDAO
 }

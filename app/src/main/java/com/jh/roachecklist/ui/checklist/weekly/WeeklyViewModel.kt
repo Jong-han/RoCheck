@@ -102,12 +102,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                 weekly.value!![pos].checkedCount = pref.argos3
 
             }
-            WeeklyWork.GHOST_SHIP -> {
-
-                pref.ghostShip = pref.ghostShip + 1
-                weekly.value!![pos].checkedCount = pref.ghostShip
-
-            }
             WeeklyWork.OREHA -> {
 
                 pref.oreha = pref.oreha + 1
@@ -151,12 +145,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
                 pref.argos3 = pref.argos3 - 1
                 weekly.value!![pos].checkedCount = pref.argos3
-
-            }
-            WeeklyWork.GHOST_SHIP -> {
-
-                pref.ghostShip = pref.ghostShip - 1
-                weekly.value!![pos].checkedCount = pref.ghostShip
 
             }
             WeeklyWork.OREHA -> {
@@ -226,17 +214,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
                     pref.argos3Noti = Const.NotiState.YES
 
                 weekly.value!![pos].isNoti = pref.argos3Noti
-
-            }
-
-            Const.WeeklyWork.GHOST_SHIP -> {
-
-                if ( pref.ghostShipNoti >= Const.NotiState.YES )
-                    pref.ghostShipNoti = Const.NotiState.NO
-                else
-                    pref.ghostShipNoti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.ghostShipNoti
 
             }
 

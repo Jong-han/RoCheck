@@ -27,7 +27,7 @@ object DefaultNotification {
     private const val NOTIFICATION_CODE_WEEKLY = 1001
 
 
-    fun startDailyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.ic_launcher) {
+    fun startDailyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.rocheck_logo_icon_round) {
 
         val notificationManager = context.getSystemService( Context.NOTIFICATION_SERVICE ) as NotificationManager
 
@@ -69,7 +69,7 @@ object DefaultNotification {
 
     }
 
-    fun startWeeklyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.ic_launcher) {
+    fun startWeeklyNotification(context: Context, content: String?, mipmapId: Int = R.mipmap.rocheck_logo_icon_round) {
 
         val notificationManager = context.getSystemService( Context.NOTIFICATION_SERVICE ) as NotificationManager
 

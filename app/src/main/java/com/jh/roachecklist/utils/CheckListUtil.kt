@@ -84,10 +84,11 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
                     }
                     pref.resetDaily()
+                    pref.resetExpeditionDaily()
                     if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY ) {
 
                         pref.resetWeekly()
-                        pref.resetExpedition()
+                        pref.resetExpeditionWeekly()
 
                     }
 
@@ -107,12 +108,15 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
             if ( alarmDaily( characterList) )
                 DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
+            else
+                if ( alarmExpeditionDaily( characterList ) )
+                    DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
 
             val calendar = Calendar.getInstance()
 
             if ( calendar.get( Calendar.DAY_OF_WEEK ) == Calendar.TUESDAY ) {
 
-                if ( alarmExpedition( characterList ) )
+                if ( alarmExpeditionWeekly( characterList ) )
                     DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
                 else {
 
@@ -244,17 +248,17 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     }
 
-    private fun alarmExpedition(characterList: List<CharacterEntity> ): Boolean {
+    private fun alarmExpeditionDaily( characterList: List<CharacterEntity> ): Boolean {
 
         var result = false
 
         for ( character in characterList ) {
 
             pref.getPref()
-            val cantExpeditionList = repository.getExpeditionCantCheckList( character.level )
-            val expeditionList = pref.getExpeditionList()
+            val cantExpeditionList = repository.getExpeditionDailyCantCheckList( character.level )
+            val expeditionList = pref.getExpeditionDailyList()
 
-            val notiList = pref.getExpeditionNotiList()
+            val notiList = pref.getExpeditionDailyNotiList()
             val notiYesList = notiList.filter { it >= 1 }
             val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
 
@@ -281,6 +285,45 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
         return result
 
     }
+
+    private fun alarmExpeditionWeekly( characterList: List<CharacterEntity> ): Boolean {
+
+        var result = false
+
+        for ( character in characterList ) {
+
+            pref.getPref()
+            val cantExpeditionList = repository.getExpeditionWeeklyCantCheckList( character.level )
+            val expeditionList = pref.getExpeditionWeeklyList()
+
+            val notiList = pref.getExpeditionWeeklyNotiList()
+            val notiYesList = notiList.filter { it >= 1 }
+            val expeditionTotalNotiCount = getNotiYesCount( notiYesList ) - getNotiCount( cantExpeditionList )
+
+            var expeditionCheckedCount = 0
+
+            for ( index in 0 until notiList.size ) {
+
+                if ( notiList[index] >= 1 ) {
+
+                    expeditionCheckedCount += expeditionList[index]
+
+                }
+
+            }
+            if ( expeditionCheckedCount < expeditionTotalNotiCount ) {
+
+                result = true
+                break
+
+            }
+
+        }
+
+        return result
+
+    }
+
 
 
     private fun getNotiCount( list: List<CheckListEntity> ): Int {
