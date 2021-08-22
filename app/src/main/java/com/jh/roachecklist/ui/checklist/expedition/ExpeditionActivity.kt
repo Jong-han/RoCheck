@@ -6,6 +6,7 @@ import android.widget.CheckBox
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
 import com.google.android.material.tabs.TabLayout
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.R
@@ -41,6 +42,9 @@ class ExpeditionActivity: BaseActivity<ActivityExpeditonBinding, ExpeditionViewM
     private var activeFragment: Fragment = expeditionDailyFragment
 
     override fun initViewAndEvent() {
+
+        val adRequest = AdRequest.Builder().build()
+        dataBinding.adView.loadAd( adRequest )
 
         viewModel.setCharacterInfo()
 

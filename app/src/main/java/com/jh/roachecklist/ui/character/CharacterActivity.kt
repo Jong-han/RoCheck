@@ -25,6 +25,12 @@ import com.jh.roachecklist.ui.dialog.DialogUtil
 import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -193,6 +199,52 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         viewModel.editFavoriteType( characterEntity, favorite )
         characterAdapter.notifyItemChanged( characterAdapter.currentList.indexOf( characterEntity ) )
+
+    }
+
+    //이종한 - backkey event  Rx -> Flow
+    private var backButtonFlow = MutableStateFlow( System.currentTimeMillis() )
+
+    @FlowPreview
+    private fun setBackFinishEventFlow() {
+
+        var lastClickedTime = 0L
+        MainScope().launch {
+
+            backButtonFlow.drop(1).collect {
+
+                if ( it - lastClickedTime <= 1500 ) {
+
+                    finish()
+
+                } else {
+
+                    Toast.makeText(this@CharacterActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
+
+                }
+
+                lastClickedTime = it
+
+            }
+
+        }
+
+    }
+
+    @FlowPreview
+    override fun onResume() {
+        super.onResume()
+
+        setBackFinishEventFlow()
+
+    }
+
+    override fun onBackPressed() {
+
+        //이종한
+        backButtonFlow.value = System.currentTimeMillis()
+
+//        backButtonSubject.onNext(System.currentTimeMillis())
 
     }
 
