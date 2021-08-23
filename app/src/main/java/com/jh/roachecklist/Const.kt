@@ -49,12 +49,8 @@ object Const {
 
         const val GUILD = 0
         const val DAILY_EFONA = 1
-        const val FAVORABILITY = 2
-        const val ISLAND = 3
-        const val FIELD_BOSS = 4
-        const val DAILY_GUARDIAN = 5
-        const val CHAOS_GATE = 6
-        const val CHAOS_DUNGEON = 7
+        const val DAILY_GUARDIAN = 2
+        const val CHAOS_DUNGEON = 3
 
     }
 

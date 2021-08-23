@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -47,6 +46,9 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     @Inject lateinit var pref: AppPreference
     @Inject lateinit var checkListUtil: CheckListUtil
+
+    private lateinit var toast: Toast
+    private var backKeyPressedTime: Long = 0
 
     override val viewModel: CharacterViewModel by viewModels()
 
@@ -202,50 +204,18 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     }
 
-    //이종한 - backkey event  Rx -> Flow
-    private var backButtonFlow = MutableStateFlow( System.currentTimeMillis() )
-
-    @FlowPreview
-    private fun setBackFinishEventFlow() {
-
-        var lastClickedTime = 0L
-        MainScope().launch {
-
-            backButtonFlow.drop(1).collect {
-
-                if ( it - lastClickedTime <= 1500 ) {
-
-                    finish()
-
-                } else {
-
-                    Toast.makeText(this@CharacterActivity, "뒤로가기를 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
-
-                }
-
-                lastClickedTime = it
-
-            }
-
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
+            backKeyPressedTime = System.currentTimeMillis()
+            toast = Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT)
+            toast.show()
+            return
         }
 
-    }
-
-    @FlowPreview
-    override fun onResume() {
-        super.onResume()
-
-        setBackFinishEventFlow()
-
-    }
-
-    override fun onBackPressed() {
-
-        //이종한
-        backButtonFlow.value = System.currentTimeMillis()
-
-//        backButtonSubject.onNext(System.currentTimeMillis())
-
+        if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
+            finish()
+            toast.cancel()
+        }
     }
 
 }
