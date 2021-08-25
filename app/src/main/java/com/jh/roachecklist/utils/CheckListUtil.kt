@@ -87,6 +87,7 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
                     pref.resetExpeditionDaily()
                     if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY ) {
 
+                        pref.getPref( nickName )
                         pref.resetWeekly()
                         pref.resetExpeditionWeekly()
 
