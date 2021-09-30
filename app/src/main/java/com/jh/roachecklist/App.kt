@@ -5,11 +5,12 @@ import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import com.google.android.gms.ads.MobileAds
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.service.AlarmReceiver
 import com.jh.roachecklist.service.RefreshReceiver
+import com.jh.roachecklist.utils.AppOpenManager
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+
 
 @HiltAndroidApp
 class App: Application() {
@@ -26,9 +28,15 @@ class App: Application() {
     @Inject
     lateinit var repository: Repository
 
+    lateinit var appOpenManager: AppOpenManager
+
     override fun onCreate() {
 
         super.onCreate()
+
+        MobileAds.initialize(this) { }
+
+        appOpenManager = AppOpenManager(this)
 
         pref.getPref()
 
@@ -83,5 +91,7 @@ class App: Application() {
         }
 
     }
+
+    fun getOpening(): AppOpenManager = this.appOpenManager
 
 }
