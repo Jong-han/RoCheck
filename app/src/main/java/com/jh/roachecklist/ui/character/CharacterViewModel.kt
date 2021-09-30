@@ -7,6 +7,8 @@ import com.jh.roachecklist.db.CharacterEntity
 import com.jh.roachecklist.preference.AppPreference
 import com.jh.roachecklist.repository.Repository
 import com.jh.roachecklist.ui.base.BaseViewModel
+import com.jh.roachecklist.ui.guide.GuideActivity
+import com.jh.roachecklist.ui.qna.QnaActivity
 import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.reflect.KClass
 
 @HiltViewModel
 class CharacterViewModel @Inject constructor( private val repository: Repository, private val pref: AppPreference, private val checkListUtil: CheckListUtil ): BaseViewModel() {
@@ -26,6 +29,25 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
     val originalList = repository.getAllCharacters()
 
     val event = MutableLiveData<CharacterEvent>()
+
+    val startActivity = SingleLiveEvent<KClass<*>>()
+    fun startGuide() {
+
+        startActivity.value = GuideActivity::class
+
+    }
+    fun startQna() {
+
+        startActivity.value = QnaActivity::class
+
+    }
+
+    val clickMenu = SingleLiveEvent<Any>()
+    fun clickMenu() {
+
+        clickMenu.call()
+
+    }
 
     val clickExpedition = SingleLiveEvent<Any>()
     fun clickExpedition() {

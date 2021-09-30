@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.jh.roachecklist.BR
@@ -70,6 +71,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             adapter = characterAdapter
 
         }
+
+        viewModel.clickMenu.observe( this, {
+
+            dataBinding.drawerNav.openDrawer(GravityCompat.END)
+
+        })
 
         viewModel.clickReset.observe( this, {
 
@@ -134,6 +141,14 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
                 startActivity( this, optionsCompat.toBundle() )
 
             }
+
+        })
+
+        viewModel.startActivity.observe( this, {
+            
+            val optionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
+            startActivity( Intent( this, it.java ), optionsCompat.toBundle() )
 
         })
 
