@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/rocheck_logo_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RoaCheckList">
-        <activity android:name=".ui.qna.QnaActivity"></activity>
+        <activity android:name=".ui.qna.QnaActivity" />
         <activity android:name=".ui.guide.GuideActivity" />
 
         <meta-data

@@ -4,13 +4,21 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.jh.roachecklist.App
 import com.jh.roachecklist.BR
 import com.jh.roachecklist.Const
 import com.jh.roachecklist.R
@@ -21,12 +29,15 @@ import com.jh.roachecklist.ui.base.BaseActivity
 import com.jh.roachecklist.ui.base.setSupportActionBar
 import com.jh.roachecklist.ui.checklist.CheckListActivity
 import com.jh.roachecklist.ui.checklist.expedition.ExpeditionActivity
+import com.jh.roachecklist.ui.dialog.DialogProgress
 import com.jh.roachecklist.ui.dialog.DialogUtil
+import com.jh.roachecklist.utils.AppOpenManager
 import com.jh.roachecklist.utils.CheckListUtil
 import com.jh.roachecklist.utils.DefaultNotification
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.drop
@@ -59,6 +70,13 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     private val characterAdapter: CharacterAdapter by lazy { CharacterAdapter( startCheckList, longClickListener ) }
 
+    private val appOpenManager: AppOpenManager by lazy { (application as App).appOpenManager }
+
+    private var count = 0
+    private var frontCount = 0
+
+    private var mInterstitialAd: InterstitialAd? = null
+
     override fun initViewAndEvent() {
 
         setSupportActionBar( dataBinding.tbCharacter, false )
@@ -70,6 +88,33 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             layoutManager = GridLayoutManager(this@CharacterActivity, 2)
             adapter = characterAdapter
 
+        }
+
+        InterstitialAd.load(this, getString(R.string.front_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("TAG", adError.message)
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d("TAG", "Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
+
+        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+                Log.d("TAG", "Ad was dismissed.")
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                Log.d("TAG", "Ad failed to show.")
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                Log.d("TAG", "Ad showed fullscreen content.")
+                mInterstitialAd = null
+            }
         }
 
         viewModel.clickMenu.observe( this, {
@@ -167,14 +212,30 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         val item = characterAdapter.currentList[pos]
         Intent( this, CheckListActivity::class.java ).apply {
 
-            putExtra( EXTRA_LEVEL, item.level )
-            putExtra( EXTRA_NICK_NAME, item.nickName )
-            putExtra( EXTRA_POSITION, pos )
+            lifecycleScope.launch {
 
-            val optionsCompat =
-                ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
+                if (frontCount == 2) {
+                    showProgress()
+                    delay(1000)
+                    dismissProgress()
+                }
 
-            resultForCharacter.launch( this, optionsCompat )
+                putExtra(EXTRA_LEVEL, item.level)
+                putExtra(EXTRA_NICK_NAME, item.nickName)
+                putExtra(EXTRA_POSITION, pos)
+
+                val optionsCompat =
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this@CharacterActivity)
+
+                resultForCharacter.launch(this@apply, optionsCompat)
+
+                if (mInterstitialAd != null && frontCount == 2) {
+                    mInterstitialAd?.show(this@CharacterActivity)
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.")
+                }
+
+            }
 
         }
 
@@ -238,6 +299,14 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if ( count == 0)
+            appOpenManager.showAdIfAvailable()
+        count++
+        frontCount++
     }
 
 }
