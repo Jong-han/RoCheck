@@ -145,7 +145,7 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         })
 
         viewModel.startActivity.observe( this, {
-            
+
             val optionsCompat =
                 ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
             startActivity( Intent( this, it.java ), optionsCompat.toBundle() )
@@ -220,17 +220,24 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     }
 
     override fun onBackPressed() {
-        if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
-            backKeyPressedTime = System.currentTimeMillis()
-            toast = Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT)
-            toast.show()
-            return
+        if (dataBinding.drawerNav.isDrawerOpen(GravityCompat.END))
+            dataBinding.drawerNav.closeDrawer(GravityCompat.END)
+        else {
+
+            if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
+                backKeyPressedTime = System.currentTimeMillis()
+                toast = Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT)
+                toast.show()
+                return
+            }
+
+            if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
+                finish()
+                toast.cancel()
+            }
+
         }
 
-        if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
-            finish()
-            toast.cancel()
-        }
     }
 
 }

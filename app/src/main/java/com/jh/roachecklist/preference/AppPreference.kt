@@ -38,6 +38,10 @@ class AppPreference constructor(private val context: Context ) {
         get() = sharedPreferences.getInt("minute", 0)
         set(value) = sharedPreferences.edit().putInt("minute", value).apply()
 
+    var alarmOnOff: Boolean
+        get() = sharedPreferences.getBoolean("alarmOnOff", true)
+        set(value) = sharedPreferences.edit().putBoolean("alarmOnOff", value).apply()
+
     /**
      * 일일 숙제 리스트
      */

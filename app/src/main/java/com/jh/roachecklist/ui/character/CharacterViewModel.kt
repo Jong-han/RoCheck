@@ -30,6 +30,22 @@ class CharacterViewModel @Inject constructor( private val repository: Repository
 
     val event = MutableLiveData<CharacterEvent>()
 
+    val alarmOnOff = MutableLiveData<Boolean>()
+
+    init {
+
+        pref.getPref()
+        alarmOnOff.value = pref.alarmOnOff
+
+    }
+    fun clickSwitch() {
+
+        pref.getPref()
+        pref.alarmOnOff = !pref.alarmOnOff
+        alarmOnOff.value = pref.alarmOnOff
+
+    }
+
     val startActivity = SingleLiveEvent<KClass<*>>()
     fun startGuide() {
 
