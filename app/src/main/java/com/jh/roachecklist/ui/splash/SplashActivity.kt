@@ -16,9 +16,7 @@ class SplashActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
 
-            MobileAds.initialize(this@SplashActivity) {}
-
-            delay( 1000 )
+            delay( 1300 )
             Intent( this@SplashActivity, CharacterActivity::class.java ).apply {
 
                 startActivity( this )

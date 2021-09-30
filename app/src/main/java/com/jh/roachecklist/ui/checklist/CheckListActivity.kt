@@ -129,4 +129,5 @@ class CheckListActivity : BaseActivity<ActivityCheckListBinding, CheckListViewMo
 
     }
 
+
 }

@@ -9,130 +9,248 @@
             type="com.jh.roachecklist.ui.character.CharacterViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_nav"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/text_color"
-        tools:context=".ui.character.CharacterActivity">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_character"
+        tools:openDrawer="right">
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/primary_color">
+            android:layout_height="match_parent"
+            android:background="@color/text_color"
+            tools:context=".ui.character.CharacterActivity">
 
-            <TextView
-                android:id="@+id/tv_title"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tb_character"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                android:background="@color/primary_color">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/character_title"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <ImageView
+                android:id="@+id/btn_add_character"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/character_title"
-                android:textSize="@dimen/title_text_size"
+                android:padding="10dp"
+                android:src="@drawable/baseline_add_24"
+                android:background="@drawable/cm_ripple_bound_oval"
+                android:onClick="@{()->viewModel.clickAddCharacter()}"
+                app:layout_constraintTop_toTopOf="@id/tb_character"
+                app:layout_constraintBottom_toBottomOf="@id/tb_character"
+                app:layout_constraintEnd_toStartOf="@id/btn_setting"/>
+
+            <ImageView
+                android:id="@+id/btn_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/cm_ripple_bound_oval"
+                android:src="@drawable/outline_menu_24"
+                android:onClick="@{()->viewModel.clickMenu()}"
+                app:layout_constraintTop_toTopOf="@id/tb_character"
+                app:layout_constraintBottom_toBottomOf="@id/tb_character"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/btn_weekly_expedition"
+                android:background="@drawable/bg_character_item"
+                android:padding="15dp"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="@string/expedition_title"
                 android:textStyle="bold"
-                android:textColor="@color/text_color"
+                android:textColor="@color/primary_color"
+                android:textSize="@dimen/title_text_size"
+                android:gravity="center"
+                android:onClick="@{()->viewModel.clickExpedition()}"
+                android:invisibleIf="@{viewModel.rvItems.empty}"
+                app:layout_constraintTop_toBottomOf="@id/tb_character"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_character"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:overScrollMode="never"
+                app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
+                app:layout_constraintBottom_toTopOf="@id/adView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/primary_color"
+                android:textStyle="bold"
+                android:textSize="@dimen/title_text_size"
+                android:text="@string/character_no_list"
+                android:visibleIf="@{viewModel.rvItems.empty}"
+                app:layout_constraintVertical_bias="0.45"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-        </androidx.appcompat.widget.Toolbar>
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id"
+                ads:layout_constraintVertical_bias="1"
+                ads:layout_constraintTop_toBottomOf="@id/rv_character"
+                ads:layout_constraintBottom_toBottomOf="parent"
+                ads:layout_constraintStart_toStartOf="parent"
+                ads:layout_constraintEnd_toEndOf="parent">
+            </com.google.android.gms.ads.AdView>
 
-        <ImageView
-            android:id="@+id/btn_add_character"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:padding="10dp"
-            android:src="@drawable/baseline_add_24"
-            android:background="@drawable/cm_ripple_bound_oval"
-            android:onClick="@{()->viewModel.clickAddCharacter()}"
-            app:layout_constraintTop_toTopOf="@id/tb_character"
-            app:layout_constraintBottom_toBottomOf="@id/tb_character"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:layout_gravity="end"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/btn_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:background="@drawable/cm_ripple_bound_oval"
-            android:src="@drawable/baseline_notifications_active_24_2"
-            android:onClick="@{()->viewModel.clickSetting()}"
-            app:layout_constraintTop_toTopOf="@id/tb_character"
-            app:layout_constraintBottom_toBottomOf="@id/tb_character"
-            app:layout_constraintEnd_toStartOf="@id/btn_add_character"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/text_color">
 
-        <TextView
-            android:id="@+id/btn_weekly_expedition"
-            android:background="@drawable/bg_character_item"
-            android:padding="15dp"
-            android:layout_margin="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:text="@string/expedition_title"
-            android:textStyle="bold"
-            android:textColor="@color/primary_color"
-            android:textSize="@dimen/title_text_size"
-            android:gravity="center"
-            android:onClick="@{()->viewModel.clickExpedition()}"
-            android:invisibleIf="@{viewModel.rvItems.empty}"
-            app:layout_constraintTop_toBottomOf="@id/tb_character"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                <View
+                    android:id="@+id/view_background"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/primary_color"
+                    app:layout_constraintVertical_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHeight_percent="0.2" />
 
-        <TextView
-            android:id="@+id/rest_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/character_reset_btn_title"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="end"
-            android:padding="5dp"
-            android:invisibleIf="@{viewModel.rvItems.empty}"
-            android:onClick="@{()->viewModel.clickReset()}"
-            app:layout_constraintTop_toBottomOf="@id/btn_weekly_expedition"
-            app:layout_constraintEnd_toEndOf="parent"/>
+                <TextView
+                    android:id="@+id/tv_top_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Menu"
+                    android:textColor="@color/white"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="@id/view_background"
+                    app:layout_constraintStart_toStartOf="@id/view_background"
+                    app:layout_constraintBottom_toBottomOf="@id/view_background"/>
+
+                <TextView
+                    android:id="@+id/tv_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_check_list_item"
+                    android:onClick="@{()->viewModel.startGuide()}"
+                    android:padding="15dp"
+                    android:text="로첵 사용 설명서"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_background" />
+
+                <TextView
+                    android:id="@+id/tv_set_alarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="알람 시간 설정"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/title_text_size"
+                    android:onClick="@{()->viewModel.clickSetting()}"
+                    app:layout_constraintTop_toBottomOf="@id/tv_set_alarm_on_off"
+                    android:background="@drawable/bg_check_list_item"/>
+
+                <TextView
+                    android:id="@+id/tv_set_alarm_on_off"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_check_list_item"
+                    android:onClick="@{()->viewModel.clickSetting()}"
+                    android:padding="15dp"
+                    android:text="알람 ON/OFF"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_guide" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/switch_alarm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:checked="@{viewModel.alarmOnOff, default=true}"
+                    android:onClick="@{()->viewModel.clickSwitch()}"
+                    app:layout_constraintTop_toTopOf="@id/tv_set_alarm_on_off"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_set_alarm_on_off"/>
+
+                <TextView
+                    android:id="@+id/tv_self_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_check_list_item"
+                    android:onClick="@{()->viewModel.clickReset()}"
+                    android:padding="15dp"
+                    android:text="수동 초기화"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_set_alarm" />
+
+                <TextView
+                    android:id="@+id/tv_to_dev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_check_list_item"
+                    android:onClick="@{()->viewModel.startQna()}"
+                    android:padding="15dp"
+                    android:text="이용문의"
+                    android:textColor="@color/primary_color"
+                    android:textSize="@dimen/title_text_size"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_self_reset" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_character"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:overScrollMode="never"
-            app:layout_constraintTop_toBottomOf="@id/rest_setting"
-            app:layout_constraintBottom_toTopOf="@id/adView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold"
-            android:textSize="@dimen/title_text_size"
-            android:text="@string/character_no_list"
-            android:visibleIf="@{viewModel.rvItems.empty}"
-            app:layout_constraintVertical_bias="0.45"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+        </com.google.android.material.navigation.NavigationView>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
-            ads:layout_constraintBottom_toBottomOf="parent"
-            ads:layout_constraintStart_toStartOf="parent"
-            ads:layout_constraintEnd_toEndOf="parent">
-        </com.google.android.gms.ads.AdView>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

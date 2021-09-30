@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.guide.GuideActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/primary_color">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로첵 사용 설명서"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
+                android:textColor="@color/text_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/tb"
+            app:layout_constraintBottom_toTopOf="@id/adView">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="1. +버튼을 눌러 캐릭터를 생성합니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_two"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="2. 생성된 캐릭터를 눌러 숙제를 체크합니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_three"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="3-1. 체크리스트 좌측 알림 버튼을 눌러 알림여부를 설정합니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_two"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_three_one"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="3-2. 알림이 활성화되지 않은 항목은 체크하지 않아도 푸시 알림이 울리지 않습니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_three"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_three_two"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="3-3. 알림 기능을 원하지 않으실 경우, 캐릭터 선택 화면의 메뉴에서 끌 수 있습니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_three_one"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_four"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="4. 데자뷰, 리허설과 같은 주간 컨텐츠는 캐릭터 선택 화면의 원정대 체크리스트를 클릭하시면 확인할 수 있습니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_three_two"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_five"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingHorizontal="15dp"
+                    android:text="5. 만약 오전 6시가 넘었는데도 초기화가 진행되지 않으셨다면, 캐릭터 선택 화면의 메뉴에서 수동 초기화가 가능합니다."
+                    android:textStyle="bold"
+                    android:textSize="@dimen/primary_text_size"
+                    android:textColor="@color/primary_color"
+                    app:layout_constraintTop_toBottomOf="@id/tv_four"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:layout_constraintVertical_bias="1"
+            ads:layout_constraintTop_toBottomOf="@id/scrollView"
+            ads:layout_constraintBottom_toBottomOf="parent"
+            ads:layout_constraintStart_toStartOf="parent"
+            ads:layout_constraintEnd_toEndOf="parent">
+        </com.google.android.gms.ads.AdView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.jh.roachecklist.ui.dialog.DialogProgress
 
 fun AppCompatActivity.setSupportActionBar(toolbar: Toolbar, isHomeAsUp:Boolean ) {
     setSupportActionBar(toolbar)
@@ -24,6 +25,15 @@ abstract class BaseActivity<T: ViewDataBinding, V: BaseViewModel>: AppCompatActi
     @LayoutRes
     abstract fun getLayoutId(): Int
     abstract fun initViewAndEvent()
+
+    private val progress by lazy { DialogProgress( this ) }
+
+    fun showProgress() {
+        if ( !progress.isShowing ) progress.show()
+    }
+    fun dismissProgress() {
+        progress.dismiss()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

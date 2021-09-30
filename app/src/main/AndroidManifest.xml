@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jh.roachecklist" >
+    package="com.jh.roachecklist">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -12,11 +12,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/rocheck_logo_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RoaCheckList" >
+        android:theme="@style/Theme.RoaCheckList">
+        <activity android:name=".ui.qna.QnaActivity" />
+        <activity android:name=".ui.guide.GuideActivity" />
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id"/>
-        <activity android:name=".ui.splash.SplashActivity" >
+            android:value="@string/admob_app_id" />
+
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,14 +29,14 @@
         </activity>
         <activity android:name=".ui.checklist.CheckListActivity" />
         <activity android:name=".ui.checklist.expedition.ExpeditionActivity" />
-        <activity android:name=".ui.character.CharacterActivity"/>
+        <activity android:name=".ui.character.CharacterActivity" />
+
         <receiver
             android:name=".service.AlarmReceiver"
-            android:exported="false" >
-        </receiver>
+            android:exported="false" />
         <receiver
             android:name=".service.RebootReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
 
@@ -43,11 +47,10 @@
         </receiver>
         <receiver
             android:name=".service.RefreshReceiver"
-            android:exported="false" >
-        </receiver>
+            android:exported="false" />
         <receiver
             android:name=".service.UpdateReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
