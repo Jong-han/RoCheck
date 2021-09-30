@@ -103,30 +103,35 @@ class CheckListUtil( private val context: Context, private val pref: AppPreferen
 
     fun validAlarm() {
 
-        CoroutineScope( Dispatchers.IO ).launch {
+        pref.getPref()
+        if ( pref.alarmOnOff ) {
 
-            val characterList = repository.getAllCharacterList()
+            CoroutineScope( Dispatchers.IO ).launch {
 
-            if ( alarmDaily( characterList) )
-                DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
-            else
-                if ( alarmExpeditionDaily( characterList ) )
+                val characterList = repository.getAllCharacterList()
+
+                if ( alarmDaily( characterList) )
                     DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
+                else
+                    if ( alarmExpeditionDaily( characterList ) )
+                        DefaultNotification.startDailyNotification( context, "하지 않은 일일 숙제가 있습니다." )
 
-            val calendar = Calendar.getInstance()
+                val calendar = Calendar.getInstance()
 
-            if ( calendar.get( Calendar.DAY_OF_WEEK ) == Calendar.TUESDAY ) {
+                if ( calendar.get( Calendar.DAY_OF_WEEK ) == Calendar.TUESDAY ) {
 
-                if ( alarmExpeditionWeekly( characterList ) )
-                    DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
-                else {
-
-                    if ( alarmWeekly( characterList ) )
+                    if ( alarmExpeditionWeekly( characterList ) )
                         DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
                     else {
 
-                        if ( alarmRaid( characterList ) )
+                        if ( alarmWeekly( characterList ) )
                             DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+                        else {
+
+                            if ( alarmRaid( characterList ) )
+                                DefaultNotification.startWeeklyNotification( context, "하지 않은 주간 숙제가 있습니다." )
+
+                        }
 
                     }
 

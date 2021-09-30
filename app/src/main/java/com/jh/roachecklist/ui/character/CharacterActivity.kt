@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.jh.roachecklist.BR
@@ -70,6 +71,12 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
             adapter = characterAdapter
 
         }
+
+        viewModel.clickMenu.observe( this, {
+
+            dataBinding.drawerNav.openDrawer(GravityCompat.END)
+
+        })
 
         viewModel.clickReset.observe( this, {
 
@@ -134,6 +141,14 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
                 startActivity( this, optionsCompat.toBundle() )
 
             }
+
+        })
+
+        viewModel.startActivity.observe( this, {
+
+            val optionsCompat =
+                ActivityOptionsCompat.makeSceneTransitionAnimation( this@CharacterActivity )
+            startActivity( Intent( this, it.java ), optionsCompat.toBundle() )
 
         })
 
@@ -205,17 +220,24 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     }
 
     override fun onBackPressed() {
-        if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
-            backKeyPressedTime = System.currentTimeMillis()
-            toast = Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT)
-            toast.show()
-            return
+        if (dataBinding.drawerNav.isDrawerOpen(GravityCompat.END))
+            dataBinding.drawerNav.closeDrawer(GravityCompat.END)
+        else {
+
+            if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
+                backKeyPressedTime = System.currentTimeMillis()
+                toast = Toast.makeText(this, "뒤로가기를 한 번 더 누르면 종료 됩니다.", Toast.LENGTH_SHORT)
+                toast.show()
+                return
+            }
+
+            if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
+                finish()
+                toast.cancel()
+            }
+
         }
 
-        if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
-            finish()
-            toast.cancel()
-        }
     }
 
 }
