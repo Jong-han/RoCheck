@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
@@ -212,13 +213,15 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         val item = characterAdapter.currentList[pos]
         Intent( this, CheckListActivity::class.java ).apply {
 
+            frontCount++
+
             lifecycleScope.launch {
 
-                if (frontCount == 2) {
-                    showProgress()
-                    delay(1000)
-                    dismissProgress()
-                }
+//                if (  mInterstitialAd != null && getRandomNumber( frontCount ) ) {
+//                    showProgress()
+//                    delay(1000)
+//                    dismissProgress()
+//                }
 
                 putExtra(EXTRA_LEVEL, item.level)
                 putExtra(EXTRA_NICK_NAME, item.nickName)
@@ -229,7 +232,10 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
                 resultForCharacter.launch(this@apply, optionsCompat)
 
-                if (mInterstitialAd != null && frontCount == 2) {
+                if ( mInterstitialAd != null && getRandomNumber( frontCount ) ) {
+//                    showProgress()
+//                    delay(1000)
+//                    dismissProgress()
                     mInterstitialAd?.show(this@CharacterActivity)
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.")
@@ -301,12 +307,20 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        if ( count == 0)
-            appOpenManager.showAdIfAvailable()
-        count++
-        frontCount++
+//    override fun onResume() {
+//        super.onResume()
+//        if ( count == 0)
+//            appOpenManager.showAdIfAvailable()
+//        count++
+//        frontCount++
+//    }
+
+    private fun getRandomNumber(count: Int ): Boolean {
+
+        val random = Random()
+        val num = random.nextInt(6)
+        return num + count > 6
+
     }
 
 }
