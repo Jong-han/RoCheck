@@ -34,7 +34,9 @@ class App: Application() {
 
         super.onCreate()
 
-        MobileAds.initialize(this) { }
+        MobileAds.initialize(this) {
+            MobileAds.setAppMuted(true)
+        }
 
         appOpenManager = AppOpenManager(this)
 

@@ -106,10 +106,14 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
         mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
             override fun onAdDismissedFullScreenContent() {
                 Log.d("TAG", "Ad was dismissed.")
+                mInterstitialAd = null
+                loadAd( adRequest )
             }
 
             override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
                 Log.d("TAG", "Ad failed to show.")
+                mInterstitialAd = null
+                loadAd( adRequest )
             }
 
             override fun onAdShowedFullScreenContent() {
@@ -318,8 +322,24 @@ class CharacterActivity : BaseActivity<ActivityCharacterBinding, CharacterViewMo
     private fun getRandomNumber(count: Int ): Boolean {
 
         val random = Random()
-        val num = random.nextInt(6)
-        return num + count > 6
+        val num = random.nextInt(4)
+        return num + count >= 4
+
+    }
+
+    private fun loadAd( adRequest: AdRequest ) {
+
+        InterstitialAd.load(this, getString(R.string.front_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d("TAG", adError.message)
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d("TAG", "Ad was loaded.")
+                mInterstitialAd = interstitialAd
+            }
+        })
 
     }
 
