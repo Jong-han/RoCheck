@@ -96,7 +96,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"
+            ads:adUnitId="@string/banner_ad_unit_id_checklist"
             android:layout_marginTop="15dp"
             ads:layout_constraintTop_toBottomOf="@id/fragment_container"
             ads:layout_constraintBottom_toBottomOf="parent"

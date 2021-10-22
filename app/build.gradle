@@ -16,8 +16,8 @@ android {
         applicationId "com.jh.roachecklist"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 8
-        versionName "1.2.2"
+        versionCode 9
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

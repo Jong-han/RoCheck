@@ -4,6 +4,8 @@
     <string name="admob_app_id_for_test">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_ad_unit_id">ca-app-pub-7741681524529243/5968380779</string>
     <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id_checklist">ca-app-pub-7741681524529243/6601620769</string>
+    <string name="banner_ad_unit_id_expedition">ca-app-pub-7741681524529243/6410049072</string>
     <string name="opening_ad_unit_id">ca-app-pub-7741681524529243/1515961418</string>
     <string name="opening_ad_unit_id_test">ca-app-pub-3940256099942544/3419835294</string>
     <string name="front_ad_unit_id">ca-app-pub-7741681524529243/7324474257</string>
