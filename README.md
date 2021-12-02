@@ -7,7 +7,8 @@
 ---------
 + kotlin
 + MVVM
-+ AAC (ViewModel, LiveData, Room, Navigation)
++ AAC (ViewModel, LiveData, Room )
++ Hilt
 + DataBinding
 
 개요
