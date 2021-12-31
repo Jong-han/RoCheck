@@ -72,36 +72,19 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
         when ( weekly.value!![pos].work ) {
 
-            WeeklyWork.CHALLENGE_GUARDIAN -> {
-
-                pref.challengeGuardian = pref.challengeGuardian + 1
-                weekly.value!![pos].checkedCount = pref.challengeGuardian
-
-            }
             WeeklyWork.WEEKLY_EFONA -> {
 
                 pref.weeklyEfona = pref.weeklyEfona + 1
                 weekly.value!![pos].checkedCount = pref.weeklyEfona
 
             }
-            WeeklyWork.ARGOS_1 -> {
+            WeeklyWork.ARGOS -> {
 
-                pref.argos1 = pref.argos1 + 1
-                weekly.value!![pos].checkedCount = pref.argos1
-
-            }
-            WeeklyWork.ARGOS_2 -> {
-
-                pref.argos2 = pref.argos2 + 1
-                weekly.value!![pos].checkedCount = pref.argos2
+                pref.argos = pref.argos + 1
+                weekly.value!![pos].checkedCount = pref.argos
 
             }
-            WeeklyWork.ARGOS_3 -> {
 
-                pref.argos3 = pref.argos3 + 1
-                weekly.value!![pos].checkedCount = pref.argos3
-
-            }
             WeeklyWork.OREHA -> {
 
                 pref.oreha = pref.oreha + 1
@@ -117,34 +100,16 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
         when ( weekly.value!![pos].work ) {
 
-            WeeklyWork.CHALLENGE_GUARDIAN -> {
-
-                pref.challengeGuardian = pref.challengeGuardian - 1
-                weekly.value!![pos].checkedCount = pref.challengeGuardian
-
-            }
             WeeklyWork.WEEKLY_EFONA -> {
 
                 pref.weeklyEfona = pref.weeklyEfona - 1
                 weekly.value!![pos].checkedCount = pref.weeklyEfona
 
             }
-            WeeklyWork.ARGOS_1 -> {
+            WeeklyWork.ARGOS -> {
 
-                pref.argos1 = pref.argos1 - 1
-                weekly.value!![pos].checkedCount = pref.argos1
-
-            }
-            WeeklyWork.ARGOS_2 -> {
-
-                pref.argos2 = pref.argos2 - 1
-                weekly.value!![pos].checkedCount = pref.argos2
-
-            }
-            WeeklyWork.ARGOS_3 -> {
-
-                pref.argos3 = pref.argos3 - 1
-                weekly.value!![pos].checkedCount = pref.argos3
+                pref.argos = pref.argos - 1
+                weekly.value!![pos].checkedCount = pref.argos
 
             }
             WeeklyWork.OREHA -> {
@@ -162,17 +127,6 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
         when ( weekly.value!![pos].work ) {
 
-            Const.WeeklyWork.CHALLENGE_GUARDIAN -> {
-
-                if ( pref.challengeGuardianNoti >= Const.NotiState.YES )
-                    pref.challengeGuardianNoti = Const.NotiState.NO
-                else
-                    pref.challengeGuardianNoti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.challengeGuardianNoti
-
-            }
-
             Const.WeeklyWork.WEEKLY_EFONA -> {
 
                 if ( pref.weeklyEfonaNoti >= Const.NotiState.YES )
@@ -184,39 +138,16 @@ class WeeklyViewModel @Inject constructor(private val pref: AppPreference,
 
             }
 
-            Const.WeeklyWork.ARGOS_1 -> {
+            Const.WeeklyWork.ARGOS -> {
 
-                if ( pref.argos1Noti >= Const.NotiState.YES )
-                    pref.argos1Noti = Const.NotiState.NO
+                if ( pref.argosNoti >= Const.NotiState.YES )
+                    pref.argosNoti = Const.NotiState.NO
                 else
-                    pref.argos1Noti = Const.NotiState.YES
+                    pref.argosNoti = Const.NotiState.YES
 
-                weekly.value!![pos].isNoti = pref.argos1Noti
+                weekly.value!![pos].isNoti = pref.argosNoti
 
             }
-
-            Const.WeeklyWork.ARGOS_2 -> {
-
-                if ( pref.argos2Noti >= Const.NotiState.YES )
-                    pref.argos2Noti = Const.NotiState.NO
-                else
-                    pref.argos2Noti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.argos2Noti
-
-            }
-
-            Const.WeeklyWork.ARGOS_3 -> {
-
-                if ( pref.argos3Noti >= Const.NotiState.YES )
-                    pref.argos3Noti = Const.NotiState.NO
-                else
-                    pref.argos3Noti = Const.NotiState.YES
-
-                weekly.value!![pos].isNoti = pref.argos3Noti
-
-            }
-
             Const.WeeklyWork.OREHA -> {
 
                 if ( pref.orehaNoti >= Const.NotiState.YES )

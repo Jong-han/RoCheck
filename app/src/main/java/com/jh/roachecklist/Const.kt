@@ -78,11 +78,8 @@ object Const {
 
     object WeeklyWork {
 
-        const val CHALLENGE_GUARDIAN = "도전 가디언 토벌"
         const val WEEKLY_EFONA = "주간 에포나 의뢰"
-        const val ARGOS_1 = "아르고스 페이즈 1"
-        const val ARGOS_2 = "아르고스 페이즈 2"
-        const val ARGOS_3 = "아르고스 페이즈 3"
+        const val ARGOS = "아르고스"
         const val OREHA = "오레하의 우물"
 
     }
@@ -100,6 +97,7 @@ object Const {
 
     object ExpeditionWeekly {
 
+        const val CHALLENGE_GUARDIAN = "도전 가디언 토벌"
         const val CHALLENGE_ABYSS_DUNGEON = "도전 어비스 던전"
         const val KOUKUSATON_REHEARSAL = "쿠크세이튼 리허설"
         const val ABRELSHOULD_DEJAVU = "아브렐슈드 데자뷰"

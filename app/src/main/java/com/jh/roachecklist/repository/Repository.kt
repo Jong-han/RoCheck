@@ -75,6 +75,7 @@ class Repository( private val db: RoCheckDB ) {
             insert(CheckListEntity( Const.DailyWork.DAILY_GUARDIAN, 0,  Const.MAX_LEVEL, 0, 0, 2, Const.WorkType.DAILY ))
             insert(CheckListEntity( Const.DailyWork.CHAOS_DUNGEON, 0,  Const.MAX_LEVEL, 0, 0, 2, Const.WorkType.DAILY ))
 
+            insert(CheckListEntity( Const.ExpeditionWeekly.CHALLENGE_GUARDIAN, 0,  Const.MAX_LEVEL, 0, 0, 1, Const.WorkType.EXPEDITION_WEEKLY ))
             insert(CheckListEntity( Const.ExpeditionWeekly.CHALLENGE_ABYSS_DUNGEON, 0,  Const.MAX_LEVEL, 0, 0, 1, Const.WorkType.EXPEDITION_WEEKLY ))
             insert(CheckListEntity( Const.ExpeditionWeekly.KOUKUSATON_REHEARSAL, 1385,  Const.MAX_LEVEL, 0, 0, 1, Const.WorkType.EXPEDITION_WEEKLY ))
             insert(CheckListEntity( Const.ExpeditionWeekly.ABRELSHOULD_DEJAVU, 1430,  Const.MAX_LEVEL, 0, 0, 1, Const.WorkType.EXPEDITION_WEEKLY ))
@@ -93,11 +94,8 @@ class Repository( private val db: RoCheckDB ) {
             insert(CheckListEntity( Const.Raid.ABRELSHOULD_3_4, 1500,  Const.MAX_LEVEL, 1500, 0, 1, Const.WorkType.RAID ))
             insert(CheckListEntity( Const.Raid.ABRELSHOULD_5_6, 1520,  Const.MAX_LEVEL, 1500, 0,1, Const.WorkType.RAID ))
 
-            insert(CheckListEntity( Const.WeeklyWork.CHALLENGE_GUARDIAN, 0,  Const.MAX_LEVEL, 0, 0, 3, Const.WorkType.WEEKLY ))
             insert(CheckListEntity( Const.WeeklyWork.WEEKLY_EFONA, 0,  Const.MAX_LEVEL, 0, 0, 3, Const.WorkType.WEEKLY ))
-            insert(CheckListEntity( Const.WeeklyWork.ARGOS_1, 1370, Const.MAX_LEVEL, 1500, 0, 1, Const.WorkType.WEEKLY ))
-            insert(CheckListEntity( Const.WeeklyWork.ARGOS_2, 1385, Const.MAX_LEVEL, 800, 0, 1, Const.WorkType.WEEKLY ))
-            insert(CheckListEntity( Const.WeeklyWork.ARGOS_3, 1400, Const.MAX_LEVEL, 1000, 0, 1, Const.WorkType.WEEKLY ))
+            insert(CheckListEntity( Const.WeeklyWork.ARGOS, 1370, Const.MAX_LEVEL, 1500, 0, 1, Const.WorkType.WEEKLY ))
             insert(CheckListEntity( Const.WeeklyWork.OREHA, 1325, Const.MAX_LEVEL, 1500, 0, 1, Const.WorkType.WEEKLY ))
         }
 

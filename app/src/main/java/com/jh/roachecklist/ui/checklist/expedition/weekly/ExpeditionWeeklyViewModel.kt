@@ -71,6 +71,13 @@ class ExpeditionWeeklyViewModel  @Inject constructor( private val repository: Re
 
         when ( expeditionWeekly.value!![pos].work ) {
 
+            Const.ExpeditionWeekly.CHALLENGE_GUARDIAN -> {
+
+                pref.challengeGuardian = pref.challengeGuardian + 1
+                expeditionWeekly.value!![pos].checkedCount = pref.challengeGuardian
+
+            }
+
             Const.ExpeditionWeekly.ABRELSHOULD_DEJAVU -> {
 
                 pref.abrelshouldDevaju = pref.abrelshouldDevaju + 1
@@ -104,6 +111,13 @@ class ExpeditionWeeklyViewModel  @Inject constructor( private val repository: Re
 
         when ( expeditionWeekly.value!![pos].work ) {
 
+            Const.ExpeditionWeekly.CHALLENGE_GUARDIAN -> {
+
+                pref.challengeGuardian = pref.challengeGuardian - 1
+                expeditionWeekly.value!![pos].checkedCount = pref.challengeGuardian
+
+            }
+
             Const.ExpeditionWeekly.ABRELSHOULD_DEJAVU -> {
 
                 pref.abrelshouldDevaju = pref.abrelshouldDevaju - 1
@@ -136,6 +150,17 @@ class ExpeditionWeeklyViewModel  @Inject constructor( private val repository: Re
     fun onClickNoti( pos: Int ) {
 
         when ( expeditionWeekly.value!![pos].work ) {
+
+            Const.ExpeditionWeekly.CHALLENGE_GUARDIAN -> {
+
+                if ( pref.challengeGuardianNoti >= Const.NotiState.YES )
+                    pref.challengeGuardianNoti = Const.NotiState.NO
+                else
+                    pref.challengeGuardianNoti = Const.NotiState.YES
+
+                expeditionWeekly.value!![pos].isNoti = pref.challengeGuardianNoti
+
+            }
 
             Const.ExpeditionWeekly.KOUKUSATON_REHEARSAL -> {
 
